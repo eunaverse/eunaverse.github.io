@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ContextWiki — MCP Retrieval Server</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0f14;
+      --surface: #13161e;
+      --border: #1e2330;
+      --accent: #64ffda;
+      --accent-dim: rgba(100,255,218,0.12);
+      --accent-dim2: rgba(100,255,218,0.06);
+      --text: #cdd5e0;
+      --text-dim: #7a8499;
+      --white: #f0f4ff;
+      --tag-bg: #1a1f2e;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ── */
+    .shell {
+      width: min(100% - 2rem, 960px);
+      margin-inline: auto;
+      padding-block: 2rem 4rem;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .back-link::before { content: '←'; }
+
+    /* ── Hero ── */
+    .hero {
+      margin-top: 2rem;
+      padding: 2.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .hero-lede {
+      color: var(--text);
+      max-width: 680px;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+
+    /* stat pills */
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 1.75rem;
+    }
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.75rem;
+      background: var(--accent-dim);
+      border: 1px solid rgba(100,255,218,0.2);
+      border-radius: 99px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.55rem 1.25rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0d0f14;
+    }
+    .btn-primary:hover { background: #8fffeb; }
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(100,255,218,0.35);
+    }
+    .btn-secondary:hover { background: var(--accent-dim); }
+
+    .demo-shot {
+      width: 70%;
+      display: block;
+      margin-inline: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+    figcaption {
+      margin-top: 0.6rem;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+    }
+
+    /* ── Section title ── */
+    .section-title {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin: 2.5rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Grid ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .span-2 { grid-column: span 2; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+    .card h2 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .card p {
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+    .card ul {
+      margin: 0.5rem 0 0 1rem;
+      color: var(--text);
+      font-size: 0.9rem;
+    }
+    .card li + li { margin-top: 0.4rem; }
+
+    /* ── Architecture diagram ── */
+    .arch-diagram {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-top: 0.75rem;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+    .arch-diagram .hl { color: var(--accent); }
+    .arch-diagram .hl2 { color: #82aaff; }
+    .arch-diagram .hl3 { color: #c792ea; }
+
+    /* ── Tech tags ── */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .tag {
+      padding: 0.2rem 0.6rem;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: 'SF Mono', monospace;
+    }
+
+    /* ── Tools table ── */
+    .tools-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 0.75rem;
+      font-size: 0.875rem;
+    }
+    .tools-table th {
+      text-align: left;
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0 0.75rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tools-table th:first-child { padding-left: 0; }
+    .tools-table td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--text);
+    }
+    .tools-table td:first-child {
+      padding-left: 0;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .tools-table tr:last-child td { border-bottom: none; }
+
+
+    /* ── Scope list ── */
+    .scope-list {
+      list-style: none;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .scope-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+    .scope-list li::before {
+      content: '▸';
+      color: var(--accent);
+      font-size: 0.7rem;
+      margin-top: 0.25rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Link ── */
+    a.inline {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    a.inline:hover { text-decoration: underline; }
+
+    @media (max-width: 720px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .span-2 { grid-column: span 1; }
+      .hero { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<main class="shell">
+  <a class="back-link" href="/index.html">Back to portfolio</a>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="eyebrow">Side Project · 2025</div>
+    <h1>ContextWiki<br>MCP Retrieval Server</h1>
+    <p class="hero-lede">
+      A private knowledge retrieval server built on the MCP protocol.
+      Syncs Notion, Tistory, GitHub, and Obsidian into a dual-store index —
+      ChromaDB for semantic search, SQLite as a metadata gate —
+      and returns citation-backed context for LLM clients like Claude Desktop.
+    </p>
+
+    <div class="stat-row">
+      <span class="stat-pill">4 source connectors</span>
+      <span class="stat-pill">7 MCP tools</span>
+      <span class="stat-pill">ChromaDB + SQLite dual-store</span>
+      <span class="stat-pill">Python · FastMCP</span>
+      <span class="stat-pill">Docker · CI</span>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn btn-primary" href="https://github.com/eunhwa99/MCPContentSearch" target="_blank" rel="noopener">View Repository</a>
+      <a class="btn btn-secondary" href="https://github.com/eunhwa99/MCPContentSearch#-verification" target="_blank" rel="noopener">README Demo Flow</a>
+    </div>
+
+    <figure>
+      <img
+        class="demo-shot"
+        src="https://raw.githubusercontent.com/eunhwa99/MCPContentSearch/main/docs/images/claude-desktop-dynamodb-star-example.png"
+        alt="Claude Desktop using ContextWiki to retrieve citation-backed DynamoDB evidence before composing a STAR-style answer"
+      >
+      <figcaption>
+        Retrieval runs inside the LLM's own workflow. The screenshot shows cited source chunks
+        surfaced before Claude composes the final response — no separate search tab needed.
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- ── Architecture ── -->
+  <p class="section-title">Architecture</p>
+  <div class="grid-2">
+    <div class="card span-2">
+      <h2>Ingestion → Dual Store → Verified Context</h2>
+      <p>Each source connector fetches raw content, which is chunked and deduplicated before being written to two stores simultaneously. ChromaDB handles semantic similarity via OpenAI embeddings; SQLite acts as a metadata gate that validates chunk provenance before results reach the caller.</p>
+      <div class="arch-diagram">
+<span class="hl">[ Sources ]</span>  Notion · Tistory · GitHub · Obsidian<br>
+         │<br>
+         ▼<br>
+<span class="hl2">[ Ingestion Service ]</span>  fetch → chunk → deduplicate<br>
+        ╱                      ╲<br>
+       ▼                        ▼<br>
+<span class="hl3">[ ChromaDB ]</span>            <span class="hl3">[ SQLite ]</span><br>
+ semantic search         metadata gate<br>
+       ╲                        ╱<br>
+        ▼                      ▼<br>
+       <span class="hl">[ Verified Context ]</span>  → MCP client
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tech Stack ── -->
+  <p class="section-title">Tech Stack</p>
+  <div class="grid-3">
+    <div class="card">
+      <h2>Core</h2>
+      <div class="tag-list">
+        <span class="tag">Python</span>
+        <span class="tag">FastMCP</span>
+        <span class="tag">Pydantic</span>
+        <span class="tag">asyncio / aiohttp</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Vector &amp; Storage</h2>
+      <div class="tag-list">
+        <span class="tag">ChromaDB</span>
+        <span class="tag">LlamaIndex</span>
+        <span class="tag">OpenAI Embeddings</span>
+        <span class="tag">SQLite</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Infra &amp; Tooling</h2>
+      <div class="tag-list">
+        <span class="tag">Docker</span>
+        <span class="tag">uv</span>
+        <span class="tag">GitHub Actions CI</span>
+        <span class="tag">pytest · ruff · mypy · bandit</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MCP Tools ── -->
+  <p class="section-title">MCP Tools</p>
+  <div class="card">
+    <h2>7 tools registered on the FastMCP server</h2>
+    <table class="tools-table">
+      <thead>
+        <tr>
+          <th>Tool</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>list_sources()</td><td>List all configured source connectors and their status</td></tr>
+        <tr><td>sync_source(source_id)</td><td>Trigger incremental sync for a specific source</td></tr>
+        <tr><td>sync_all()</td><td>Sync all active sources in one call</td></tr>
+        <tr><td>get_sync_status()</td><td>Return current source health and sync job state</td></tr>
+        <tr><td>search_context(query, ...)</td><td>Semantic search with SQLite metadata validation — primary retrieval path</td></tr>
+        <tr><td>search_documents(query, ...)</td><td>Same retrieval grouped by source document</td></tr>
+        <tr><td>fetch_context(document_id, ...)</td><td>Direct chunk or document fetch by ID</td></tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── What I built / Design decisions ── -->
+  <p class="section-title">Design Decisions</p>
+  <div class="grid-2">
+    <div class="card">
+      <h2>What I built</h2>
+      <ul class="scope-list">
+        <li>Source connectors for Notion API, Tistory RSS, GitHub REST, and Obsidian vault</li>
+        <li>Chunking pipeline with deduplication before indexing</li>
+        <li>Dual-store write path: Chroma for embedding, SQLite for metadata gating</li>
+        <li>Search &amp; ranking layer with optional LLM query rewrite (GPT-4.1-mini)</li>
+        <li>FastMCP server entry point wiring all services together</li>
+        <li>Docker image + GitHub Actions CI (lint, type check, security scan, 70%+ coverage)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Evidence gathering vs. answer generation</h2>
+      <p>
+        In production, <code>search_context</code> and <code>search_documents</code>
+        return grounded evidence chunks, and the downstream LLM — Claude Desktop, Cursor —
+        composes the final answer.
+      </p>
+      <p style="margin-top:0.75rem;">
+        Keeping the retrieval layer and the answer layer separate means the search results
+        stay inspectable, the MCP server stays stateless, and swapping the LLM client
+        requires zero changes to the server.
+      </p>
+    </div>
+  </div>
+
+
+</main>
+</body>
+</html>

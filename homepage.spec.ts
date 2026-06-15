@@ -245,8 +245,8 @@ import { expect, test, type Page } from "@playwright/test";
    }
  });
 
- test("keeps project cards concise and points to evidence", async ({ page }) => {
-   await page.goto("/");
+test("keeps project cards concise and points to evidence", async ({ page }) => {
+  await page.goto("/");
 
    const cards = page.locator("#projects .project-card");
    await expect(cards).toHaveCount(2);
@@ -263,10 +263,30 @@ import { expect, test, type Page } from "@playwright/test";
      await expect(card.locator(".project-evidence").getByRole("link", { name: "Repository", exact: true })).toBeVisible();
    }
 
-   for (const removedLabel of ["Architecture", "Core Loop", "Local e2e verified", "Sample Output", "Source Strategy"]) {
-     await expect(page.locator("#projects").getByText(removedLabel, { exact: true })).toHaveCount(0);
-   }
- });
+  for (const removedLabel of ["Architecture", "Core Loop", "Local e2e verified", "Sample Output", "Source Strategy"]) {
+    await expect(page.locator("#projects").getByText(removedLabel, { exact: true })).toHaveCount(0);
+  }
+});
+
+test("routes the MCPContentSearch demo link to a dedicated walkthrough page", async ({ page }) => {
+  await page.goto("/");
+
+  const projectCard = page.locator("#projects .project-card").filter({ hasText: "ContextWiki / MCPContentSearch" });
+  const demoLink = projectCard.getByRole("link", { name: "Demo", exact: true });
+
+  await expect(demoLink).toHaveAttribute("href", "/mcpcontentsearch-demo.html");
+
+  await demoLink.click();
+  await expect(page).toHaveURL(/\/mcpcontentsearch-demo\.html$/);
+  await expect(page).toHaveTitle("ContextWiki — MCP Retrieval Server");
+  await expect(page.getByRole("heading", { name: /ContextWiki\s+MCP Retrieval Server/ })).toBeVisible();
+  await expect(page.getByText(/returns citation-backed context for LLM clients like Claude Desktop/i)).toBeVisible();
+  await expect(page.getByRole("link", { name: "View Repository", exact: true })).toHaveAttribute(
+    "href",
+    "https://github.com/eunhwa99/MCPContentSearch",
+  );
+  await expect(page.getByText(/7 tools registered on the FastMCP server/i)).toBeVisible();
+});
 
  test("groups open source contributions into evidence-backed upstream work", async ({ page }) => {
    await page.goto("/");
