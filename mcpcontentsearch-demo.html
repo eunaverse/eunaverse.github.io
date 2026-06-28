@@ -4,350 +4,599 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ContextWiki — MCP Retrieval Server</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #0d0f14;
-      --surface: #13161e;
-      --border: #1e2330;
-      --accent: #64ffda;
-      --accent-dim: rgba(100,255,218,0.12);
-      --accent-dim2: rgba(100,255,218,0.06);
-      --text: #cdd5e0;
-      --text-dim: #7a8499;
-      --white: #f0f4ff;
-      --tag-bg: #1a1f2e;
+      --bg: #f7f4ef;
+      --surface: #ffffff;
+      --text: #1c1917;
+      --text-muted: #57534e;
+      --text-soft: #78716c;
+      --accent: #4f46e5;
+      --accent-soft: #eef2ff;
+      --accent-2: #ea580c;
+      --border: rgba(28, 25, 23, 0.08);
+      --shadow: 0 18px 50px rgba(28, 25, 23, 0.08);
+      --radius: 18px;
+      --font: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
     }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: var(--font);
       font-size: 15px;
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Layout ── */
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.4;
+    }
+
+    .bg-blob-1 {
+      width: 360px;
+      height: 360px;
+      background: #c7d2fe;
+      top: -60px;
+      right: -40px;
+    }
+
+    .bg-blob-2 {
+      width: 300px;
+      height: 300px;
+      background: #fed7aa;
+      bottom: 5%;
+      left: -60px;
+    }
+
+    .bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(28, 25, 23, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(28, 25, 23, 0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.45), transparent 90%);
+    }
+
     .shell {
-      width: min(100% - 2rem, 960px);
+      position: relative;
+      z-index: 1;
+      width: min(100% - 2rem, 980px);
       margin-inline: auto;
-      padding-block: 2rem 4rem;
+      padding-block: 1.5rem 4rem;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .back-link {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      color: var(--text-dim);
+      gap: 0.45rem;
+      color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 0.02em;
-      transition: color 0.15s;
-    }
-    .back-link:hover { color: var(--accent); }
-    .back-link::before { content: '←'; }
-
-    /* ── Hero ── */
-    .hero {
-      margin-top: 2rem;
-      padding: 2.5rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.5rem 0.85rem;
+      border-radius: 999px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .back-link:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+      color: var(--text);
+    }
+
+    .back-link::before { content: "←"; }
+
+    .logo-chip {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid rgba(79, 70, 229, 0.12);
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) + 4px);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: start;
     }
 
     .eyebrow {
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 0.75rem;
+      background: var(--accent-soft);
+      border: 1px solid rgba(79, 70, 229, 0.12);
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      margin-bottom: 0.85rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
     }
 
     .hero h1 {
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 700;
-      color: var(--white);
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.85rem;
+      color: var(--text);
     }
 
     .hero-lede {
-      color: var(--text);
-      max-width: 680px;
-      margin-bottom: 1.5rem;
+      color: var(--text-muted);
+      max-width: 38rem;
+      margin-bottom: 1.25rem;
       font-size: 1rem;
     }
 
-    /* stat pills */
     .stat-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.6rem;
-      margin-bottom: 1.75rem;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
     }
+
     .stat-pill {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      padding: 0.3rem 0.75rem;
-      background: var(--accent-dim);
-      border: 1px solid rgba(100,255,218,0.2);
-      border-radius: 99px;
-      font-size: 0.8rem;
+      padding: 0.35rem 0.7rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      transition: transform 0.15s, background 0.15s;
+    }
+
+    .stat-pill:hover {
+      transform: translateY(-2px);
+      background: var(--accent-soft);
       color: var(--accent);
-      font-weight: 500;
-      white-space: nowrap;
     }
 
     .btn-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 2rem;
+      gap: 0.65rem;
     }
+
     .btn {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      padding: 0.55rem 1.25rem;
-      border-radius: 8px;
-      font-size: 0.875rem;
-      font-weight: 600;
+      padding: 0.65rem 1.1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
       text-decoration: none;
-      transition: all 0.15s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
+
     .btn-primary {
-      background: var(--accent);
-      color: #0d0f14;
+      background: var(--text);
+      color: #fff;
+      box-shadow: var(--shadow);
     }
-    .btn-primary:hover { background: #8fffeb; }
+
+    .btn-primary:hover { transform: translateY(-2px); }
+
     .btn-secondary {
-      background: transparent;
-      color: var(--accent);
-      border: 1px solid rgba(100,255,218,0.35);
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
     }
-    .btn-secondary:hover { background: var(--accent-dim); }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .demo-panel {
+      background: #fafaf9;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .demo-panel:hover {
+      transform: translateY(-4px);
+    }
+
+    .demo-panel-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.7rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+
+    .dot.red { background: #f87171; }
+    .dot.yellow { background: #fbbf24; }
+    .dot.green { background: #4ade80; }
+
+    .demo-panel-label {
+      margin-left: 0.35rem;
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-soft);
+    }
 
     .demo-shot {
-      width: 70%;
+      width: 100%;
       display: block;
-      margin-inline: auto;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      display: block;
-    }
-    figcaption {
-      margin-top: 0.6rem;
-      font-size: 0.82rem;
-      color: var(--text-dim);
     }
 
-    /* ── Section title ── */
+    figcaption {
+      padding: 0.85rem 1rem 1rem;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      background: #fff;
+      border-top: 1px solid var(--border);
+    }
+
     .section-title {
+      font-family: var(--mono);
       font-size: 0.72rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--text-dim);
-      margin: 2.5rem 0 1rem;
+      color: var(--text-soft);
+      margin: 2rem 0 0.85rem;
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
+
     .section-title::after {
-      content: '';
+      content: "";
       flex: 1;
       height: 1px;
       background: var(--border);
     }
 
-    /* ── Grid ── */
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
     }
+
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
+
     .span-2 { grid-column: span 2; }
 
-    /* ── Card ── */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.5rem;
+      border-radius: var(--radius);
+      padding: 1.35rem;
+      box-shadow: 0 10px 30px rgba(28, 25, 23, 0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .card h2 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--accent);
-      margin-bottom: 0.75rem;
-    }
-    .card p {
-      color: var(--text);
-      font-size: 0.9rem;
-    }
-    .card ul {
-      margin: 0.5rem 0 0 1rem;
-      color: var(--text);
-      font-size: 0.9rem;
-    }
-    .card li + li { margin-top: 0.4rem; }
 
-    /* ── Architecture diagram ── */
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 0.65rem;
+      letter-spacing: -0.02em;
+    }
+
+    .card p,
+    .card ul {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+    }
+
+    .card ul {
+      margin: 0.5rem 0 0 1.1rem;
+    }
+
+    .card li + li { margin-top: 0.35rem; }
+
     .arch-diagram {
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.78rem;
-      color: var(--text-dim);
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      color: var(--text-muted);
       background: var(--bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.25rem 1.5rem;
-      margin-top: 0.75rem;
-      line-height: 1.8;
+      border-radius: 12px;
+      padding: 1.1rem 1.25rem;
+      margin-top: 0.85rem;
+      line-height: 1.85;
       overflow-x: auto;
     }
-    .arch-diagram .hl { color: var(--accent); }
-    .arch-diagram .hl2 { color: #82aaff; }
-    .arch-diagram .hl3 { color: #c792ea; }
 
-    /* ── Tech tags ── */
+    .arch-diagram .hl { color: var(--accent); font-weight: 600; }
+    .arch-diagram .hl2 { color: #2563eb; font-weight: 600; }
+    .arch-diagram .hl3 { color: var(--accent-2); font-weight: 600; }
+
     .tag-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.75rem;
-    }
-    .tag {
-      padding: 0.2rem 0.6rem;
-      background: var(--tag-bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      font-size: 0.78rem;
-      color: var(--text-dim);
-      font-family: 'SF Mono', monospace;
+      gap: 0.45rem;
+      margin-top: 0.65rem;
     }
 
-    /* ── Tools table ── */
+    .tag {
+      padding: 0.25rem 0.6rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-family: var(--mono);
+      font-weight: 500;
+    }
+
     .tools-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 0.75rem;
-      font-size: 0.875rem;
+      margin-top: 0.65rem;
+      font-size: 0.88rem;
     }
+
     .tools-table th {
       text-align: left;
-      color: var(--text-dim);
-      font-size: 0.75rem;
-      letter-spacing: 0.06em;
+      color: var(--text-soft);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      padding: 0 0.75rem 0.6rem;
+      padding: 0 0.65rem 0.55rem;
       border-bottom: 1px solid var(--border);
     }
+
     .tools-table th:first-child { padding-left: 0; }
+
     .tools-table td {
-      padding: 0.6rem 0.75rem;
+      padding: 0.65rem;
       border-bottom: 1px solid var(--border);
       vertical-align: top;
-      color: var(--text);
+      color: var(--text-muted);
     }
+
     .tools-table td:first-child {
       padding-left: 0;
-      font-family: 'SF Mono', 'Fira Code', monospace;
-      font-size: 0.8rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
       color: var(--accent);
       white-space: nowrap;
+      font-weight: 600;
     }
+
     .tools-table tr:last-child td { border-bottom: none; }
 
-
-    /* ── Scope list ── */
     .scope-list {
       list-style: none;
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
+      gap: 0.5rem;
     }
+
     .scope-list li {
       display: flex;
       align-items: flex-start;
-      gap: 0.6rem;
-      font-size: 0.9rem;
+      gap: 0.55rem;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    .scope-list li::before {
+      content: "→";
+      color: var(--accent-2);
+      font-size: 0.85rem;
+      margin-top: 0.05rem;
+      flex-shrink: 0;
+      font-weight: 700;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 0.86em;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.1rem 0.35rem;
+      border-radius: 6px;
       color: var(--text);
     }
-    .scope-list li::before {
-      content: '▸';
-      color: var(--accent);
-      font-size: 0.7rem;
+
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.65rem;
       margin-top: 0.25rem;
-      flex-shrink: 0;
     }
 
-    /* ── Link ── */
-    a.inline {
+    .flow-step {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.85rem;
+      text-align: center;
+    }
+
+    .flow-step-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
       color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
     }
-    a.inline:hover { text-decoration: underline; }
 
-    @media (max-width: 720px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .flow-step-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .flow-step-desc {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      line-height: 1.45;
+    }
+
+    @media (max-width: 820px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .grid-2, .grid-3, .flow-steps { grid-template-columns: 1fr; }
       .span-2 { grid-column: span 1; }
-      .hero { padding: 1.5rem; }
+      .hero { padding: 1.35rem; }
     }
   </style>
 </head>
 <body>
+<div class="bg-mesh" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="bg-blob bg-blob-1"></div>
+  <div class="bg-blob bg-blob-2"></div>
+</div>
+
 <main class="shell">
-  <a class="back-link" href="/index.html">Back to portfolio</a>
+  <div class="top-bar">
+    <a class="back-link" href="/index.html">Back to portfolio</a>
+    <span class="logo-chip">eunaverse / demo</span>
+  </div>
 
-  <!-- ── Hero ── -->
   <section class="hero">
-    <div class="eyebrow">Side Project · 2025</div>
-    <h1>ContextWiki<br>MCP Retrieval Server</h1>
-    <p class="hero-lede">
-      A private knowledge retrieval server built on the MCP protocol.
-      Syncs Notion, Tistory, GitHub, and Obsidian into a dual-store index —
-      ChromaDB for semantic search, SQLite as a metadata gate —
-      and returns citation-backed context for LLM clients like Claude Desktop.
-    </p>
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">Personal Project · Retrieval &amp; MCP</div>
+        <h1>ContextWiki<br>MCP Retrieval Server</h1>
+        <p class="hero-lede">
+          A private knowledge retrieval server built on the MCP protocol.
+          Syncs Notion, Tistory, GitHub, and Obsidian into a dual-store index —
+          ChromaDB for semantic search, SQLite as a metadata gate —
+          and returns citation-backed context for LLM clients like Claude Desktop.
+        </p>
 
-    <div class="stat-row">
-      <span class="stat-pill">4 source connectors</span>
-      <span class="stat-pill">7 MCP tools</span>
-      <span class="stat-pill">ChromaDB + SQLite dual-store</span>
-      <span class="stat-pill">Python · FastMCP</span>
-      <span class="stat-pill">Docker · CI</span>
+        <div class="stat-row">
+          <span class="stat-pill">4 source connectors</span>
+          <span class="stat-pill">7 MCP tools</span>
+          <span class="stat-pill">ChromaDB + SQLite</span>
+          <span class="stat-pill">Python · FastMCP</span>
+          <span class="stat-pill">Docker · CI</span>
+        </div>
+
+        <div class="btn-row">
+          <a class="btn btn-primary" href="https://github.com/eunaverse/MCPContentSearch" target="_blank" rel="noopener noreferrer">View Repository</a>
+          <a class="btn btn-secondary" href="https://github.com/eunaverse/MCPContentSearch#-verification" target="_blank" rel="noopener noreferrer">README Demo Flow</a>
+        </div>
+      </div>
+
+      <figure class="demo-panel">
+        <div class="demo-panel-bar">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="demo-panel-label">Claude Desktop · retrieval in context</span>
+        </div>
+        <img
+          class="demo-shot"
+          src="https://raw.githubusercontent.com/eunaverse/MCPContentSearch/main/docs/images/claude-desktop-dynamodb-star-example.png"
+          alt="Claude Desktop using ContextWiki to retrieve citation-backed DynamoDB evidence before composing a STAR-style answer"
+        >
+        <figcaption>
+          Retrieval runs inside the LLM workflow — cited source chunks appear before the final answer, no separate search tab.
+        </figcaption>
+      </figure>
     </div>
-
-    <div class="btn-row">
-      <a class="btn btn-primary" href="https://github.com/eunhwa99/MCPContentSearch" target="_blank" rel="noopener">View Repository</a>
-      <a class="btn btn-secondary" href="https://github.com/eunhwa99/MCPContentSearch#-verification" target="_blank" rel="noopener">README Demo Flow</a>
-    </div>
-
-    <figure>
-      <img
-        class="demo-shot"
-        src="https://raw.githubusercontent.com/eunhwa99/MCPContentSearch/main/docs/images/claude-desktop-dynamodb-star-example.png"
-        alt="Claude Desktop using ContextWiki to retrieve citation-backed DynamoDB evidence before composing a STAR-style answer"
-      >
-      <figcaption>
-        Retrieval runs inside the LLM's own workflow. The screenshot shows cited source chunks
-        surfaced before Claude composes the final response — no separate search tab needed.
-      </figcaption>
-    </figure>
   </section>
 
-  <!-- ── Architecture ── -->
+  <p class="section-title">How it works</p>
+  <div class="flow-steps">
+    <div class="flow-step">
+      <div class="flow-step-num">01</div>
+      <div class="flow-step-label">Sync</div>
+      <div class="flow-step-desc">Connectors pull Notion, GitHub, Obsidian, Tistory</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">02</div>
+      <div class="flow-step-label">Index</div>
+      <div class="flow-step-desc">Chunk, dedupe, write to ChromaDB + SQLite</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">03</div>
+      <div class="flow-step-label">Retrieve</div>
+      <div class="flow-step-desc">Semantic search with metadata validation</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-step-num">04</div>
+      <div class="flow-step-label">Cite</div>
+      <div class="flow-step-desc">Return grounded chunks to the MCP client</div>
+    </div>
+  </div>
+
   <p class="section-title">Architecture</p>
   <div class="grid-2">
     <div class="card span-2">
@@ -369,7 +618,6 @@
     </div>
   </div>
 
-  <!-- ── Tech Stack ── -->
   <p class="section-title">Tech Stack</p>
   <div class="grid-3">
     <div class="card">
@@ -401,7 +649,6 @@
     </div>
   </div>
 
-  <!-- ── MCP Tools ── -->
   <p class="section-title">MCP Tools</p>
   <div class="card">
     <h2>7 tools registered on the FastMCP server</h2>
@@ -420,41 +667,21 @@
         <tr><td>search_context(query, ...)</td><td>Semantic search with SQLite metadata validation — primary retrieval path</td></tr>
         <tr><td>search_documents(query, ...)</td><td>Same retrieval grouped by source document</td></tr>
         <tr><td>fetch_context(document_id, ...)</td><td>Direct chunk or document fetch by ID</td></tr>
-
       </tbody>
     </table>
   </div>
 
-  <!-- ── What I built / Design decisions ── -->
-  <p class="section-title">Design Decisions</p>
-  <div class="grid-2">
-    <div class="card">
-      <h2>What I built</h2>
-      <ul class="scope-list">
-        <li>Source connectors for Notion API, Tistory RSS, GitHub REST, and Obsidian vault</li>
-        <li>Chunking pipeline with deduplication before indexing</li>
-        <li>Dual-store write path: Chroma for embedding, SQLite for metadata gating</li>
-        <li>Search &amp; ranking layer with optional LLM query rewrite (GPT-4.1-mini)</li>
-        <li>FastMCP server entry point wiring all services together</li>
-        <li>Docker image + GitHub Actions CI (lint, type check, security scan, 70%+ coverage)</li>
-      </ul>
-    </div>
-    <div class="card">
-      <h2>Evidence gathering vs. answer generation</h2>
-      <p>
-        In production, <code>search_context</code> and <code>search_documents</code>
-        return grounded evidence chunks, and the downstream LLM — Claude Desktop, Cursor —
-        composes the final answer.
-      </p>
-      <p style="margin-top:0.75rem;">
-        Keeping the retrieval layer and the answer layer separate means the search results
-        stay inspectable, the MCP server stays stateless, and swapping the LLM client
-        requires zero changes to the server.
-      </p>
-    </div>
+  <p class="section-title">What I built</p>
+  <div class="card">
+    <ul class="scope-list">
+      <li>Source connectors for Notion API, Tistory RSS, GitHub REST, and Obsidian vault</li>
+      <li>Chunking pipeline with deduplication before indexing</li>
+      <li>Dual-store write path: Chroma for embedding, SQLite for metadata gating</li>
+      <li>Search &amp; ranking layer with optional LLM query rewrite (GPT-4.1-mini)</li>
+      <li>FastMCP server entry point wiring all services together</li>
+      <li>Docker image + GitHub Actions CI (lint, type check, security scan, 70%+ coverage)</li>
+    </ul>
   </div>
-
-
 </main>
 </body>
 </html>

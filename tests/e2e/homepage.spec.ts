@@ -130,7 +130,7 @@ import { expect, test, type Page } from "@playwright/test";
    await expect(hero.getByRole("link", { name: "LinkedIn" })).toHaveCount(0);
    await expect(hero.getByRole("link", { name: /View\s+GitHub/ })).toHaveCount(0);
 
-   for (const heading of ["Experience", "Education", "Selected Projects", "Open Source Contributions", "Skills & Focus", "Contact"]) {
+   for (const heading of ["Experience", "Education", "Personal & Open Source Work", "Skills & Focus", "Contact"]) {
      await expect(page.getByRole("heading", { name: heading })).toBeVisible();
    }
  });
@@ -283,7 +283,7 @@ test("routes the MCPContentSearch demo link to a dedicated walkthrough page", as
   await expect(page.getByText(/returns citation-backed context for LLM clients like Claude Desktop/i)).toBeVisible();
   await expect(page.getByRole("link", { name: "View Repository", exact: true })).toHaveAttribute(
     "href",
-    "https://github.com/eunhwa99/MCPContentSearch",
+    "https://github.com/eunaverse/MCPContentSearch",
   );
   await expect(page.getByText(/7 tools registered on the FastMCP server/i)).toBeVisible();
 });
@@ -291,14 +291,20 @@ test("routes the MCPContentSearch demo link to a dedicated walkthrough page", as
  test("groups open source contributions into evidence-backed upstream work", async ({ page }) => {
    await page.goto("/");
 
-   const openSource = page.locator("#open-source");
-   const items = openSource.locator(".oss-item");
+   const projects = page.locator("#projects");
+   const openSourceCards = projects.locator(".project-card").filter({ hasText: /Open Source/ });
 
-   await expect(items).toHaveCount(2);
-   await expect(openSource.getByText("Apache Zeppelin", { exact: true })).toBeVisible();
-   await expect(openSource.getByText("Kubernetes Website", { exact: true })).toBeVisible();
-   await expect(openSource.getByText(/Grand Prize recipient/i)).toBeVisible();
-   await expect(openSource.getByText(/Additional cleanup and refactoring contributions merged upstream/i)).toBeVisible();
+   await expect(openSourceCards).toHaveCount(1);
+   await expect(projects.getByText("Apache Zeppelin", { exact: true })).toBeVisible();
+   await expect(projects.getByText(/Grand Prize \(1st place\)/i)).toBeVisible();
+   await expect(projects.getByText(/Korean Open Source Contribution Program/i)).toBeVisible();
+   await expect(projects.getByText(/additional cleanup and refactoring upstream/i)).toBeVisible();
+   await expect(projects.getByText("Kubernetes Website", { exact: true })).toHaveCount(0);
+   await expect(projects.getByText(/More projects and experiments on/i)).toBeVisible();
+   await expect(projects.locator(".projects-github-more").getByRole("link", { name: "GitHub →" })).toHaveAttribute(
+     "href",
+     "https://github.com/eunaverse",
+   );
 
    for (const linkName of [
      "ZEPPELIN-6220",
@@ -310,17 +316,16 @@ test("routes the MCPContentSearch demo link to a dedicated walkthrough page", as
      "ZEPPELIN-6264",
      "ZEPPELIN-6242",
    ]) {
-     await expect(openSource.getByRole("link", { name: linkName })).toHaveAttribute("href", /github\.com\/apache\/zeppelin\/pull\//);
+     await expect(projects.getByRole("link", { name: linkName })).toHaveAttribute("href", /github\.com\/apache\/zeppelin\/pull\//);
    }
+ });
 
-   await expect(openSource.getByRole("link", { name: "Merged PR" })).toHaveAttribute(
-     "href",
-     "https://github.com/kubernetes/website/pull/52238",
-   );
-   await expect(openSource.getByRole("link", { name: "Issue" })).toHaveAttribute(
-     "href",
-     "https://github.com/kubernetes/website/issues/52237",
-   );
+ test("shows personal learning automation project", async ({ page }) => {
+   await page.goto("/");
+
+   const projects = page.locator("#projects");
+   await expect(projects.getByText("ai-news-alerts", { exact: true })).toBeVisible();
+   await expect(projects.getByText(/staying current on backend, platform, and AI infrastructure trends/i)).toBeVisible();
  });
 
  test("collects contact links outside the hero", async ({ page }) => {
@@ -332,13 +337,13 @@ test("routes the MCPContentSearch demo link to a dedicated walkthrough page", as
    await expect(availability.getByText(/Happy to talk about backend systems/i)).toBeVisible();
    await expect(availability.getByRole("link", { name: "Email" })).toHaveAttribute(
      "href",
-     "mailto:eun.h.engineer@gmail.com",
+     "mailto:euna.engineer@gmail.com",
    );
    await expect(availability.getByRole("link", { name: /LinkedIn/i })).toHaveAttribute(
      "href",
      "https://www.linkedin.com/in/eunhwa-park-20a286248/",
    );
-   await expect(availability.getByRole("link", { name: /GitHub/i })).toHaveAttribute("href", "https://github.com/eunhwa99");
+   await expect(availability.getByRole("link", { name: /GitHub/i })).toHaveAttribute("href", "https://github.com/eunaverse");
    await expect(availability.getByRole("link", { name: /Resume/i })).toHaveCount(0);
  });
 
