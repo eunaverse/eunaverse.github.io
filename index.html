@@ -638,6 +638,8 @@
     .project-snippet .ok { color: #16a34a; }
 
     .project-card {
+      display: flex;
+      flex-direction: column;
       padding: 1.6rem;
       height: 100%;
     }
@@ -662,7 +664,7 @@
 
     .project-description {
         color: var(--text-muted);
-        margin-bottom: 1.1rem;
+        margin-bottom: 0;
         font-size: 0.96rem;
     }
 
@@ -687,11 +689,26 @@
     .project-quip .prompt { color: var(--accent); }
     .project-quip .ok { color: #16a34a; }
 
+    .project-card-main {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 1.1rem;
+    }
+
+    .project-card-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-top: auto;
+    }
+
     .project-evidence {
       display: flex;
       flex-wrap: wrap;
       gap: 0.55rem;
-      margin-bottom: 0.85rem;
+      margin-bottom: 0;
     }
 
     .evidence-link {
@@ -1058,48 +1075,56 @@
     <h3 class="project-group-title">Personal Projects</h3>
     <div class="projects-grid">
       <div class="project-card card tilt-card">
-        <div class="project-title">ContextWiki / MCPContentSearch</div>
-        <div class="project-period">Personal Project · Retrieval &amp; MCP</div>
-        <div class="project-quip">
-          <span class="prompt">$</span> mcp tools list --personal<br>
-          <span class="ok">✓</span> retrieval · citations · agent context
+        <div class="project-card-main">
+          <div class="project-title">ContextWiki / MCPContentSearch</div>
+          <div class="project-period">Personal Project · Retrieval &amp; MCP</div>
+          <div class="project-quip">
+            <span class="prompt">$</span> mcp tools list --personal<br>
+            <span class="ok">✓</span> retrieval · citations · agent context
+          </div>
+          <div class="project-description">
+            Unified search across Notion, GitHub, Obsidian, and notes — with citation-gated answers for AI clients via MCP. Vector retrieval plus document lifecycle management (dedup, tombstones, stale cleanup) keeps responses grounded in real sources.
+          </div>
         </div>
-        <div class="project-description">
-          Unified search across Notion, GitHub, Obsidian, and notes — with citation-gated answers for AI clients via MCP. Vector retrieval plus document lifecycle management (dedup, tombstones, stale cleanup) keeps responses grounded in real sources.
-        </div>
-        <div class="project-evidence">
-          <a class="evidence-link" href="https://github.com/eunaverse/MCPContentSearch" target="_blank" rel="noopener noreferrer">Repository</a>
-          <a class="evidence-link" href="/mcpcontentsearch-demo.html">Demo</a>
-        </div>
-        <div class="tech-stack">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">FastMCP</span>
-          <span class="tech-tag">LlamaIndex</span>
-          <span class="tech-tag">ChromaDB</span>
-          <span class="tech-tag">SQLite</span>
-          <span class="tech-tag">Citations</span>
+        <div class="project-card-footer">
+          <div class="project-evidence">
+            <a class="evidence-link" href="https://github.com/eunaverse/MCPContentSearch" target="_blank" rel="noopener noreferrer">Repository</a>
+            <a class="evidence-link" href="/mcpcontentsearch-demo.html">Demo</a>
+          </div>
+          <div class="tech-stack">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">FastMCP</span>
+            <span class="tech-tag">LlamaIndex</span>
+            <span class="tech-tag">ChromaDB</span>
+            <span class="tech-tag">SQLite</span>
+            <span class="tech-tag">Citations</span>
+          </div>
         </div>
       </div>
 
       <div class="project-card card tilt-card">
-        <div class="project-title">ai-news-alerts</div>
-        <div class="project-period">Personal Project · Learning Automation</div>
-        <div class="project-quip">
-          <span class="prompt">$</span> while true; do learn_ai; done<br>
-          <span class="ok">✓</span> HN + RSS every morning
+        <div class="project-card-main">
+          <div class="project-title">ai-news-alerts</div>
+          <div class="project-period">Personal Project · Learning Automation</div>
+          <div class="project-quip">
+            <span class="prompt">$</span> while true; do learn_ai; done<br>
+            <span class="ok">✓</span> HN + RSS every morning
+          </div>
+          <div class="project-description">
+            Built to solve my own problem — staying current on backend, platform, and AI infrastructure trends without manual browsing. A daily Slack automation with an explicit HN + RSS source strategy, dry-runs that never mutate state, pytest coverage, and GitHub Actions delivery. Keeps me reading primary sources in English every morning.
+          </div>
         </div>
-        <div class="project-description">
-          Built to solve my own problem — staying current on backend, platform, and AI infrastructure trends without manual browsing. A daily Slack automation with an explicit HN + RSS source strategy, dry-runs that never mutate state, pytest coverage, and GitHub Actions delivery. Keeps me reading primary sources in English every morning.
-        </div>
-        <div class="project-evidence">
-          <a class="evidence-link" href="https://github.com/eunaverse/ai-news-alerts" target="_blank" rel="noopener noreferrer">Repository</a>
-        </div>
-        <div class="tech-stack">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">GitHub Actions</span>
-          <span class="tech-tag">Slack</span>
-          <span class="tech-tag">pytest</span>
-          <span class="tech-tag">Dry-run Safety</span>
+        <div class="project-card-footer">
+          <div class="project-evidence">
+            <a class="evidence-link" href="https://github.com/eunaverse/ai-news-alerts" target="_blank" rel="noopener noreferrer">Repository</a>
+          </div>
+          <div class="tech-stack">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">GitHub Actions</span>
+            <span class="tech-tag">Slack</span>
+            <span class="tech-tag">pytest</span>
+            <span class="tech-tag">Dry-run Safety</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1107,27 +1132,31 @@
     <h3 class="project-group-title">Open Source</h3>
     <div class="projects-grid">
       <div class="project-card card tilt-card">
-        <div class="oss-prize-badge">🏆 Grand Prize · OSSCA</div>
-        <div class="project-title">Apache Zeppelin</div>
-        <div class="project-period">Open Source · 8 Merged PRs</div>
-        <div class="project-description">
-          Grand Prize (1st place), <a href="https://www.contribution.ac" target="_blank" rel="noopener noreferrer">Korean Open Source Contribution Program</a> (OSSCA). Contributed to Apache Zeppelin with merged Java interpreter fixes for reliability, readability, and maintainability, plus additional cleanup and refactoring upstream.
+        <div class="project-card-main">
+          <div class="oss-prize-badge">🏆 Grand Prize · OSSCA</div>
+          <div class="project-title">Apache Zeppelin</div>
+          <div class="project-period">Open Source · 8 Merged PRs</div>
+          <div class="project-description">
+            Grand Prize (1st place), <a href="https://www.contribution.ac" target="_blank" rel="noopener noreferrer">Korean Open Source Contribution Program</a> (OSSCA). Contributed to Apache Zeppelin with merged Java interpreter fixes for reliability, readability, and maintainability, plus additional cleanup and refactoring upstream.
+          </div>
         </div>
-        <div class="project-evidence">
-          <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/4970" target="_blank" rel="noopener noreferrer">ZEPPELIN-6220</a>
-          <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/4978" target="_blank" rel="noopener noreferrer">ZEPPELIN-6243</a>
-          <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5033" target="_blank" rel="noopener noreferrer">ZEPPELIN-6285</a>
-          <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5049" target="_blank" rel="noopener noreferrer">ZEPPELIN-6300</a>
-          <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5069" target="_blank" rel="noopener noreferrer">ZEPPELIN-6306</a>
-          <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5048" target="_blank" rel="noopener noreferrer">ZEPPELIN-6299</a>
-          <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5005" target="_blank" rel="noopener noreferrer">ZEPPELIN-6264</a>
-          <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/4975" target="_blank" rel="noopener noreferrer">ZEPPELIN-6242</a>
-        </div>
-        <div class="tech-stack">
-          <span class="tech-tag">Java</span>
-          <span class="tech-tag">Reliability</span>
-          <span class="tech-tag">Refactoring</span>
-          <span class="tech-tag">Interpreters</span>
+        <div class="project-card-footer">
+          <div class="project-evidence">
+            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/4970" target="_blank" rel="noopener noreferrer">ZEPPELIN-6220</a>
+            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/4978" target="_blank" rel="noopener noreferrer">ZEPPELIN-6243</a>
+            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5033" target="_blank" rel="noopener noreferrer">ZEPPELIN-6285</a>
+            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5049" target="_blank" rel="noopener noreferrer">ZEPPELIN-6300</a>
+            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5069" target="_blank" rel="noopener noreferrer">ZEPPELIN-6306</a>
+            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5048" target="_blank" rel="noopener noreferrer">ZEPPELIN-6299</a>
+            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5005" target="_blank" rel="noopener noreferrer">ZEPPELIN-6264</a>
+            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/4975" target="_blank" rel="noopener noreferrer">ZEPPELIN-6242</a>
+          </div>
+          <div class="tech-stack">
+            <span class="tech-tag">Java</span>
+            <span class="tech-tag">Reliability</span>
+            <span class="tech-tag">Refactoring</span>
+            <span class="tech-tag">Interpreters</span>
+          </div>
         </div>
       </div>
     </div>
