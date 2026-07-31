@@ -68,7 +68,7 @@ import { expect, test, type Page } from "@playwright/test";
 
      const blocks = Array.from(
        document.querySelectorAll<HTMLElement>(
-         ".hero-title, .hero-description, .cta-buttons, .stat-item, .section-title, .section-subtitle, .experience-item, .education-item, .project-card, .oss-item, .skill-category, .contact-item, footer",
+         ".hero-title, .hero-description, .stat-item, .section-title, .section-subtitle, .experience-item, .education-item, .project-card, .oss-item, .skill-category, .contact-item, footer",
        ),
      ).filter((element) => {
        const rect = element.getBoundingClientRect();
@@ -92,7 +92,7 @@ import { expect, test, type Page } from "@playwright/test";
        }
      }
 
-     const firstViewportSignals = [".hero-title", ".hero-description", ".cta-buttons"];
+     const firstViewportSignals = [".hero-title", ".hero-description", ".stats"];
      for (const selector of firstViewportSignals) {
        const rect = document.querySelector(selector)?.getBoundingClientRect();
        if (!rect || rect.top >= window.innerHeight || rect.bottom <= 0) {
@@ -122,10 +122,7 @@ import { expect, test, type Page } from "@playwright/test";
    await expect(page.getByText(/56M/i)).toHaveCount(0);
    await expect(page.getByRole("link", { name: /Resume/i })).toHaveCount(0);
    await expect(hero.getByRole("link", { name: "LinkedIn" })).toHaveCount(0);
-   const githubLink = hero.getByRole("link", { name: /GitHub/i });
-   await expect(githubLink).toHaveAttribute("href", "https://github.com/eunaverse");
-   await expect(githubLink).toHaveAttribute("target", "_blank");
-   await expect(githubLink).toHaveClass(/btn-primary/);
+   await expect(hero.getByRole("link", { name: /GitHub/i })).toHaveCount(0);
 
    for (const heading of ["Experience", "Education", "Personal & Open Source Work", "Skills & Focus", "Contact"]) {
      await expect(page.getByRole("heading", { name: heading })).toBeVisible();
@@ -154,7 +151,7 @@ import { expect, test, type Page } from "@playwright/test";
    const ossStat = hero.locator(".stat-item").filter({ hasText: "Merged OSS PRs" });
 
    await expect(uiucStat.getByText("UIUC MCS", { exact: true })).toBeVisible();
-   await expect(uiucStat.getByText("Incoming 2026", { exact: true })).toBeVisible();
+   await expect(uiucStat.getByText("2026 – 2028", { exact: true })).toBeVisible();
    await expect(ossStat.getByText("9", { exact: true })).toBeVisible();
    await expect(awsStat.getByText("AWS", { exact: true })).toBeVisible();
    await expect(awsStat.getByText("Solutions Architect Pro", { exact: true })).toBeVisible();
@@ -167,22 +164,22 @@ import { expect, test, type Page } from "@playwright/test";
    const projectTitles = await page.locator("#projects .project-title").allTextContents();
 
    expect(projectTitles).toEqual([
-     "ContextWiki / MCPContentSearch",
-     "RepoLens",
+     "ContextWiki",
+     "ai-news-alerts",
+     "Apache Zeppelin",
    ]);
 
    const projects = page.locator("#projects");
-   await expect(projects.getByText(/citation-ready knowledge backend/i)).toBeVisible();
-   await expect(projects.getByText(/onboarding-ready\s+exploration\s+workspace/i)).toBeVisible();
+   await expect(projects.getByText(/Private MCP server for agents/i)).toBeVisible();
+   await expect(projects.getByText(/Daily Slack digest from HN \+ RSS/i)).toBeVisible();
    for (const removedProject of [
+     "RepoLens",
      "Agent Harness Playbook + Codex Config",
-     "AI News Alerts",
      "ImageGallery",
      "Lanternwood Athenaeum",
    ]) {
      await expect(projects.getByText(removedProject, { exact: true })).toHaveCount(0);
    }
- });
 
  test("keeps experience narrative concise and portfolio-friendly", async ({ page }) => {
    await page.goto("/");
@@ -193,30 +190,35 @@ import { expect, test, type Page } from "@playwright/test";
    await expect(experience.getByText("Jan 2023 - Present", { exact: true })).toBeVisible();
    await expect(experience.getByText(/Training:/i)).toHaveCount(0);
    await expect(experience.locator(".job-description li")).toHaveCount(0);
-   await expect(experience.getByText(/At Samsung, I've worked on large-scale database migrations/i)).toBeVisible();
-   await expect(experience.getByText(/cloud-native modernization/i)).toBeVisible();
-   await expect(experience.getByText(/services\s+used by millions of people/i)).toBeVisible();
-   await expect(experience.getByText(/turning complex production problems into systems/i)).toBeVisible();
-   await expect(experience.getByText(/easier to understand, operate, and trust/i)).toBeVisible();
-   await expect(experience.getByText(/78B\+|95%|4 calls to 1|61%/i)).toHaveCount(0);
+   await expect(experience.locator(".exp-hit")).toHaveCount(3);
+   await expect(experience.getByText(/400M\+ monthly active users/i)).toBeVisible();
+   await expect(experience.getByRole("heading", { name: "Keep users online while the database changes", exact: true })).toBeVisible();
+   await expect(experience.getByRole("heading", { name: "Safer identity for users, freer shipping for teams", exact: true })).toBeVisible();
+   await expect(experience.getByRole("heading", { name: "Fewer failed requests in the real product path", exact: true })).toBeVisible();
+   await expect(experience.getByText(/78B\+/i)).toBeVisible();
+   await expect(experience.getByText(/\$2\.2M/i)).toBeVisible();
+   await expect(experience.getByText(/99\.5%\+/i)).toBeVisible();
+   await expect(experience.getByText(/56M\+/i)).toBeVisible();
+   await expect(experience.getByText(/4 calls to 1|61%/i)).toHaveCount(0);
    for (const focus of ["Large-scale migration", "Cloud-native operations", "Data consistency", "Distributed systems"]) {
      await expect(experience.getByText(focus, { exact: true })).toBeVisible();
    }
    await expect(experience.getByText(/agent-assisted engineering harnesses/i)).toHaveCount(0);
  });
 
- test("shows the education timeline with the incoming UIUC MCS program", async ({ page }) => {
+ test("shows the education timeline with the UIUC MCS program", async ({ page }) => {
    await page.goto("/");
 
    const education = page.locator("#education");
    await expect(education.getByText("University of Illinois Urbana-Champaign")).toBeVisible();
-   await expect(education.getByText("Incoming Master of Computer Science (MCS)")).toBeVisible();
+   await expect(education.getByText("Master of Computer Science (MCS)", { exact: true })).toBeVisible();
+   await expect(education.getByText(/Incoming/i)).toHaveCount(0);
    await expect(education.getByText("2026 - 2028")).toBeVisible();
    await expect(education.getByText("Kyungpook National University")).toBeVisible();
    await expect(education.getByText("Mobile Engineering")).toBeVisible();
-   await expect(education.getByText("GPA 4.45 / 4.5")).toBeVisible();
-   await expect(education.getByText("Ranked 1st out of 33 students")).toBeVisible();
-   await expect(education.getByText(/systems, algorithms,\s+and AI infrastructure foundations/i)).toBeVisible();
+   await expect(education.getByText(/GPA 4\.45 \/ 4\.5/)).toBeVisible();
+   await expect(education.getByText(/Ranked 1st \/ 33/)).toBeVisible();
+   await expect(education.getByText("Systems", { exact: true })).toBeVisible();
    await expect(education.getByText(/AI-adjacent infrastructure/i)).toHaveCount(0);
  });
 
@@ -227,8 +229,14 @@ import { expect, test, type Page } from "@playwright/test";
    await expect(skills.getByText(/Tools I reach for when systems need to be reliable/i)).toHaveCount(0);
    await expect(skills.getByText("Backend & Data Systems")).toBeVisible();
    await expect(skills.getByText("Cloud & Delivery")).toBeVisible();
-   await expect(skills.getByText("AI-Assisted Engineering")).toBeVisible();
-   await expect(skills.getByText("Verification Habits")).toBeVisible();
+   await expect(skills.getByText("AI Tooling")).toBeVisible();
+   await expect(skills.getByText(/LLM-assisted coding/i)).toBeVisible();
+   await expect(skills.getByText(/Claude, Codex, Cursor, Gemini/i)).toBeVisible();
+   await expect(skills.getByText(/Distributed Systems/i)).toBeVisible();
+   await expect(skills.getByText(/System Design/i)).toBeVisible();
+   await expect(skills.getByText(/Spark/i)).toBeVisible();
+   await expect(skills.getByText(/FastMCP/i)).toHaveCount(0);
+   await expect(skills.getByText(/Personal projects/i)).toHaveCount(0);
 
    for (const technology of ["PixiJS", "Vitest", "Playwright", "AI Engineering Tooling", "Agent Workflow Observability"]) {
      await expect(skills.getByText(technology, { exact: true })).toHaveCount(0);
@@ -239,19 +247,20 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
   await page.goto("/");
 
    const cards = page.locator("#projects .project-card");
-   await expect(cards).toHaveCount(2);
+   await expect(cards).toHaveCount(3);
 
    const descriptions = await cards.locator(".project-description").allTextContents();
    for (const description of descriptions) {
      expect(description.trim().length).toBeLessThanOrEqual(190);
    }
 
-   await expect(cards.locator(".project-evidence")).toHaveCount(2);
-   for (let i = 0; i < 2; i += 1) {
-     const card = cards.nth(i);
-     await expect(card.locator(".project-evidence").getByRole("link")).toHaveCount(2);
-     await expect(card.locator(".project-evidence").getByRole("link", { name: "Repository", exact: true })).toBeVisible();
-   }
+   const contextWiki = cards.filter({ hasText: "ContextWiki" });
+   await expect(contextWiki.locator(".project-evidence").getByRole("link")).toHaveCount(2);
+   await expect(contextWiki.getByRole("link", { name: "Repository", exact: true })).toBeVisible();
+   await expect(contextWiki.getByRole("link", { name: "Demo", exact: true })).toBeVisible();
+
+   const news = cards.filter({ hasText: "ai-news-alerts" });
+   await expect(news.locator(".project-evidence").getByRole("link", { name: "Repository", exact: true })).toBeVisible();
 
   for (const removedLabel of ["Architecture", "Core Loop", "Local e2e verified", "Sample Output", "Source Strategy"]) {
     await expect(page.locator("#projects").getByText(removedLabel, { exact: true })).toHaveCount(0);
@@ -261,21 +270,22 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
 test("routes the MCPContentSearch demo link to a dedicated walkthrough page", async ({ page }) => {
   await page.goto("/");
 
-  const projectCard = page.locator("#projects .project-card").filter({ hasText: "ContextWiki / MCPContentSearch" });
+  const projectCard = page.locator("#projects .project-card").filter({ hasText: "ContextWiki" });
   const demoLink = projectCard.getByRole("link", { name: "Demo", exact: true });
 
   await expect(demoLink).toHaveAttribute("href", "/mcpcontentsearch-demo.html");
 
   await demoLink.click();
   await expect(page).toHaveURL(/\/mcpcontentsearch-demo\.html$/);
-  await expect(page).toHaveTitle("ContextWiki — MCP Retrieval Server");
-  await expect(page.getByRole("heading", { name: /ContextWiki\s+MCP Retrieval Server/ })).toBeVisible();
-  await expect(page.getByText(/returns citation-backed context for LLM clients like Claude Desktop/i)).toBeVisible();
+  await expect(page).toHaveTitle("ContextWiki");
+  await expect(page.getByRole("heading", { name: "ContextWiki", exact: true })).toBeVisible();
+  await expect(page.getByText(/private MCP server for LLM agents/i)).toBeVisible();
   await expect(page.getByRole("link", { name: "View Repository", exact: true })).toHaveAttribute(
     "href",
     "https://github.com/eunaverse/MCPContentSearch",
   );
-  await expect(page.getByText(/7 tools registered on the FastMCP server/i)).toBeVisible();
+  await expect(page.getByText(/The plot/i)).toBeVisible();
+  await expect(page.getByText(/search_context/i)).toBeVisible();
 });
 
  test("groups open source contributions into evidence-backed upstream work", async ({ page }) => {
@@ -315,7 +325,7 @@ test("routes the MCPContentSearch demo link to a dedicated walkthrough page", as
 
    const projects = page.locator("#projects");
    await expect(projects.getByText("ai-news-alerts", { exact: true })).toBeVisible();
-   await expect(projects.getByText(/staying current on backend, platform, and AI infrastructure trends/i)).toBeVisible();
+   await expect(projects.getByText(/Daily Slack digest from HN \+ RSS/i)).toBeVisible();
  });
 
  test("collects contact links outside the hero", async ({ page }) => {
