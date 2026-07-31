@@ -114,32 +114,22 @@ import { expect, test, type Page } from "@playwright/test";
 
    const hero = page.locator("#home");
 
-   await expect(page).toHaveTitle(/Eunwha \| Backend \/ Platform Engineer/);
-   await expect(page.getByRole("heading", { name: /Backend & Platform Engineer\s+Eunwha Park/ })).toBeVisible();
-   await expect(page.getByText(/I enjoy building backend systems that scale/i)).toBeVisible();
-   await expect(page.getByText(/from cloud services to data\s+infrastructure/i)).toBeVisible();
+   await expect(page).toHaveTitle(/Eunwha \(Euna\) Park \| Backend Engineer/);
+   await expect(page.getByRole("heading", { name: /Eunwha \(Euna\) Park/ })).toBeVisible();
+   await expect(page.getByText(/Backend engineer focused on large-scale identity and data systems/i)).toBeVisible();
    await expect(hero.getByText(/50TB/i)).toHaveCount(0);
    await expect(page.getByText(/Seeking U\.S\./i)).toHaveCount(0);
-   await expect(page.getByText(/software engineering roles/i)).toHaveCount(0);
-   await expect(page.getByText(/IAM/i)).toHaveCount(0);
    await expect(page.getByText(/56M/i)).toHaveCount(0);
-   const resumeLink = hero.getByRole("link", { name: "View Resume" });
-   await expect(resumeLink).toHaveAttribute("href", "Resume.pdf");
-   await expect(resumeLink).toHaveAttribute("target", "_blank");
-   await expect(resumeLink).not.toHaveAttribute("download", /.*/);
+   await expect(page.getByRole("link", { name: /Resume/i })).toHaveCount(0);
    await expect(hero.getByRole("link", { name: "LinkedIn" })).toHaveCount(0);
-   await expect(hero.getByRole("link", { name: /View\s+GitHub/ })).toHaveCount(0);
+   const githubLink = hero.getByRole("link", { name: /GitHub/i });
+   await expect(githubLink).toHaveAttribute("href", "https://github.com/eunaverse");
+   await expect(githubLink).toHaveAttribute("target", "_blank");
+   await expect(githubLink).toHaveClass(/btn-primary/);
 
    for (const heading of ["Experience", "Education", "Personal & Open Source Work", "Skills & Focus", "Contact"]) {
      await expect(page.getByRole("heading", { name: heading })).toBeVisible();
    }
- });
-
- test("serves the resume PDF for in-browser viewing", async ({ page }) => {
-   const response = await page.request.get("/Resume.pdf");
-
-   expect(response.ok()).toBe(true);
-   expect(response.headers()["content-type"]).toContain("application/pdf");
  });
 
  test("calculates years experience from the configured start year", async ({ page }) => {
