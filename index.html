@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Eunwha (Euna) Park | Backend Engineer</title>
-  <meta name="description" content="Backend Engineer. Large-scale identity systems at Samsung, incoming UIUC MCS 2026. Open to Backend and Platform Engineer roles.">
+  <meta name="description" content="Backend Engineer. Large-scale identity systems at Samsung, UIUC MCS. Open to Backend and Platform Engineer roles.">
   <meta property="og:title" content="Eunwha (Euna) Park | Backend Engineer">
-  <meta property="og:description" content="Backend engineer focused on large-scale identity and data systems. Samsung IAM platform, Apache Zeppelin OSS, incoming UIUC MCS 2026.">
+  <meta property="og:description" content="Backend engineer focused on large-scale identity and data systems. Samsung IAM platform, Apache Zeppelin OSS, UIUC MCS.">
   <meta property="og:url" content="https://eunaverse.github.io/">
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/49258273?v=4">
   <meta property="og:type" content="website">
@@ -545,6 +545,75 @@
       font-family: var(--mono);
     }
 
+
+    .exp-lede {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin: 0 0 1rem;
+      max-width: 46rem;
+    }
+
+    .experience-highlights {
+      display: grid;
+      gap: 1rem;
+      margin-top: 0.25rem;
+    }
+
+    .exp-group {
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .exp-group-title {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      margin: 0.15rem 0 0.1rem;
+    }
+
+    .exp-hit {
+      display: grid;
+      grid-template-columns: 2.4rem 1fr;
+      gap: 0.75rem;
+      align-items: start;
+      padding: 0.85rem 0.95rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .exp-hit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(28, 25, 23, 0.06);
+    }
+
+    .exp-hit-num {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      padding-top: 0.15rem;
+    }
+
+    .exp-hit h3 {
+      font-size: 0.98rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.3rem;
+      color: var(--text);
+    }
+
+    .exp-hit p {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
     .experience-list {
       color: var(--text-muted);
       padding-left: 1.2rem;
@@ -573,6 +642,9 @@
     }
 
     .education-item {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
       padding: 1.75rem;
       text-align: left;
     }
@@ -591,10 +663,20 @@
     }
 
     .gpa {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--accent-2);
-      margin: 0.75rem 0;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin: 0.55rem 0 0;
+      line-height: 1.4;
+    }
+
+    .education-facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: auto;
+      padding-top: 1.1rem;
     }
 
     .education-note {
@@ -665,7 +747,15 @@
     .project-description {
         color: var(--text-muted);
         margin-bottom: 0;
-        font-size: 0.96rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .project-hits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
     }
 
     .project-description a {
@@ -955,9 +1045,6 @@
           zero-downtime migration, and cloud-native reliability.
         </p>
         <div class="hero-location-roles fade-in-up">Based in Champaign, IL &bull; Open to Backend &amp; Platform Engineer roles</div>
-        <div class="cta-buttons fade-in-up">
-          <a href="https://github.com/eunaverse" target="_blank" rel="noopener noreferrer" class="btn btn-primary">GitHub →</a>
-        </div>
         <div class="stats fade-in-up">
           <div class="stat-item">
             <div class="stat-number">400M+</div>
@@ -965,7 +1052,7 @@
           </div>
           <div class="stat-item">
             <div class="stat-number">UIUC<br>MCS</div>
-            <div class="stat-label">Incoming 2026</div>
+            <div class="stat-label">2026 – 2028</div>
           </div>
           <div class="stat-item">
             <div class="stat-number">9</div>
@@ -1009,25 +1096,43 @@
   <div class="container reveal">
     <div class="section-head">
       <h2 class="section-title">Experience</h2>
-      <p class="section-subtitle">Where production scale teaches you things side projects can't</p>
     </div>
     <div class="experience-item card">
       <div class="company-name">Samsung Electronics</div>
       <div class="job-title">Backend Software Engineer</div>
       <div class="job-period">Jan 2023 - Present</div>
       <div class="job-description">
-        <ul class="experience-list">
-          <li>Modernized Samsung's global IAM platform serving nearly half a billion users — identity lookup, authentication, and account lifecycle at production scale.</li>
-          <li>Led zero-downtime migration from a legacy relational database to NoSQL (DynamoDB and Cassandra), designing dual-write and backfill strategies so running services never stopped.</li>
-          <li>Redesigned IAM into modular services with clearer ownership boundaries, improving deployability and long-term maintainability across teams.</li>
-          <li>Architected privacy-aware identifier systems that separate internal keys from external-facing IDs, supporting compliance and safer data handling.</li>
-          <li>Operated multi-region Kubernetes (EKS) workloads with autoscaling, observability, and incident response for high-traffic identity services.</li>
-        </ul>
+        <p class="exp-lede">Backend engineer on Samsung mobile identity — the systems behind sign-in and account lifecycle for 400M+ monthly active users.</p>
+        <div class="experience-highlights" aria-label="Experience highlights">
+          <article class="exp-hit">
+            <div class="exp-hit-num">01</div>
+            <div>
+              <h3>Keep users online while the database changes</h3>
+              <p>Replaced an end-of-life store with a multi-region cutover (78B+ records, 50TB+) so login and account flows never stopped — and cut ~$2.2M/yr in operating cost.</p>
+            </div>
+          </article>
+          <article class="exp-hit">
+            <div class="exp-hit-num">02</div>
+            <div>
+              <h3>Safer identity for users, freer shipping for teams</h3>
+              <p>Split a tightly coupled IAM monolith and introduced layered user IDs — less personal data in the blast radius, and 10+ downstream services no longer blocked on legacy internals.</p>
+            </div>
+          </article>
+          <article class="exp-hit">
+            <div class="exp-hit-num">03</div>
+            <div>
+              <h3>Fewer failed requests in the real product path</h3>
+              <p>Raised monthly request success from 97.5% to 99.5%+ on a critical path, and moved a batch platform for 56M+ users onto Kubernetes so releases stop depending on hand-managed servers.</p>
+            </div>
+          </article>
+        </div>
         <div class="experience-focus" aria-label="Experience focus areas">
           <span class="tech-tag">Large-scale migration</span>
           <span class="tech-tag">Distributed systems</span>
           <span class="tech-tag">Cloud-native operations</span>
           <span class="tech-tag">Data consistency</span>
+          <span class="tech-tag">Service boundaries</span>
+          <span class="tech-tag">Privacy-aware IDs</span>
           <span class="tech-tag">Kotlin · Java · Spring Boot</span>
           <span class="tech-tag">AWS · EKS · DynamoDB · Cassandra</span>
         </div>
@@ -1040,21 +1145,28 @@
   <div class="container reveal">
     <div class="section-head">
       <h2 class="section-title">Education</h2>
-      <p class="section-subtitle">Computer science foundations, systems, and steady curiosity</p>
     </div>
     <div class="education-grid">
       <div class="education-item card">
         <div class="university-name">University of Illinois Urbana-Champaign</div>
-        <div class="degree">Incoming Master of Computer Science (MCS)</div>
+        <div class="degree">Master of Computer Science (MCS)</div>
         <div class="job-period">2026 - 2028</div>
-        <div class="education-note">Incoming graduate study to deepen systems, algorithms, and backend engineering foundations.</div>
+        <div class="education-facts" aria-label="UIUC focus">
+          <span class="tech-tag">Systems</span>
+          <span class="tech-tag">Algorithms</span>
+          <span class="tech-tag">Backend engineering</span>
+        </div>
       </div>
       <div class="education-item card">
         <div class="university-name">Kyungpook National University</div>
         <div class="degree">B.S. in Mobile Engineering (CS-focused)</div>
         <div class="job-period">2019 ~ 2023</div>
-        <div class="gpa">GPA 4.45 / 4.5</div>
-        <div class="education-note">Ranked 1st out of 33 students. Relevant coursework in algorithms, distributed systems, and backend development.</div>
+        <div class="gpa">GPA 4.45 / 4.5 &nbsp;·&nbsp; Ranked 1st / 33</div>
+        <div class="education-facts" aria-label="Undergraduate focus">
+          <span class="tech-tag">Algorithms</span>
+          <span class="tech-tag">Distributed systems</span>
+          <span class="tech-tag">Backend development</span>
+        </div>
       </div>
     </div>
   </div>
@@ -1064,21 +1176,20 @@
   <div class="container reveal">
     <div class="section-head">
       <h2 class="section-title">Personal &amp; Open Source Work</h2>
-      <p class="section-subtitle">Side projects built outside work, plus merged upstream contributions</p>
     </div>
 
     <h3 class="project-group-title">Personal Projects</h3>
     <div class="projects-grid">
       <div class="project-card card tilt-card">
         <div class="project-card-main">
-          <div class="project-title">ContextWiki / MCPContentSearch</div>
+          <div class="project-title">ContextWiki</div>
           <div class="project-period">Personal Project · Retrieval &amp; MCP</div>
           <div class="project-quip">
             <span class="prompt">$</span> mcp tools list --personal<br>
             <span class="ok">✓</span> retrieval · citations · agent context
           </div>
           <div class="project-description">
-            Unified search across Notion, GitHub, Obsidian, and notes — with citation-gated context for AI clients via MCP. Recent shipping adds a durable LaunchAgent sync worker, exact-job status polling, date-aware document browsing, and cheaper Notion re-sync when pages are unchanged.
+            Private MCP server for agents — citation-gated search across Notion, GitHub, Obsidian, and blog (Tistory).
           </div>
         </div>
         <div class="project-card-footer">
@@ -1089,10 +1200,9 @@
           <div class="tech-stack">
             <span class="tech-tag">Python</span>
             <span class="tech-tag">FastMCP</span>
-            <span class="tech-tag">LlamaIndex</span>
             <span class="tech-tag">ChromaDB</span>
             <span class="tech-tag">SQLite</span>
-            <span class="tech-tag">Citations</span>
+            <span class="tech-tag">LlamaIndex</span>
           </div>
         </div>
       </div>
@@ -1106,7 +1216,7 @@
             <span class="ok">✓</span> HN + RSS every morning
           </div>
           <div class="project-description">
-            Built to solve my own problem — staying current on backend, platform, and AI infrastructure trends without manual browsing. A daily Slack automation with an explicit HN + RSS source strategy, dry-runs that never mutate state, pytest coverage, and GitHub Actions delivery. Keeps me reading primary sources in English every morning.
+            Daily Slack digest from HN + RSS — dry-run safe, pytest-covered, delivered by GitHub Actions.
           </div>
         </div>
         <div class="project-card-footer">
@@ -1118,7 +1228,6 @@
             <span class="tech-tag">GitHub Actions</span>
             <span class="tech-tag">Slack</span>
             <span class="tech-tag">pytest</span>
-            <span class="tech-tag">Dry-run Safety</span>
           </div>
         </div>
       </div>
@@ -1174,7 +1283,8 @@
         <div class="skill-title">Backend &amp; Data Systems</div>
         <div class="skill-list">
           Java, Kotlin, Python<br>
-          Spring Boot, Batch Systems<br>
+          Spring Boot, Batch Systems, Spark<br>
+          Distributed Systems, System Design<br>
           DynamoDB, Cassandra, MySQL, Kafka
         </div>
       </div>
@@ -1191,9 +1301,10 @@
         <div class="skill-icon">🤖</div>
         <div class="skill-title">AI Tooling</div>
         <div class="skill-list">
-          Personal projects<br>
+          LLM-assisted coding &amp; harness engineering<br>
+          Claude, Codex, Cursor, Gemini<br>
           MCP, RAG Pipelines<br>
-          LlamaIndex, ChromaDB, FastMCP
+          LlamaIndex, ChromaDB
         </div>
       </div>
     </div>
