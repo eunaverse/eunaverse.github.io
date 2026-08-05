@@ -16,7 +16,7 @@ The local test command starts Playwright with a temporary HTTP server at `http:/
 
 ## Content Architecture
 - `index.html` — Main portfolio page
-- `mcpcontentsearch-demo.html` — ContextWiki walkthrough and architecture detail
+- `mcpcontentsearch-demo.html` — ContextZip walkthrough and architecture detail
 - `tests/e2e/` — End-to-end tests (Playwright)
 
 ## Accessibility and UX

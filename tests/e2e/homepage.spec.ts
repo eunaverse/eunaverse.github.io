@@ -149,7 +149,7 @@ test("focuses the project section on the strongest recruiter-facing GitHub work"
   const projectTitles = await page.locator("#projects .project-title").allTextContents();
 
    expect(projectTitles).toEqual([
-     "ContextWiki",
+     "ContextZip",
      "ai-news-alerts",
      "Apache Zeppelin",
    ]);
@@ -241,10 +241,10 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
     expect(description.trim().length).toBeLessThanOrEqual(260);
   }
 
-   const contextWiki = cards.filter({ hasText: "ContextWiki" });
-   await expect(contextWiki.locator(".project-evidence").getByRole("link")).toHaveCount(2);
-   await expect(contextWiki.getByRole("link", { name: "Repository", exact: true })).toBeVisible();
-   await expect(contextWiki.getByRole("link", { name: "Demo", exact: true })).toBeVisible();
+   const contextZip = cards.filter({ hasText: "ContextZip" });
+   await expect(contextZip.locator(".project-evidence").getByRole("link")).toHaveCount(2);
+   await expect(contextZip.getByRole("link", { name: "Repository", exact: true })).toBeVisible();
+   await expect(contextZip.getByRole("link", { name: "Demo", exact: true })).toBeVisible();
 
    const news = cards.filter({ hasText: "ai-news-alerts" });
    await expect(news.locator(".project-evidence").getByRole("link", { name: "Repository", exact: true })).toBeVisible();
@@ -257,15 +257,15 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
 test("routes the MCPContentSearch demo link to a dedicated walkthrough page", async ({ page }) => {
   await page.goto("/");
 
-  const projectCard = page.locator("#projects .project-card").filter({ hasText: "ContextWiki" });
+  const projectCard = page.locator("#projects .project-card").filter({ hasText: "ContextZip" });
   const demoLink = projectCard.getByRole("link", { name: "Demo", exact: true });
 
   await expect(demoLink).toHaveAttribute("href", "/mcpcontentsearch-demo.html");
 
   await demoLink.click();
   await expect(page).toHaveURL(/\/mcpcontentsearch-demo\.html$/);
-  await expect(page).toHaveTitle("ContextWiki");
-  await expect(page.getByRole("heading", { name: "ContextWiki", exact: true })).toBeVisible();
+  await expect(page).toHaveTitle("ContextZip");
+  await expect(page.getByRole("heading", { name: "ContextZip", exact: true })).toBeVisible();
   await expect(page.getByText(/private MCP server for LLM agents/i)).toBeVisible();
   await expect(page.getByRole("link", { name: "View Repository", exact: true })).toHaveAttribute(
     "href",
