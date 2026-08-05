@@ -4,7 +4,11 @@
   "private": true,
   "scripts": {
     "test": "npm run test:e2e",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:list": "playwright test --list --project=chromium",
+    "test:e2e:one-by-one": "node scripts/e2e-harness.mjs",
+    "verify:pr": "npm run test:e2e:one-by-one",
+    "prepare": "node scripts/install-git-hooks.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.60.0"

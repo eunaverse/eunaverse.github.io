@@ -1,11 +1,22 @@
 name: e2e
 
 on:
-  push:
   pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
+    name: E2E harness
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -19,7 +30,16 @@ jobs:
         run: npm ci
 
       - name: Install browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
 
-      - name: Run e2e tests
-        run: npm test
+      - name: Run every feature contract independently
+        run: npm run verify:pr
+
+      - name: Upload failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-failure-evidence
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7

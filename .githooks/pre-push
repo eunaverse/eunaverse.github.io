@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+
+echo "Running required portfolio E2E harness before push..."
+npm run verify:pr
