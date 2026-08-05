@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "features": [
+    {
+      "id": "home-content-and-primary-actions",
+      "test": "renders the portfolio content and primary calls to action"
+    },
+    {
+      "id": "career-timeline",
+      "test": "keeps the career timeline clearly stated"
+    },
+    {
+      "id": "hero-recruiter-stats",
+      "test": "uses recruiter-facing hero stats instead of leading with GPA"
+    },
+    {
+      "id": "project-selection",
+      "test": "focuses the project section on the strongest recruiter-facing GitHub work"
+    },
+    {
+      "id": "experience-narrative",
+      "test": "keeps experience narrative concise and portfolio-friendly"
+    },
+    {
+      "id": "education-timeline",
+      "test": "shows the education timeline with the UIUC MCS program"
+    },
+    {
+      "id": "skills-claims",
+      "test": "uses defensible skill categories without overclaiming frontend tooling"
+    },
+    {
+      "id": "project-evidence-links",
+      "test": "keeps project cards concise and points to evidence"
+    },
+    {
+      "id": "contextzip-demo-route",
+      "test": "routes the MCPContentSearch demo link to a dedicated walkthrough page"
+    },
+    {
+      "id": "open-source-evidence",
+      "test": "groups open source contributions into evidence-backed upstream work"
+    },
+    {
+      "id": "learning-automation-project",
+      "test": "shows personal learning automation project"
+    },
+    {
+      "id": "contact-links",
+      "test": "collects contact links outside the hero"
+    },
+    {
+      "id": "fixed-navigation-targets",
+      "test": "keeps internal navigation targets below the fixed nav"
+    },
+    {
+      "id": "responsive-mobile",
+      "test": "scores responsive UX quality on mobile"
+    },
+    {
+      "id": "responsive-tablet",
+      "test": "scores responsive UX quality on tablet"
+    },
+    {
+      "id": "responsive-desktop",
+      "test": "scores responsive UX quality on desktop"
+    },
+    {
+      "id": "mobile-hero-priority",
+      "test": "keeps hero priority content visible in the mobile first viewport"
+    },
+    {
+      "id": "external-link-safety",
+      "test": "marks external new-tab links as safe"
+    }
+  ]
+}
