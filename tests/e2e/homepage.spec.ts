@@ -328,7 +328,7 @@ test("routes the MCPContentSearch demo link to a dedicated walkthrough page", as
    );
    await expect(availability.getByRole("link", { name: /LinkedIn/i })).toHaveAttribute(
      "href",
-     "https://www.linkedin.com/in/eunhwa-park-20a286248/",
+     "https://www.linkedin.com/in/euna-park-20a286248/",
    );
    await expect(availability.getByRole("link", { name: /GitHub/i })).toHaveAttribute("href", "https://github.com/eunaverse");
    await expect(availability.getByRole("link", { name: /Resume/i })).toHaveCount(0);
