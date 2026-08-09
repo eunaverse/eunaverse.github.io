@@ -34,12 +34,24 @@
       "test": "keeps project cards concise and points to evidence"
     },
     {
+      "id": "personal-project-evidence-alignment",
+      "test": "aligns personal project evidence rows while cards share a row"
+    },
+    {
       "id": "contextzip-demo-route",
-      "test": "routes the MCPContentSearch demo link to a dedicated walkthrough page"
+      "test": "routes the ContextZip demo link to a playable video"
+    },
+    {
+      "id": "contextzip-proof-card-responsiveness",
+      "test": "keeps ContextZip proof card content contained while resizing"
     },
     {
       "id": "open-source-evidence",
       "test": "groups open source contributions into evidence-backed upstream work"
+    },
+    {
+      "id": "open-source-card-alignment",
+      "test": "aligns open source evidence and technology rows while cards share a row"
     },
     {
       "id": "learning-automation-project",
