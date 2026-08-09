@@ -805,6 +805,24 @@
       transform: translateY(-1px);
     }
 
+    .evidence-link-demo {
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      color: #fff;
+      box-shadow: 0 7px 18px rgba(79, 70, 229, 0.22);
+    }
+
+    .evidence-link-demo:hover {
+      background: linear-gradient(135deg, #4338ca, var(--accent));
+      color: #fff;
+      box-shadow: 0 9px 22px rgba(79, 70, 229, 0.28);
+    }
+
+    .evidence-link-demo:focus-visible {
+      outline: 3px solid rgba(79, 70, 229, 0.28);
+      outline-offset: 3px;
+    }
+
     .tech-stack {
       display: flex;
       flex-wrap: wrap;
@@ -828,15 +846,53 @@
       color: var(--accent-2);
     }
 
+    @media (min-width: 769px) and (max-width: 1100px) {
+      .personal-projects-grid .tech-stack {
+        min-height: 4.3rem;
+        align-content: flex-start;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1023px) {
+      .open-source-projects-grid .project-evidence {
+        min-height: 10.7rem;
+        align-content: flex-start;
+      }
+
+      .open-source-projects-grid .tech-stack {
+        min-height: 4.3rem;
+        align-content: flex-start;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 899px) {
+      .open-source-projects-grid .project-period {
+        min-height: 2.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .open-source-projects-grid .project-evidence {
+        min-height: 7.9rem;
+        align-content: flex-start;
+      }
+
+      .open-source-projects-grid .tech-stack {
+        min-height: 2rem;
+        align-content: flex-start;
+      }
+    }
+
     .oss-prize-badge {
       display: inline-block;
+      align-self: flex-start;
       background: linear-gradient(135deg, #fde047, #fb923c);
       color: #422006;
       padding: 0.25rem 0.7rem;
       border-radius: 999px;
       font-size: 0.72rem;
       font-weight: 800;
-      margin-bottom: 0.65rem;
+      margin-top: 0.9rem;
     }
 
     .section-footnote {
