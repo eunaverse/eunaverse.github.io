@@ -883,18 +883,6 @@
       }
     }
 
-    .oss-prize-badge {
-      display: inline-block;
-      align-self: flex-start;
-      background: linear-gradient(135deg, #fde047, #fb923c);
-      color: #422006;
-      padding: 0.25rem 0.7rem;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 800;
-      margin-top: 0.9rem;
-    }
-
     .section-footnote {
         margin-top: 1.5rem;
         text-align: center;

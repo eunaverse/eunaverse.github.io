@@ -374,14 +374,16 @@ test("keeps ContextZip proof card content contained while resizing", async ({ pa
    await expect(openSourceCards).toHaveCount(2);
    const zeppelinCard = openSourceCards.filter({ hasText: "Apache Zeppelin" });
    await expect(zeppelinCard.getByText("Apache Zeppelin", { exact: true })).toBeVisible();
-   await expect(zeppelinCard.locator(".project-card-main").locator(":scope > *")).toHaveCount(4);
+   await expect(zeppelinCard.locator(".project-card-main").locator(":scope > *")).toHaveCount(3);
    expect(
      await zeppelinCard.locator(".project-card-main").locator(":scope > *").evaluateAll((elements) =>
        elements.map((element) => element.className),
      ),
-   ).toEqual(["project-title", "project-period", "project-description", "oss-prize-badge"]);
-   await expect(projects.getByText(/1st Place in the Korean Open Source Contribution Program/i)).toBeVisible();
-   await expect(projects.getByText(/Grand Prize/i)).toHaveCount(0);
+   ).toEqual(["project-title", "project-period", "project-description"]);
+   await expect(zeppelinCard.locator(".oss-prize-badge")).toHaveCount(0);
+   await expect(
+     zeppelinCard.getByText(/1st Place|Grand Prize|OSSCA|Korean Open Source Contribution Program/i),
+   ).toHaveCount(0);
    await expect(projects.getByText(/additional cleanup and refactoring upstream/i)).toBeVisible();
    const kubernetesCard = openSourceCards.filter({ hasText: "Kubernetes Website" });
    await expect(kubernetesCard.locator(".oss-prize-placeholder")).toHaveCount(0);
