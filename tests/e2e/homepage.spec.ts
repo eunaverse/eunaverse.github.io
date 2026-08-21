@@ -152,6 +152,7 @@ test("focuses the project section on the strongest recruiter-facing GitHub work"
      "ContextZip",
      "ai-news-alerts",
      "Apache Zeppelin",
+     "Kubernetes Website",
    ]);
 
    const projects = page.locator("#projects");
@@ -234,7 +235,7 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
   await page.goto("/");
 
    const cards = page.locator("#projects .project-card");
-   await expect(cards).toHaveCount(3);
+   await expect(cards).toHaveCount(4);
 
   const descriptions = await cards.locator(".project-description").allTextContents();
   for (const description of descriptions) {
@@ -243,8 +244,26 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
 
    const contextZip = cards.filter({ hasText: "ContextZip" });
    await expect(contextZip.locator(".project-evidence").getByRole("link")).toHaveCount(2);
-   await expect(contextZip.getByRole("link", { name: "Repository", exact: true })).toBeVisible();
-   await expect(contextZip.getByRole("link", { name: "Demo", exact: true })).toBeVisible();
+   const repositoryLink = contextZip.getByRole("link", { name: "Repository", exact: true });
+   const demoLink = contextZip.getByRole("link", { name: "Demo", exact: true });
+   await expect(repositoryLink).toBeVisible();
+   await expect(repositoryLink).toHaveAttribute("href", "https://github.com/eunaverse/ContextZip");
+   await expect(demoLink).toBeVisible();
+   await expect(demoLink).toHaveClass(/evidence-link-demo/);
+
+   const [repositoryStyle, demoStyle] = await Promise.all([
+     repositoryLink.evaluate((link) => ({
+       backgroundImage: getComputedStyle(link).backgroundImage,
+       color: getComputedStyle(link).color,
+     })),
+     demoLink.evaluate((link) => ({
+       backgroundImage: getComputedStyle(link).backgroundImage,
+       color: getComputedStyle(link).color,
+     })),
+   ]);
+   expect(repositoryStyle.backgroundImage).toBe("none");
+   expect(demoStyle.backgroundImage).not.toBe("none");
+   expect(demoStyle.color).not.toBe(repositoryStyle.color);
 
    const news = cards.filter({ hasText: "ai-news-alerts" });
    await expect(news.locator(".project-evidence").getByRole("link", { name: "Repository", exact: true })).toBeVisible();
@@ -254,25 +273,96 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
   }
 });
 
-test("routes the MCPContentSearch demo link to a dedicated walkthrough page", async ({ page }) => {
-  await page.goto("/");
+test("aligns personal project evidence rows while cards share a row", async ({ page }) => {
+  for (const width of [769, 820, 900, 1024, 1100, 1101, 1200, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/#projects");
+    await page.evaluate(() => document.fonts.ready.then(() => true));
 
-  const projectCard = page.locator("#projects .project-card").filter({ hasText: "ContextZip" });
-  const demoLink = projectCard.getByRole("link", { name: "Demo", exact: true });
+    const positions = await page.locator(".personal-projects-grid").evaluate((grid) => {
+      const cards = Array.from(grid.querySelectorAll<HTMLElement>(".project-card"));
+      const contextZip = cards.find((card) => card.textContent?.includes("ContextZip"));
+      const newsAlerts = cards.find((card) => card.textContent?.includes("ai-news-alerts"));
+      const bounds = (element: Element | null | undefined) => element?.getBoundingClientRect() ?? null;
 
-  await expect(demoLink).toHaveAttribute("href", "/mcpcontentsearch-demo.html");
+      return {
+        contextCard: bounds(contextZip),
+        contextEvidence: bounds(contextZip?.querySelector(".project-evidence")),
+        newsCard: bounds(newsAlerts),
+        newsEvidence: bounds(newsAlerts?.querySelector(".project-evidence")),
+      };
+    });
 
-  await demoLink.click();
-  await expect(page).toHaveURL(/\/mcpcontentsearch-demo\.html$/);
-  await expect(page).toHaveTitle("ContextZip");
-  await expect(page.getByRole("heading", { name: "ContextZip", exact: true })).toBeVisible();
+    expect(positions.contextCard).not.toBeNull();
+    expect(positions.newsCard).not.toBeNull();
+    expect(positions.contextEvidence).not.toBeNull();
+    expect(positions.newsEvidence).not.toBeNull();
+
+    if (Math.abs(positions.contextCard!.y - positions.newsCard!.y) <= 1) {
+      expect.soft(
+        Math.abs(positions.contextEvidence!.y - positions.newsEvidence!.y),
+        `Repository rows should align at ${width}px`,
+      ).toBeLessThanOrEqual(1);
+    }
+  }
+});
+
+test("routes the ContextZip demo link to a playable video", async ({ page }) => {
+  for (const width of [375, 900, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/#projects");
+
+    const projectCard = page.locator("#projects .project-card").filter({ hasText: "ContextZip" });
+    const demoLink = projectCard.getByRole("link", { name: "Demo", exact: true });
+
+    await expect(demoLink).toHaveAttribute("href", "/mcpcontentsearch-demo.html");
+    await demoLink.click();
+    await expect(page).toHaveURL(/\/mcpcontentsearch-demo\.html$/);
+    await expect(page).toHaveTitle("ContextZip");
+    await expect(page.getByRole("heading", { name: "ContextZip", exact: true })).toBeVisible();
+  }
+
   await expect(page.getByText(/private MCP server for LLM agents/i)).toBeVisible();
+  const demoVideo = page.getByLabel("ContextZip product demo");
+  await expect(demoVideo).toBeVisible();
+  await expect(demoVideo).toHaveAttribute("controls", "");
+  await expect(demoVideo).toHaveAttribute("playsinline", "");
+  await expect(demoVideo.locator("source")).toHaveAttribute("src", "assets/videos/contextzip-demo.mp4");
+  await expect(demoVideo.locator("source")).toHaveAttribute("type", "video/mp4");
+  await expect.poll(() => demoVideo.evaluate((video: HTMLVideoElement) => video.readyState)).toBeGreaterThanOrEqual(1);
+  expect(await demoVideo.evaluate((video: HTMLVideoElement) => video.duration)).toBeGreaterThan(0);
+  expect(await demoVideo.evaluate((video: HTMLVideoElement) => video.error)).toBeNull();
   await expect(page.getByRole("link", { name: "View Repository", exact: true })).toHaveAttribute(
     "href",
-    "https://github.com/eunaverse/MCPContentSearch",
+    "https://github.com/eunaverse/ContextZip",
   );
+  for (const pullRequest of [88, 89, 91, 93]) {
+    await expect(page.getByRole("link", { name: `#${pullRequest}`, exact: true })).toHaveAttribute(
+      "href",
+      `https://github.com/eunaverse/ContextZip/pull/${pullRequest}`,
+    );
+  }
   await expect(page.getByText(/The plot/i)).toBeVisible();
   await expect(page.locator(".story", { hasText: "The payoff" }).getByText("search_context", { exact: true })).toBeVisible();
+});
+
+test("keeps ContextZip proof card content contained while resizing", async ({ page }) => {
+  for (const width of [375, 768, 821, 860, 900, 960, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/mcpcontentsearch-demo.html");
+
+    const proofCard = page.locator(".ship-card").filter({ hasText: "Skip unchanged Notion pages" });
+    const afterColumn = proofCard.locator(".compare-col.after");
+    const lastEditedTime = afterColumn.locator("code");
+
+    const bounds = await Promise.all([afterColumn.boundingBox(), lastEditedTime.boundingBox()]);
+    expect(bounds[0], `after column should render at ${width}px`).not.toBeNull();
+    expect(bounds[1], `last_edited_time should render at ${width}px`).not.toBeNull();
+    expect(bounds[1]!.x, `last_edited_time left edge at ${width}px`).toBeGreaterThanOrEqual(bounds[0]!.x);
+    expect(bounds[1]!.x + bounds[1]!.width, `last_edited_time right edge at ${width}px`).toBeLessThanOrEqual(
+      bounds[0]!.x + bounds[0]!.width + 0.5,
+    );
+  }
 });
 
  test("groups open source contributions into evidence-backed upstream work", async ({ page }) => {
@@ -281,12 +371,29 @@ test("routes the MCPContentSearch demo link to a dedicated walkthrough page", as
    const projects = page.locator("#projects");
    const openSourceCards = projects.locator(".project-card").filter({ hasText: /Open Source/ });
 
-   await expect(openSourceCards).toHaveCount(1);
-   await expect(projects.getByText("Apache Zeppelin", { exact: true })).toBeVisible();
-   await expect(projects.getByText(/Grand Prize \(1st place\)/i)).toBeVisible();
-   await expect(projects.getByText(/Korean Open Source Contribution Program/i)).toBeVisible();
+   await expect(openSourceCards).toHaveCount(2);
+   const zeppelinCard = openSourceCards.filter({ hasText: "Apache Zeppelin" });
+   await expect(zeppelinCard.getByText("Apache Zeppelin", { exact: true })).toBeVisible();
+   await expect(zeppelinCard.locator(".project-card-main").locator(":scope > *")).toHaveCount(3);
+   expect(
+     await zeppelinCard.locator(".project-card-main").locator(":scope > *").evaluateAll((elements) =>
+       elements.map((element) => element.className),
+     ),
+   ).toEqual(["project-title", "project-period", "project-description"]);
+   await expect(zeppelinCard.locator(".oss-prize-badge")).toHaveCount(0);
+   await expect(
+     zeppelinCard.getByText(/1st Place|Grand Prize|OSSCA|Korean Open Source Contribution Program/i),
+   ).toHaveCount(0);
    await expect(projects.getByText(/additional cleanup and refactoring upstream/i)).toBeVisible();
-   await expect(projects.getByText("Kubernetes Website", { exact: true })).toHaveCount(0);
+   const kubernetesCard = openSourceCards.filter({ hasText: "Kubernetes Website" });
+   await expect(kubernetesCard.locator(".oss-prize-placeholder")).toHaveCount(0);
+   await expect(kubernetesCard.getByText("Kubernetes Website", { exact: true })).toBeVisible();
+   await expect(kubernetesCard.getByText(/While learning Kubernetes hands-on/i)).toBeVisible();
+   await expect(kubernetesCard.getByText(/Korean ingress-minikube guide/i)).toBeVisible();
+   await expect(kubernetesCard.getByRole("link", { name: "#52238 · ingress-minikube", exact: true })).toHaveAttribute(
+     "href",
+     "https://github.com/kubernetes/website/pull/52238",
+   );
    await expect(projects.getByText(/More projects and experiments on/i)).toBeVisible();
    await expect(projects.locator(".projects-github-more").getByRole("link", { name: "GitHub →" })).toHaveAttribute(
      "href",
@@ -306,6 +413,72 @@ test("routes the MCPContentSearch demo link to a dedicated walkthrough page", as
      await expect(projects.getByRole("link", { name: linkName })).toHaveAttribute("href", /github\.com\/apache\/zeppelin\/pull\//);
    }
  });
+
+test("aligns open source evidence and technology rows while cards share a row", async ({ page }) => {
+  for (const width of [769, 820, 900, 1024, 1100, 1200, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.goto("/#projects");
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+
+    const positions = await page.locator("#projects .projects-grid").filter({ hasText: "Apache Zeppelin" }).evaluate((grid) => {
+      const cards = Array.from(grid.querySelectorAll<HTMLElement>(".project-card"));
+      const zeppelin = cards.find((card) => card.textContent?.includes("Apache Zeppelin"));
+      const kubernetes = cards.find((card) => card.textContent?.includes("Kubernetes Website"));
+      const bounds = (element: Element | null | undefined) => element?.getBoundingClientRect() ?? null;
+
+      return {
+        kubernetesCard: bounds(kubernetes),
+        kubernetesTitle: bounds(kubernetes?.querySelector(".project-title")),
+        kubernetesPeriod: bounds(kubernetes?.querySelector(".project-period")),
+        kubernetesDescription: bounds(kubernetes?.querySelector(".project-description")),
+        kubernetesEvidence: bounds(kubernetes?.querySelector(".project-evidence")),
+        kubernetesTech: bounds(kubernetes?.querySelector(".tech-stack")),
+        zeppelinCard: bounds(zeppelin),
+        zeppelinTitle: bounds(zeppelin?.querySelector(".project-title")),
+        zeppelinPeriod: bounds(zeppelin?.querySelector(".project-period")),
+        zeppelinDescription: bounds(zeppelin?.querySelector(".project-description")),
+        zeppelinEvidence: bounds(zeppelin?.querySelector(".project-evidence")),
+        zeppelinTech: bounds(zeppelin?.querySelector(".tech-stack")),
+      };
+    });
+
+    expect(positions.zeppelinCard).not.toBeNull();
+    expect(positions.kubernetesCard).not.toBeNull();
+    expect(positions.zeppelinTitle).not.toBeNull();
+    expect(positions.kubernetesTitle).not.toBeNull();
+    expect(positions.zeppelinPeriod).not.toBeNull();
+    expect(positions.kubernetesPeriod).not.toBeNull();
+    expect(positions.zeppelinDescription).not.toBeNull();
+    expect(positions.kubernetesDescription).not.toBeNull();
+    expect(positions.zeppelinEvidence).not.toBeNull();
+    expect(positions.kubernetesEvidence).not.toBeNull();
+    expect(positions.zeppelinTech).not.toBeNull();
+    expect(positions.kubernetesTech).not.toBeNull();
+
+    if (Math.abs(positions.zeppelinCard!.y - positions.kubernetesCard!.y) <= 1) {
+      expect.soft(
+        Math.abs(positions.zeppelinTitle!.y - positions.kubernetesTitle!.y),
+        `Open source title rows should align at ${width}px`,
+      ).toBeLessThanOrEqual(1);
+      expect.soft(
+        Math.abs(positions.zeppelinPeriod!.y - positions.kubernetesPeriod!.y),
+        `Open source subtitle rows should align at ${width}px`,
+      ).toBeLessThanOrEqual(1);
+      expect.soft(
+        Math.abs(positions.zeppelinDescription!.y - positions.kubernetesDescription!.y),
+        `Open source description rows should align at ${width}px`,
+      ).toBeLessThanOrEqual(1);
+      expect.soft(
+        Math.abs(positions.zeppelinEvidence!.y - positions.kubernetesEvidence!.y),
+        `Open source evidence rows should align at ${width}px`,
+      ).toBeLessThanOrEqual(1);
+      expect.soft(
+        Math.abs(positions.zeppelinTech!.y - positions.kubernetesTech!.y),
+        `Open source technology rows should align at ${width}px`,
+      ).toBeLessThanOrEqual(1);
+    }
+  }
+});
 
  test("shows personal learning automation project", async ({ page }) => {
    await page.goto("/");
