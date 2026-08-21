@@ -247,6 +247,7 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
    const repositoryLink = contextZip.getByRole("link", { name: "Repository", exact: true });
    const demoLink = contextZip.getByRole("link", { name: "Demo", exact: true });
    await expect(repositoryLink).toBeVisible();
+   await expect(repositoryLink).toHaveAttribute("href", "https://github.com/eunaverse/ContextZip");
    await expect(demoLink).toBeVisible();
    await expect(demoLink).toHaveClass(/evidence-link-demo/);
 
@@ -333,8 +334,14 @@ test("routes the ContextZip demo link to a playable video", async ({ page }) => 
   expect(await demoVideo.evaluate((video: HTMLVideoElement) => video.error)).toBeNull();
   await expect(page.getByRole("link", { name: "View Repository", exact: true })).toHaveAttribute(
     "href",
-    "https://github.com/eunaverse/MCPContentSearch",
+    "https://github.com/eunaverse/ContextZip",
   );
+  for (const pullRequest of [88, 89, 91, 93]) {
+    await expect(page.getByRole("link", { name: `#${pullRequest}`, exact: true })).toHaveAttribute(
+      "href",
+      `https://github.com/eunaverse/ContextZip/pull/${pullRequest}`,
+    );
+  }
   await expect(page.getByText(/The plot/i)).toBeVisible();
   await expect(page.locator(".story", { hasText: "The payoff" }).getByText("search_context", { exact: true })).toBeVisible();
 });
