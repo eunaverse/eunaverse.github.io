@@ -34,8 +34,8 @@
       "test": "keeps project cards concise and points to evidence"
     },
     {
-      "id": "personal-project-evidence-alignment",
-      "test": "aligns personal project evidence rows while cards share a row"
+      "id": "selected-project-footer-alignment",
+      "test": "aligns selected project footers while cards share a row"
     },
     {
       "id": "contextzip-demo-route",
@@ -54,8 +54,8 @@
       "test": "aligns open source evidence and technology rows while cards share a row"
     },
     {
-      "id": "learning-automation-project",
-      "test": "shows personal learning automation project"
+      "id": "resume-selected-projects",
+      "test": "shows resume-selected project evidence"
     },
     {
       "id": "contact-links",

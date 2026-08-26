@@ -105,13 +105,13 @@ const viewports = [
 
    const hero = page.locator("#home");
 
-   await expect(page).toHaveTitle(/Eunwha \(Euna\) Park \| Backend Engineer/);
-  await expect(page.getByRole("heading", { name: /Eunwha \(Euna\) Park/ })).toBeVisible();
-  await expect(page.getByText(/Backend engineer focused on large-scale identity and data systems/i)).toBeVisible();
-  await expect(page.getByText(/50TB\+/i)).toHaveCount(1);
-  await expect(page.getByText(/Open to Backend & Platform Engineer roles/i)).toBeVisible();
+   await expect(page).toHaveTitle(/Eunwha Park \| Backend & Distributed Systems Engineer/);
+  await expect(page.getByRole("heading", { name: "Eunwha Park", exact: true })).toBeVisible();
+  await expect(page.getByText(/Building large-scale data systems/i)).toBeVisible();
+  await expect(page.getByText(/Urbana, IL/i)).toBeVisible();
   await expect(page.getByText(/systems@eunaverse ~ status/i)).toBeVisible();
   await expect(page.getByText(/56M\+/i)).toHaveCount(1);
+  await expect(page.getByText(/18K QPS/i)).toHaveCount(2);
   await expect(page.getByRole("link", { name: /Resume/i })).toHaveCount(0);
    await expect(hero.getByRole("link", { name: "LinkedIn" })).toHaveCount(0);
    await expect(hero.getByRole("link", { name: /GitHub/i })).toHaveCount(0);
@@ -125,21 +125,22 @@ test("keeps the career timeline clearly stated", async ({ page }) => {
   await page.goto("/");
 
   await expect(page.locator("#experience .job-period").getByText(/Jan 2023 - Present/i)).toBeVisible();
+  await expect(page.locator("#experience .job-period").getByText(/Mar 2022 - Jun 2022/i)).toBeVisible();
 });
 
  test("uses recruiter-facing hero stats instead of leading with GPA", async ({ page }) => {
    await page.goto("/");
 
    const hero = page.locator("#home");
-   const uiucStat = hero.locator(".stat-item").filter({ hasText: /UIUC/i });
-   const awsStat = hero.locator(".stat-item").filter({ hasText: "AWS" });
+   const migrationStat = hero.locator(".stat-item").filter({ hasText: "Records Migrated" });
+   const costStat = hero.locator(".stat-item").filter({ hasText: "Annual Cost Reduction" });
+   const sloStat = hero.locator(".stat-item").filter({ hasText: "Monthly SLO" });
    const ossStat = hero.locator(".stat-item").filter({ hasText: "Merged OSS PRs" });
 
-   await expect(uiucStat.getByText(/UIUC/i)).toBeVisible();
-   await expect(uiucStat.getByText(/2026/)).toBeVisible();
+   await expect(migrationStat.getByText("78B+", { exact: true })).toBeVisible();
+   await expect(costStat.getByText("$2.2M", { exact: true })).toBeVisible();
+   await expect(sloStat.getByText("99.5%+", { exact: true })).toBeVisible();
    await expect(ossStat.getByText("9", { exact: true })).toBeVisible();
-   await expect(awsStat.getByText("AWS", { exact: true })).toBeVisible();
-   await expect(awsStat.getByText("Solutions Architect Pro", { exact: true })).toBeVisible();
   await expect(hero.getByText("University GPA")).toHaveCount(0);
  });
 
@@ -150,14 +151,16 @@ test("focuses the project section on the strongest recruiter-facing GitHub work"
 
    expect(projectTitles).toEqual([
      "ContextZip",
-     "ai-news-alerts",
+     "Code2Contract",
+     "Hotel Recommendation System",
      "Apache Zeppelin",
      "Kubernetes Website",
    ]);
 
    const projects = page.locator("#projects");
-   await expect(projects.getByText(/Private MCP server for agents/i)).toBeVisible();
-   await expect(projects.getByText(/Daily Slack digest from HN \+ RSS/i)).toBeVisible();
+   await expect(projects.getByText(/reducing data re-sync latency by 93%/i)).toBeVisible();
+   await expect(projects.getByText(/self-service API documentation system/i)).toBeVisible();
+   await expect(projects.getByText(/MAP@5 of 0\.37/i)).toBeVisible();
    for (const removedProject of [
      "RepoLens",
      "Agent Harness Playbook + Codex Config",
@@ -176,19 +179,26 @@ test("focuses the project section on the strongest recruiter-facing GitHub work"
 
    await expect(experience.getByText("Backend Software Engineer", { exact: true })).toBeVisible();
    await expect(experience.getByText("Jan 2023 - Present", { exact: true })).toBeVisible();
+   await expect(experience.getByText("Software Engineer Intern", { exact: true })).toBeVisible();
+   await expect(experience.getByText("Mar 2022 - Jun 2022", { exact: true })).toBeVisible();
    await expect(experience.getByText(/Training:/i)).toHaveCount(0);
    await expect(experience.locator(".job-description li")).toHaveCount(0);
-   await expect(experience.locator(".exp-hit")).toHaveCount(3);
-   await expect(experience.getByText(/400M\+ monthly active users/i)).toBeVisible();
-   await expect(experience.getByRole("heading", { name: "Keep users online while the database changes", exact: true })).toBeVisible();
-   await expect(experience.getByRole("heading", { name: "Safer identity for users, freer shipping for teams", exact: true })).toBeVisible();
-   await expect(experience.getByRole("heading", { name: "Fewer failed requests in the real product path", exact: true })).toBeVisible();
+   await expect(experience.locator(".exp-hit")).toHaveCount(5);
+   await expect(experience.getByRole("heading", { name: "Migrate 78B+ records without downtime", exact: true })).toBeVisible();
+   await expect(experience.getByRole("heading", { name: "Double regional batch throughput", exact: true })).toBeVisible();
+   await expect(experience.getByRole("heading", { name: "Reduce identity exposure and coupling", exact: true })).toBeVisible();
+   await expect(experience.getByRole("heading", { name: "Move write-heavy workloads to Cassandra", exact: true })).toBeVisible();
+   await expect(experience.getByRole("heading", { name: "Eliminate recurring reliability failures", exact: true })).toBeVisible();
    await expect(experience.getByText(/78B\+/i)).toBeVisible();
    await expect(experience.getByText(/\$2\.2M/i)).toBeVisible();
+   await expect(experience.getByText(/108%/i)).toBeVisible();
+   await expect(experience.getByText(/\$700K\+\/year/i)).toBeVisible();
+   await expect(experience.getByText(/18K QPS/i)).toBeVisible();
    await expect(experience.getByText(/99\.5%\+/i)).toBeVisible();
    await expect(experience.getByText(/56M\+/i)).toBeVisible();
+   await expect(experience.getByText(/10\+ smartphone system features/i)).toBeVisible();
    await expect(experience.getByText(/4 calls to 1|61%/i)).toHaveCount(0);
-   for (const focus of ["Large-scale migration", "Cloud-native operations", "Data consistency", "Distributed systems"]) {
+   for (const focus of ["Large-scale migration", "Reliability & performance", "Identity architecture", "Distributed systems"]) {
      await expect(experience.getByText(focus, { exact: true })).toBeVisible();
    }
    await expect(experience.getByText(/agent-assisted engineering harnesses/i)).toHaveCount(0);
@@ -199,14 +209,16 @@ test("focuses the project section on the strongest recruiter-facing GitHub work"
 
    const education = page.locator("#education");
    await expect(education.getByText("University of Illinois Urbana-Champaign")).toBeVisible();
-   await expect(education.getByText("Master of Computer Science (MCS)", { exact: true })).toBeVisible();
+   await expect(education.getByText("Master of Computer Science", { exact: true })).toBeVisible();
    await expect(education.getByText(/Incoming/i)).toHaveCount(0);
-   await expect(education.getByText("2026 - 2028")).toBeVisible();
+   await expect(education.getByText("Aug 2026 - May 2028")).toBeVisible();
    await expect(education.getByText("Kyungpook National University")).toBeVisible();
-   await expect(education.getByText("Mobile Engineering")).toBeVisible();
-   await expect(education.getByText(/GPA 4\.45 \/ 4\.5/)).toBeVisible();
-   await expect(education.getByText(/Ranked 1st \/ 33/)).toBeVisible();
-   await expect(education.getByText("Systems", { exact: true })).toBeVisible();
+   await expect(education.getByText(/B\.S\. in Mobile Engineering \(Academic Chair\)/)).toBeVisible();
+   await expect(education.getByText("Mar 2019 - Feb 2023")).toBeVisible();
+   await expect(education.getByText(/GPA 4\.23 \/ 4\.3/)).toBeVisible();
+   for (const course of ["Distributed Systems", "Advanced Topics in NLP", "Database Systems"]) {
+     await expect(education.getByText(course, { exact: true })).toBeVisible();
+   }
    await expect(education.getByText(/AI-adjacent infrastructure/i)).toHaveCount(0);
  });
 
@@ -215,14 +227,16 @@ test("focuses the project section on the strongest recruiter-facing GitHub work"
 
    const skills = page.locator("#skills");
    await expect(skills.getByText(/Tools I reach for when systems need to be reliable/i)).toHaveCount(0);
-   await expect(skills.getByText("Backend & Data Systems")).toBeVisible();
-   await expect(skills.getByText("Cloud & Delivery")).toBeVisible();
-   await expect(skills.getByText("AI Tooling")).toBeVisible();
-   await expect(skills.getByText(/LLM-assisted coding/i)).toBeVisible();
-   await expect(skills.getByText(/Claude, Codex, Cursor, Gemini/i)).toBeVisible();
-   await expect(skills.getByText(/Distributed Systems/i)).toBeVisible();
-   await expect(skills.getByText(/System Design/i)).toBeVisible();
-   await expect(skills.getByText(/Spark/i)).toBeVisible();
+   for (const category of ["Languages", "Backend & Data", "Cloud & Infrastructure", "AI & Developer Tools"]) {
+     await expect(skills.getByText(category, { exact: true })).toBeVisible();
+   }
+   for (const technology of ["Java, Kotlin, Python", "Spring Boot, REST APIs, Kafka", "AWS, Kubernetes, Docker", "RAG, LangChain, MCP", "Claude Code, Codex"]) {
+     await expect(skills.locator(".skill-list").filter({ hasText: technology })).toBeVisible();
+   }
+   const certification = skills.locator(".certification-card");
+   await expect(certification.getByText("AWS Certified Solutions Architect - Professional", { exact: true })).toBeVisible();
+   await expect(certification.getByText("Jan 2025", { exact: true })).toBeVisible();
+   await expect(skills.getByText(/Spark|Jenkins|Cursor|Gemini|LlamaIndex|ChromaDB/i)).toHaveCount(0);
    await expect(skills.getByText(/FastMCP/i)).toHaveCount(0);
    await expect(skills.getByText(/Personal projects/i)).toHaveCount(0);
 
@@ -235,7 +249,7 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
   await page.goto("/");
 
    const cards = page.locator("#projects .project-card");
-   await expect(cards).toHaveCount(4);
+   await expect(cards).toHaveCount(5);
 
   const descriptions = await cards.locator(".project-description").allTextContents();
   for (const description of descriptions) {
@@ -265,44 +279,50 @@ test("keeps project cards concise and points to evidence", async ({ page }) => {
    expect(demoStyle.backgroundImage).not.toBe("none");
    expect(demoStyle.color).not.toBe(repositoryStyle.color);
 
-   const news = cards.filter({ hasText: "ai-news-alerts" });
-   await expect(news.locator(".project-evidence").getByRole("link", { name: "Repository", exact: true })).toBeVisible();
+   const code2Contract = cards.filter({ hasText: "Code2Contract" });
+   await expect(code2Contract.getByRole("link")).toHaveCount(0);
+   const hotel = cards.filter({ hasText: "Hotel Recommendation System" });
+   await expect(hotel.getByRole("link", { name: "Project Report", exact: true })).toHaveAttribute(
+     "href",
+     "https://github.com/eunaverse/Hotel-Recommendation-Project/blob/main/Hotel_Recommendation.pdf",
+   );
 
   for (const removedLabel of ["Architecture", "Core Loop", "Local e2e verified", "Sample Output", "Source Strategy"]) {
     await expect(page.locator("#projects").getByText(removedLabel, { exact: true })).toHaveCount(0);
   }
 });
 
-test("aligns personal project evidence rows while cards share a row", async ({ page }) => {
+test("aligns selected project footers while cards share a row", async ({ page }) => {
   for (const width of [769, 820, 900, 1024, 1100, 1101, 1200, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/#projects");
     await page.evaluate(() => document.fonts.ready.then(() => true));
 
-    const positions = await page.locator(".personal-projects-grid").evaluate((grid) => {
+    const positions = await page.locator(".selected-projects-grid").evaluate((grid) => {
       const cards = Array.from(grid.querySelectorAll<HTMLElement>(".project-card"));
-      const contextZip = cards.find((card) => card.textContent?.includes("ContextZip"));
-      const newsAlerts = cards.find((card) => card.textContent?.includes("ai-news-alerts"));
       const bounds = (element: Element | null | undefined) => element?.getBoundingClientRect() ?? null;
 
-      return {
-        contextCard: bounds(contextZip),
-        contextEvidence: bounds(contextZip?.querySelector(".project-evidence")),
-        newsCard: bounds(newsAlerts),
-        newsEvidence: bounds(newsAlerts?.querySelector(".project-evidence")),
-      };
+      return cards.map((card) => ({
+        card: bounds(card),
+        tech: bounds(card.querySelector(".tech-stack")),
+      }));
     });
 
-    expect(positions.contextCard).not.toBeNull();
-    expect(positions.newsCard).not.toBeNull();
-    expect(positions.contextEvidence).not.toBeNull();
-    expect(positions.newsEvidence).not.toBeNull();
+    expect(positions).toHaveLength(3);
+    for (const position of positions) {
+      expect(position.card).not.toBeNull();
+      expect(position.tech).not.toBeNull();
+    }
 
-    if (Math.abs(positions.contextCard!.y - positions.newsCard!.y) <= 1) {
-      expect.soft(
-        Math.abs(positions.contextEvidence!.y - positions.newsEvidence!.y),
-        `Repository rows should align at ${width}px`,
-      ).toBeLessThanOrEqual(1);
+    for (let i = 0; i < positions.length; i += 1) {
+      for (let j = i + 1; j < positions.length; j += 1) {
+        if (Math.abs(positions[i].card!.y - positions[j].card!.y) <= 1) {
+          expect.soft(
+            Math.abs(positions[i].tech!.bottom - positions[j].tech!.bottom),
+            `Technology rows should align at ${width}px`,
+          ).toBeLessThanOrEqual(1);
+        }
+      }
     }
   }
 });
@@ -384,12 +404,12 @@ test("keeps ContextZip proof card content contained while resizing", async ({ pa
    await expect(
      zeppelinCard.getByText(/1st Place|Grand Prize|OSSCA|Korean Open Source Contribution Program/i),
    ).toHaveCount(0);
-   await expect(projects.getByText(/additional cleanup and refactoring upstream/i)).toBeVisible();
+   await expect(projects.getByText(/prevented null-pointer failures, replaced deprecated APIs/i)).toBeVisible();
    const kubernetesCard = openSourceCards.filter({ hasText: "Kubernetes Website" });
    await expect(kubernetesCard.locator(".oss-prize-placeholder")).toHaveCount(0);
    await expect(kubernetesCard.getByText("Kubernetes Website", { exact: true })).toBeVisible();
-   await expect(kubernetesCard.getByText(/While learning Kubernetes hands-on/i)).toBeVisible();
-   await expect(kubernetesCard.getByText(/Korean ingress-minikube guide/i)).toBeVisible();
+   await expect(kubernetesCard.getByText(/Synchronized the outdated Korean ingress-minikube tutorial/i)).toBeVisible();
+   await expect(kubernetesCard.getByText(/with the English source through a merged SIG Docs contribution/i)).toBeVisible();
    await expect(kubernetesCard.getByRole("link", { name: "#52238 · ingress-minikube", exact: true })).toHaveAttribute(
      "href",
      "https://github.com/kubernetes/website/pull/52238",
@@ -480,12 +500,14 @@ test("aligns open source evidence and technology rows while cards share a row", 
   }
 });
 
- test("shows personal learning automation project", async ({ page }) => {
+ test("shows resume-selected project evidence", async ({ page }) => {
    await page.goto("/");
 
    const projects = page.locator("#projects");
-   await expect(projects.getByText("ai-news-alerts", { exact: true })).toBeVisible();
-   await expect(projects.getByText(/Daily Slack digest from HN \+ RSS/i)).toBeVisible();
+   await expect(projects.getByText("Code2Contract", { exact: true })).toBeVisible();
+   await expect(projects.getByText(/manual minutes → seconds/i)).toBeVisible();
+   await expect(projects.getByText("Hotel Recommendation System", { exact: true })).toBeVisible();
+   await expect(projects.getByText(/MAP@5 of 0\.37/i)).toBeVisible();
  });
 
  test("collects contact links outside the hero", async ({ page }) => {
@@ -501,7 +523,7 @@ test("aligns open source evidence and technology rows while cards share a row", 
    );
    await expect(availability.getByRole("link", { name: /LinkedIn/i })).toHaveAttribute(
      "href",
-     "https://www.linkedin.com/in/euna-park-20a286248/",
+     "https://www.linkedin.com/in/euna-engineer/",
    );
    await expect(availability.getByRole("link", { name: /GitHub/i })).toHaveAttribute("href", "https://github.com/eunaverse");
    await expect(availability.getByRole("link", { name: /Resume/i })).toHaveCount(0);

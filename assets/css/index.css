@@ -508,6 +508,27 @@
       padding: 2rem;
     }
 
+    .experience-stack {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .experience-item--compact {
+      padding: 1.5rem 2rem;
+    }
+
+    .experience-item--compact .job-period {
+      margin-bottom: 0.65rem;
+    }
+
+    .internship-summary {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin: 0;
+      max-width: 56rem;
+    }
+
     .company-name {
       font-size: 1.55rem;
       font-weight: 800;
@@ -847,7 +868,7 @@
     }
 
     @media (min-width: 769px) and (max-width: 1100px) {
-      .personal-projects-grid .tech-stack {
+      .selected-projects-grid .tech-stack {
         min-height: 4.3rem;
         align-content: flex-start;
       }
@@ -930,6 +951,50 @@
       color: var(--text-muted);
       line-height: 1.75;
       font-size: 0.95rem;
+    }
+
+    .certification-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.25rem;
+      padding: 1.35rem 1.5rem;
+    }
+
+    .certification-mark {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 3.25rem;
+      height: 3.25rem;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .certification-label {
+      color: var(--text-soft);
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .certification-title {
+      color: var(--text);
+      font-size: 0.98rem;
+      font-weight: 800;
+      margin-top: 0.15rem;
+    }
+
+    .certification-date {
+      color: var(--text-soft);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      margin-top: 0.15rem;
     }
 
     .contact-grid {
