@@ -404,12 +404,12 @@ test("keeps ContextZip proof card content contained while resizing", async ({ pa
    await expect(
      zeppelinCard.getByText(/1st Place|Grand Prize|OSSCA|Korean Open Source Contribution Program/i),
    ).toHaveCount(0);
-   await expect(projects.getByText(/resolved null-pointer failures, modernized dependencies/i)).toBeVisible();
+   await expect(projects.getByText(/prevented null-pointer failures, replaced deprecated APIs/i)).toBeVisible();
    const kubernetesCard = openSourceCards.filter({ hasText: "Kubernetes Website" });
    await expect(kubernetesCard.locator(".oss-prize-placeholder")).toHaveCount(0);
    await expect(kubernetesCard.getByText("Kubernetes Website", { exact: true })).toBeVisible();
-   await expect(kubernetesCard.getByText(/Localized Kubernetes architecture documentation into Korean/i)).toBeVisible();
-   await expect(kubernetesCard.getByText(/non-English-speaking cloud-native learners/i)).toBeVisible();
+   await expect(kubernetesCard.getByText(/Synchronized the outdated Korean ingress-minikube tutorial/i)).toBeVisible();
+   await expect(kubernetesCard.getByText(/with the English source through a merged SIG Docs contribution/i)).toBeVisible();
    await expect(kubernetesCard.getByRole("link", { name: "#52238 · ingress-minikube", exact: true })).toHaveAttribute(
      "href",
      "https://github.com/kubernetes/website/pull/52238",
