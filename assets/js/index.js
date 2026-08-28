@@ -49,17 +49,6 @@
     updateActiveNav();
 
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      var reveals = document.querySelectorAll(".reveal");
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.12 });
-      reveals.forEach(function (el) { observer.observe(el); });
-
       var blob1 = document.getElementById("blob1");
       var blob2 = document.getElementById("blob2");
       var blob3 = document.getElementById("blob3");
@@ -94,10 +83,6 @@
         card.addEventListener("mouseleave", function () {
           card.style.transform = "";
         });
-      });
-    } else {
-      document.querySelectorAll(".reveal").forEach(function (el) {
-        el.classList.add("visible");
       });
     }
   })();

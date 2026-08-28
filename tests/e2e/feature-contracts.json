@@ -26,6 +26,10 @@
       "test": "shows the education timeline with the UIUC MCS program"
     },
     {
+      "id": "recruiter-section-order",
+      "test": "orders recruiter evidence before education"
+    },
+    {
       "id": "skills-claims",
       "test": "uses defensible skill categories without overclaiming frontend tooling"
     },
@@ -36,6 +40,10 @@
     {
       "id": "selected-project-footer-alignment",
       "test": "aligns selected project footers while cards share a row"
+    },
+    {
+      "id": "selected-project-story-layout",
+      "test": "keeps selected project stories contained and visually emphasizes results"
     },
     {
       "id": "contextzip-demo-route",
@@ -60,6 +68,10 @@
     {
       "id": "contact-links",
       "test": "collects contact links outside the hero"
+    },
+    {
+      "id": "content-visible-without-scroll",
+      "test": "keeps portfolio sections visible without scrolling"
     },
     {
       "id": "fixed-navigation-targets",

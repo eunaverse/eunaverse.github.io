@@ -31,9 +31,9 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="#home">Home</a></li>
       <li><a href="#experience">Experience</a></li>
-      <li><a href="#education">Education</a></li>
       <li><a href="#projects">Work</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#education">Education</a></li>
       <li><a href="#availability">Contact</a></li>
     </ul>
     <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation menu">
@@ -176,32 +176,6 @@
   </div>
 </section>
 
-<section id="education" class="section">
-  <div class="container reveal">
-    <div class="section-head">
-      <h2 class="section-title">Education</h2>
-    </div>
-    <div class="education-grid">
-      <div class="education-item card">
-        <div class="university-name">University of Illinois Urbana-Champaign</div>
-        <div class="degree">Master of Computer Science</div>
-        <div class="job-period">Aug 2026 - May 2028</div>
-        <div class="education-facts" aria-label="Relevant coursework">
-          <span class="tech-tag">Distributed Systems</span>
-          <span class="tech-tag">Advanced Topics in NLP</span>
-          <span class="tech-tag">Database Systems</span>
-        </div>
-      </div>
-      <div class="education-item card">
-        <div class="university-name">Kyungpook National University</div>
-        <div class="degree">B.S. in Mobile Engineering (Academic Chair)</div>
-        <div class="job-period">Mar 2019 - Feb 2023</div>
-        <div class="gpa">GPA 4.23 / 4.3</div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section id="projects" class="section">
   <div class="container reveal">
     <div class="section-head">
@@ -214,12 +188,19 @@
         <div class="project-card-main">
           <div class="project-title">ContextZip</div>
           <div class="project-period">Dec 2025 - Aug 2026 · AI Knowledge Retrieval</div>
-          <div class="project-quip">
-            <span class="prompt">$</span> sync --incremental<br>
-            <span class="ok">✓</span> 30 min → 2 min
-          </div>
-          <div class="project-description">
-            Architected incremental synchronization for a private, multi-source MCP RAG system, reducing data re-sync latency by 93%.
+          <div class="project-story" aria-label="ContextZip project story">
+            <div class="project-story-row">
+              <div class="project-story-label">Problem</div>
+              <p>Knowledge was scattered across Notion, GitHub, Obsidian, and Tistory with no shared search for agents.</p>
+            </div>
+            <div class="project-story-row">
+              <div class="project-story-label">Approach</div>
+              <p>Built a private, multi-source MCP RAG system with durable synchronization and citation-backed retrieval.</p>
+            </div>
+            <div class="project-story-row project-story-row--result">
+              <div class="project-story-label">Result</div>
+              <p>Enabled citation-backed retrieval across four sources for grounded agent responses.</p>
+            </div>
           </div>
         </div>
         <div class="project-card-footer">
@@ -240,12 +221,19 @@
         <div class="project-card-main">
           <div class="project-title">Code2Contract</div>
           <div class="project-period">Aug 2025 - Dec 2025 · Self-Service API Discovery</div>
-          <div class="project-quip">
-            <span class="prompt">$</span> discover api<br>
-            <span class="ok">✓</span> manual minutes → seconds
-          </div>
-          <div class="project-description">
-            Built a self-service API documentation system that accelerated API discovery and streamlined testing and integration for developers.
+          <div class="project-story" aria-label="Code2Contract project story">
+            <div class="project-story-row">
+              <div class="project-story-label">Problem</div>
+              <p>Developers had to inspect source code manually to discover API behavior.</p>
+            </div>
+            <div class="project-story-row">
+              <div class="project-story-label">Approach</div>
+              <p>Built a self-service API documentation workflow for discovery, testing, and integration.</p>
+            </div>
+            <div class="project-story-row project-story-row--result">
+              <div class="project-story-label">Result</div>
+              <p>Cut API discovery from minutes of manual inspection to seconds.</p>
+            </div>
           </div>
         </div>
         <div class="project-card-footer">
@@ -262,12 +250,19 @@
         <div class="project-card-main">
           <div class="project-title">Hotel Recommendation System</div>
           <div class="project-period">Oct 2022 - Dec 2022 · Machine Learning</div>
-          <div class="project-quip">
-            <span class="prompt">$</span> evaluate --metric MAP@5<br>
-            <span class="ok">✓</span> 0.37
-          </div>
-          <div class="project-description">
-            Built and evaluated a hotel recommendation system using KNN, Random Forest, and XGBoost, achieving a MAP@5 of 0.37.
+          <div class="project-story" aria-label="Hotel Recommendation System project story">
+            <div class="project-story-row">
+              <div class="project-story-label">Problem</div>
+              <p>Compare model families for ranking relevant hotel recommendations.</p>
+            </div>
+            <div class="project-story-row">
+              <div class="project-story-label">Approach</div>
+              <p>Evaluated KNN, Random Forest, and XGBoost using MAP@5.</p>
+            </div>
+            <div class="project-story-row project-story-row--result">
+              <div class="project-story-label">Result</div>
+              <p>Achieved a MAP@5 of 0.37 with the full evaluation available in the report.</p>
+            </div>
           </div>
         </div>
         <div class="project-card-footer">
@@ -378,7 +373,7 @@
         <div class="skill-icon">🤖</div>
         <div class="skill-title">AI &amp; Developer Tools</div>
         <div class="skill-list">
-          RAG, LangChain, MCP<br>
+          RAG, MCP<br>
           Machine Learning<br>
           Claude Code, Codex
         </div>
@@ -390,6 +385,32 @@
         <div class="certification-label">Certification</div>
         <div class="certification-title">AWS Certified Solutions Architect - Professional</div>
         <div class="certification-date">Jan 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education" class="section">
+  <div class="container reveal">
+    <div class="section-head">
+      <h2 class="section-title">Education</h2>
+    </div>
+    <div class="education-grid">
+      <div class="education-item card">
+        <div class="university-name">University of Illinois Urbana-Champaign</div>
+        <div class="degree">Master of Computer Science</div>
+        <div class="job-period">Aug 2026 - May 2028</div>
+        <div class="education-facts" aria-label="Relevant coursework">
+          <span class="tech-tag">Distributed Systems</span>
+          <span class="tech-tag">Advanced Topics in NLP</span>
+          <span class="tech-tag">Database Systems</span>
+        </div>
+      </div>
+      <div class="education-item card">
+        <div class="university-name">Kyungpook National University</div>
+        <div class="degree">B.S. in Mobile Engineering (Academic Chair)</div>
+        <div class="job-period">Mar 2019 - Feb 2023</div>
+        <div class="gpa">GPA 4.23 / 4.3</div>
       </div>
     </div>
   </div>

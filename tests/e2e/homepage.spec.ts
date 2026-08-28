@@ -158,9 +158,42 @@ test("focuses the project section on the strongest recruiter-facing GitHub work"
    ]);
 
    const projects = page.locator("#projects");
-   await expect(projects.getByText(/reducing data re-sync latency by 93%/i)).toBeVisible();
-   await expect(projects.getByText(/self-service API documentation system/i)).toBeVisible();
+   await expect(projects.getByText(/Knowledge was scattered across Notion, GitHub, Obsidian, and Tistory/i)).toBeVisible();
+   const contextZipCard = projects.locator(".selected-projects-grid .project-card").filter({ hasText: "ContextZip" });
+   await expect(contextZipCard.getByText(/Enabled citation-backed retrieval across four sources/i)).toBeVisible();
+   await expect(contextZipCard.getByText(/30 minutes|2 minutes/i)).toHaveCount(0);
+   await expect(projects.getByText(/self-service API documentation workflow/i)).toBeVisible();
    await expect(projects.getByText(/MAP@5 of 0\.37/i)).toBeVisible();
+   const selectedCards = projects.locator(".selected-projects-grid .project-card");
+   await expect(selectedCards).toHaveCount(3);
+   const storyExpectations = [
+     {
+       approach: /private, multi-source MCP RAG system/i,
+       problem: /Knowledge was scattered across Notion, GitHub, Obsidian, and Tistory/i,
+       result: /Enabled citation-backed retrieval across four sources/i,
+       title: "ContextZip",
+     },
+     {
+       approach: /self-service API documentation workflow/i,
+       problem: /inspect source code manually to discover API behavior/i,
+       result: /minutes of manual inspection to seconds/i,
+       title: "Code2Contract",
+     },
+     {
+       approach: /Evaluated KNN, Random Forest, and XGBoost using MAP@5/i,
+       problem: /Compare model families for ranking relevant hotel recommendations/i,
+       result: /Achieved a MAP@5 of 0\.37/i,
+       title: "Hotel Recommendation System",
+     },
+   ];
+   for (const story of storyExpectations) {
+     const card = selectedCards.filter({ hasText: story.title });
+     await expect(card.locator(".project-story-label")).toHaveText(["Problem", "Approach", "Result"]);
+     await expect(card.locator(".project-story-row").nth(0)).toContainText(story.problem);
+     await expect(card.locator(".project-story-row").nth(1)).toContainText(story.approach);
+     await expect(card.locator(".project-story-row").nth(2)).toContainText(story.result);
+     await expect(card.locator(".project-quip, .project-description")).toHaveCount(0);
+   }
    for (const removedProject of [
      "RepoLens",
      "Agent Harness Playbook + Codex Config",
@@ -222,6 +255,18 @@ test("focuses the project section on the strongest recruiter-facing GitHub work"
    await expect(education.getByText(/AI-adjacent infrastructure/i)).toHaveCount(0);
  });
 
+ test("orders recruiter evidence before education", async ({ page }) => {
+   await page.goto("/");
+
+   const sectionOrder = await page.locator("body > section[id]").evaluateAll((sections) =>
+     sections.map((section) => section.id),
+   );
+   expect(sectionOrder).toEqual(["home", "experience", "projects", "skills", "education", "availability"]);
+
+   const navOrder = await page.locator("#navLinks a").allTextContents();
+   expect(navOrder).toEqual(["Home", "Experience", "Work", "Skills", "Education", "Contact"]);
+ });
+
  test("uses defensible skill categories without overclaiming frontend tooling", async ({ page }) => {
    await page.goto("/");
 
@@ -230,9 +275,10 @@ test("focuses the project section on the strongest recruiter-facing GitHub work"
    for (const category of ["Languages", "Backend & Data", "Cloud & Infrastructure", "AI & Developer Tools"]) {
      await expect(skills.getByText(category, { exact: true })).toBeVisible();
    }
-   for (const technology of ["Java, Kotlin, Python", "Spring Boot, REST APIs, Kafka", "AWS, Kubernetes, Docker", "RAG, LangChain, MCP", "Claude Code, Codex"]) {
+   for (const technology of ["Java, Kotlin, Python", "Spring Boot, REST APIs, Kafka", "AWS, Kubernetes, Docker", "RAG, MCP", "Claude Code, Codex"]) {
      await expect(skills.locator(".skill-list").filter({ hasText: technology })).toBeVisible();
    }
+   await expect(skills.getByText(/LangChain|LangGraph|AgentOps/i)).toHaveCount(0);
    const certification = skills.locator(".certification-card");
    await expect(certification.getByText("AWS Certified Solutions Architect - Professional", { exact: true })).toBeVisible();
    await expect(certification.getByText("Jan 2025", { exact: true })).toBeVisible();
@@ -322,6 +368,49 @@ test("aligns selected project footers while cards share a row", async ({ page })
             `Technology rows should align at ${width}px`,
           ).toBeLessThanOrEqual(1);
         }
+      }
+    }
+  }
+});
+
+test("keeps selected project stories contained and visually emphasizes results", async ({ page }) => {
+  for (const width of [375, 768, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/#projects");
+    await page.evaluate(() => document.fonts.ready.then(() => true));
+
+    const cards = await page.locator(".selected-projects-grid .project-card").evaluateAll((elements) =>
+      elements.map((card) => {
+        const cardBounds = card.getBoundingClientRect();
+        const rows = Array.from(card.querySelectorAll<HTMLElement>(".project-story-row"));
+        return {
+          backgroundColors: rows.map((row) => getComputedStyle(row).backgroundColor),
+          card: { left: cardBounds.left, right: cardBounds.right },
+          rows: rows.map((row) => {
+            const rowBounds = row.getBoundingClientRect();
+            const labelBounds = row.querySelector(".project-story-label")?.getBoundingClientRect();
+            const copyBounds = row.querySelector("p")?.getBoundingClientRect();
+            return {
+              copyLeft: copyBounds?.left ?? 0,
+              copyRight: copyBounds?.right ?? 0,
+              labelRight: labelBounds?.right ?? 0,
+              left: rowBounds.left,
+              right: rowBounds.right,
+            };
+          }),
+        };
+      }),
+    );
+
+    expect(cards).toHaveLength(3);
+    for (const card of cards) {
+      expect(card.rows).toHaveLength(3);
+      expect(card.backgroundColors[2]).not.toBe(card.backgroundColors[0]);
+      for (const row of card.rows) {
+        expect(row.left, `story row left edge at ${width}px`).toBeGreaterThanOrEqual(card.card.left);
+        expect(row.right, `story row right edge at ${width}px`).toBeLessThanOrEqual(card.card.right);
+        expect(row.copyLeft, `story copy should clear its label at ${width}px`).toBeGreaterThan(row.labelRight);
+        expect(row.copyRight, `story copy should stay inside its row at ${width}px`).toBeLessThanOrEqual(row.right);
       }
     }
   }
@@ -505,9 +594,25 @@ test("aligns open source evidence and technology rows while cards share a row", 
 
    const projects = page.locator("#projects");
    await expect(projects.getByText("Code2Contract", { exact: true })).toBeVisible();
-   await expect(projects.getByText(/manual minutes → seconds/i)).toBeVisible();
+   await expect(projects.getByText(/minutes of manual inspection to seconds/i)).toBeVisible();
    await expect(projects.getByText("Hotel Recommendation System", { exact: true })).toBeVisible();
    await expect(projects.getByText(/MAP@5 of 0\.37/i)).toBeVisible();
+ });
+
+ test("keeps portfolio sections visible without scrolling", async ({ page }) => {
+   await page.goto("/");
+
+   const revealOpacity = await page.locator(".reveal").evaluateAll((elements) =>
+     elements.map((element) => getComputedStyle(element).opacity),
+   );
+   expect(revealOpacity.length).toBeGreaterThan(0);
+   expect(revealOpacity.every((opacity) => opacity === "1")).toBe(true);
+
+   await page.emulateMedia({ media: "print" });
+   const printOpacity = await page.locator(".reveal").evaluateAll((elements) =>
+     elements.map((element) => getComputedStyle(element).opacity),
+   );
+   expect(printOpacity.every((opacity) => opacity === "1")).toBe(true);
  });
 
  test("collects contact links outside the hero", async ({ page }) => {
@@ -533,14 +638,14 @@ test("keeps internal navigation targets below the fixed nav", async ({ page }) =
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
 
-  const targetByLinkName: Record<string, string> = {
-    Home: "home",
-    Experience: "experience",
-    Education: "education",
-    Work: "projects",
-    Skills: "skills",
-    Contact: "availability",
-  };
+   const targetByLinkName: Record<string, string> = {
+     Home: "home",
+     Experience: "experience",
+     Work: "projects",
+     Skills: "skills",
+     Education: "education",
+     Contact: "availability",
+   };
 
   for (const linkName of Object.keys(targetByLinkName)) {
     await page.locator("nav").getByRole("link", { name: linkName, exact: true }).click();
