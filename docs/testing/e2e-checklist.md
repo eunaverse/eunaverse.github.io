@@ -17,11 +17,12 @@ The command must pass before a branch is pushed or a pull request is opened. It 
 | Area | Required behavior |
 | --- | --- |
 | Home | Hero identity, recruiter-facing status, primary actions, and career timeline render correctly. |
-| Navigation | Every internal navigation target remains visible below the fixed header after activation. |
+| Navigation | Recruiter evidence stays ordered before education, and every internal navigation target remains visible below the fixed header after activation. |
 | Experience | The concise backend narrative and its verified impact statements remain visible. |
 | Education | UIUC and undergraduate timelines render without reintroducing removed status copy. |
-| Skills | Skill groups remain defensible and excluded claims stay absent. |
-| Projects | Exactly the intended project cards render with concise descriptions and evidence links. |
+| Skills | Skill groups remain defensible, and excluded claims such as LangChain stay absent. |
+| Projects | Exactly the intended project cards render with factual Problem, Approach, and Result stories, visible result emphasis, and evidence links. |
+| Content visibility | Portfolio sections remain visible on initial load and in print without depending on scroll-triggered reveal behavior. |
 | ContextZip demo | The Demo action opens the dedicated page, whose title, heading, repository action, architecture story, and tool evidence render. |
 | Contact | Contact actions remain outside the hero and are reachable. |
 | External links | New-tab links include `noopener noreferrer`. |
