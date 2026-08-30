@@ -103,15 +103,26 @@ test("shows both schools with visual identity and concise degree details", async
   await expect(education.getByText(/B\.S\. in Mobile Engineering/)).toBeVisible();
 });
 
-test("uses a playable demo and simple diagrams for selected projects", async ({ page }) => {
+test("uses aligned 4 by 3 frames for the project demo and diagrams", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/#projects");
 
   const projects = page.locator(".selected-projects-grid .project-card");
+  const mediaFrames = projects.locator(".project-media");
   await expect(projects).toHaveCount(3);
-  await expect(projects.locator(".project-media")).toHaveCount(3);
+  await expect(mediaFrames).toHaveCount(3);
   await expect(projects.locator(".project-media--empty, .project-overlay")).toHaveCount(0);
   await expect(projects.locator(".project-media--illustration img")).toHaveCount(2);
   await expect(projects.locator(".project-media--figure img")).toHaveCount(0);
+
+  for (const frame of await mediaFrames.all()) {
+    await expect(frame).toHaveCSS("aspect-ratio", "4 / 3");
+  }
+
+  const storyTops = await projects.locator(".project-story").evaluateAll((stories) =>
+    stories.map((story) => Math.round(story.getBoundingClientRect().top)),
+  );
+  expect(new Set(storyTops).size).toBe(1);
 
   const demo = projects.filter({ hasText: "ContextZip" }).getByLabel("ContextZip product demo");
   await expect(demo).toHaveAttribute("controls", "");

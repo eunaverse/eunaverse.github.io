@@ -23,7 +23,7 @@
     },
     {
       "id": "project-visual-frames",
-      "test": "uses a playable demo and simple diagrams for selected projects"
+      "test": "uses aligned 4 by 3 frames for the project demo and diagrams"
     },
     {
       "id": "contextzip-unobstructed-playback",
