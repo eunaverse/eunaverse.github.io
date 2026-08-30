@@ -187,11 +187,11 @@ test("opens every project story only by explicit click or keyboard action", asyn
   await stories.nth(1).locator("summary").focus();
   await stories.nth(1).locator("summary").press("Enter");
   expect(await stories.nth(1).evaluate((element: HTMLDetailsElement) => element.open)).toBe(true);
-  await expect(stories.nth(1).getByText("OpenAPI", { exact: false })).toBeVisible();
+  await expect(stories.nth(1).getByText("MAP@5 0.4096", { exact: false })).toBeVisible();
 
   await stories.nth(2).locator("summary").click();
   expect(await stories.nth(2).evaluate((element: HTMLDetailsElement) => element.open)).toBe(true);
-  await expect(stories.nth(2).getByText("MAP@5 0.4096", { exact: false })).toBeVisible();
+  await expect(stories.nth(2).getByText("Code changes automatically refreshed the specification", { exact: false })).toBeVisible();
 });
 
 test("opens project stories on touch without covering project media", async ({ browser }) => {
@@ -220,24 +220,56 @@ test("keeps selected project evidence links", async ({ page }) => {
   await page.goto("/#projects");
 
   const contextZip = page.locator(".project-card").filter({ hasText: "ContextZip" });
+  await expect(contextZip.getByText("Incremental Sync", { exact: true })).toHaveCount(0);
   await expect(contextZip.getByRole("link", { name: "Repository", exact: true })).toHaveAttribute(
     "href",
     "https://github.com/eunaverse/ContextZip",
   );
-  await expect(contextZip.getByRole("link", { name: "Full demo", exact: true })).toHaveAttribute(
+  const details = contextZip.getByRole("link", { name: "Details", exact: true });
+  await expect(details).toHaveAttribute(
     "href",
     "mcpcontentsearch-demo.html#plot",
   );
 
+  const projectTitles = await page.locator(".selected-projects-grid .project-card h3").allTextContents();
+  expect(projectTitles).toEqual(["ContextZip", "Hotel Recommendation System", "Code2Contract"]);
+
   const code2Contract = page.locator(".project-card").filter({ hasText: "Code2Contract" });
   await expect(code2Contract.getByRole("link")).toHaveCount(0);
   await expect(code2Contract.getByText("Related prototype", { exact: true })).toHaveCount(0);
+  await code2Contract.locator("summary").click();
+  await expect(code2Contract.getByText("Code changes automatically refreshed the specification", { exact: false })).toBeVisible();
+  await code2Contract.locator("summary").click();
+  expect(await code2Contract.locator("details.project-story").evaluate((element: HTMLDetailsElement) => element.open)).toBe(false);
 
   const hotel = page.locator(".project-card").filter({ hasText: "Hotel Recommendation System" });
-  await expect(hotel.getByRole("link", { name: "Report", exact: true })).toHaveAttribute(
+  const report = hotel.getByRole("link", { name: "Report", exact: true });
+  await expect(report).toHaveClass(/action-primary/);
+  await expect(report).toHaveCSS("color", "rgb(255, 255, 255)");
+  await expect(report).toHaveCSS("background-color", "rgb(79, 70, 229)");
+  await expect(report).toHaveAttribute(
     "href",
     "https://github.com/eunaverse/Hotel-Recommendation-Project/blob/main/Hotel_Recommendation.pdf",
   );
+
+  const titleTops = await page.locator(".selected-projects-grid .project-meta h3").evaluateAll((titles) =>
+    titles.map((title) => Math.round(title.getBoundingClientRect().top)),
+  );
+  expect(new Set(titleTops).size).toBe(1);
+
+  const actionTops = await page.locator(".selected-projects-grid .project-actions").evaluateAll((actions) =>
+    actions.map((action) => Math.round(action.getBoundingClientRect().top)),
+  );
+  expect(new Set(actionTops).size).toBe(1);
+
+  for (const action of [details, report]) {
+    const bounds = await action.evaluate((link) => {
+      const linkBox = link.getBoundingClientRect();
+      const cardBox = link.closest(".project-card")!.getBoundingClientRect();
+      return { linkRight: linkBox.right, cardRight: cardBox.right };
+    });
+    expect(bounds.linkRight).toBeLessThanOrEqual(bounds.cardRight);
+  }
 });
 
 test("shows logo-led open source contributions with merged evidence", async ({ page }) => {
@@ -275,19 +307,19 @@ test("preserves the existing defensible skill set", async ({ page }) => {
   await expect(skills.getByText(/LangChain|LangGraph|AgentOps|FastMCP/i)).toHaveCount(0);
 });
 
-test("keeps the recruiter section order", async ({ page }) => {
+test("keeps education first in the portfolio section order", async ({ page }) => {
   await page.goto("/");
 
   const sectionOrder = await page.locator("main > section[id]").evaluateAll((sections) =>
     sections.map((section) => section.id),
   );
-  expect(sectionOrder).toEqual(["home", "experience", "projects", "skills", "education", "availability"]);
+  expect(sectionOrder).toEqual(["home", "education", "experience", "projects", "skills", "availability"]);
   expect(await page.locator("#navLinks a").allTextContents()).toEqual([
     "Home",
+    "Education",
     "Experience",
     "Work",
     "Skills",
-    "Education",
     "Contact",
   ]);
 });
@@ -296,7 +328,7 @@ test("collects contact links in the closing panel", async ({ page }) => {
   await page.goto("/#availability");
 
   const contact = page.locator("#availability");
-  await expect(contact.getByRole("heading", { name: "Let’s build something reliable.", exact: true })).toBeVisible();
+  await expect(contact.getByRole("heading", { name: "Contact me", exact: true })).toBeVisible();
   await expect(contact.getByRole("link", { name: /Email/ })).toHaveAttribute("href", "mailto:euna.engineer@gmail.com");
   await expect(contact.getByRole("link", { name: /LinkedIn/ })).toHaveAttribute("href", "https://www.linkedin.com/in/euna-engineer/");
   await expect(contact.getByRole("link", { name: /GitHub/ })).toHaveAttribute("href", "https://github.com/eunaverse");
@@ -317,7 +349,7 @@ test("keeps internal navigation targets clear of the fixed navigation", async ({
   await page.goto("/");
 
   const navHeight = await page.locator("nav").evaluate((nav) => nav.getBoundingClientRect().height);
-  for (const target of ["experience", "projects", "skills", "education", "availability"]) {
+  for (const target of ["education", "experience", "projects", "skills", "availability"]) {
     await page.locator(`#navLinks a[href="#${target}"]`).click();
     await page.waitForTimeout(650);
     const top = await page.locator(`#${target}`).evaluate((section) => section.getBoundingClientRect().top);
@@ -388,7 +420,7 @@ test("marks every external new-tab link as safe", async ({ page }) => {
 
 test("routes the ContextZip action directly to The plot walkthrough", async ({ page }) => {
   await page.goto("/#projects");
-  await page.getByRole("link", { name: "Full demo", exact: true }).click();
+  await page.getByRole("link", { name: "Details", exact: true }).click();
 
   await expect(page).toHaveURL(/\/mcpcontentsearch-demo\.html#plot$/);
   await expect(page).toHaveTitle("ContextZip");

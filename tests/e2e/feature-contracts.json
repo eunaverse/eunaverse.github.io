@@ -54,8 +54,8 @@
       "test": "preserves the existing defensible skill set"
     },
     {
-      "id": "recruiter-section-order",
-      "test": "keeps the recruiter section order"
+      "id": "education-first-section-order",
+      "test": "keeps education first in the portfolio section order"
     },
     {
       "id": "contact-links",
