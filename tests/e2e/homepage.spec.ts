@@ -102,14 +102,15 @@ test("shows both schools with visual identity and concise degree details", async
   await expect(education.getByText(/B\.S\. in Mobile Engineering/)).toBeVisible();
 });
 
-test("uses a playable demo and simple visual diagrams for selected projects", async ({ page }) => {
+test("uses a playable demo, a simple diagram, and a report figure for selected projects", async ({ page }) => {
   await page.goto("/#projects");
 
   const projects = page.locator(".selected-projects-grid .project-card");
   await expect(projects).toHaveCount(3);
   await expect(projects.locator(".project-media")).toHaveCount(3);
   await expect(projects.locator(".project-media--empty, .project-overlay")).toHaveCount(0);
-  await expect(projects.locator(".project-media--illustration img")).toHaveCount(2);
+  await expect(projects.locator(".project-media--illustration img")).toHaveCount(1);
+  await expect(projects.locator(".project-media--figure img")).toHaveCount(1);
 
   const demo = projects.filter({ hasText: "ContextZip" }).getByLabel("ContextZip product demo");
   await expect(demo).toHaveAttribute("controls", "");
@@ -122,9 +123,9 @@ test("uses a playable demo and simple visual diagrams for selected projects", as
     "src",
     "assets/images/code2contract-flow.svg",
   );
-  await expect(page.getByAltText("Hotel recommendation workflow and tuned MAP at 5 model comparison", { exact: true })).toHaveAttribute(
+  await expect(page.getByAltText("Hotel recommendation report figure showing data preparation, model selection, and hotel cluster extraction", { exact: true })).toHaveAttribute(
     "src",
-    "assets/images/hotel-recommendation-flow.svg",
+    "assets/images/hotel-recommendation-pipeline.png",
   );
 });
 
@@ -194,7 +195,8 @@ test("opens project stories on touch without covering project media", async ({ b
   await stories.first().locator("summary").click();
   expect(await stories.first().evaluate((element: HTMLDetailsElement) => element.open)).toBe(true);
   await expect(cards.first().getByLabel("ContextZip product demo")).toBeVisible();
-  await expect(cards.locator(".project-media--illustration img")).toHaveCount(2);
+  await expect(cards.locator(".project-media--illustration img")).toHaveCount(1);
+  await expect(cards.locator(".project-media--figure img")).toHaveCount(1);
   await expectNoHorizontalOverflow(page, 390);
   await context.close();
 });
@@ -213,10 +215,8 @@ test("keeps selected project evidence links", async ({ page }) => {
   );
 
   const code2Contract = page.locator(".project-card").filter({ hasText: "Code2Contract" });
-  await expect(code2Contract.getByRole("link", { name: "Related prototype", exact: true })).toHaveAttribute(
-    "href",
-    "https://github.com/eunaverse/SpecGenerator",
-  );
+  await expect(code2Contract.getByRole("link")).toHaveCount(0);
+  await expect(code2Contract.getByText("Related prototype", { exact: true })).toHaveCount(0);
 
   const hotel = page.locator(".project-card").filter({ hasText: "Hotel Recommendation System" });
   await expect(hotel.getByRole("link", { name: "Report", exact: true })).toHaveAttribute(
@@ -377,6 +377,8 @@ test("routes the ContextZip action directly to The plot walkthrough", async ({ p
 
   await expect(page).toHaveURL(/\/mcpcontentsearch-demo\.html#plot$/);
   await expect(page).toHaveTitle("ContextZip");
+  await expect(page.locator(".hero")).toHaveCount(0);
+  await expect(page.getByLabel("ContextZip product demo")).toHaveCount(0);
   const plot = page.locator("#plot");
   await expect(plot).toHaveText("The plot");
   await expect(page.getByRole("heading", { name: "Four silos. Zero shared search." })).toBeVisible();
@@ -388,11 +390,6 @@ test("routes the ContextZip action directly to The plot walkthrough", async ({ p
     "href",
     "index.html#projects",
   );
-  const video = page.getByLabel("ContextZip product demo");
-  await expect(video).toHaveAttribute("controls", "");
-  await expect(video.locator("source")).toHaveAttribute("src", "assets/videos/contextzip-demo.mp4");
-  await expect.poll(() => video.evaluate((element: HTMLVideoElement) => element.readyState)).toBeGreaterThanOrEqual(1);
-  expect(await video.evaluate((element: HTMLVideoElement) => element.error)).toBeNull();
 });
 
 test("keeps the full ContextZip proof card contained while resizing", async ({ page }) => {

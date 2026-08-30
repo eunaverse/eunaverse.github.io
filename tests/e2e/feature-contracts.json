@@ -23,7 +23,7 @@
     },
     {
       "id": "project-visual-frames",
-      "test": "uses a playable demo and simple visual diagrams for selected projects"
+      "test": "uses a playable demo, a simple diagram, and a report figure for selected projects"
     },
     {
       "id": "contextzip-unobstructed-playback",

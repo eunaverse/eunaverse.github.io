@@ -541,8 +541,13 @@ section[id] {
   background: #ece9e3;
 }
 
-.project-media--illustration img {
+.project-media--illustration img,
+.project-media--figure img {
   object-fit: contain;
+}
+
+.project-media--figure {
+  background: #fff;
 }
 
 .project-story {
