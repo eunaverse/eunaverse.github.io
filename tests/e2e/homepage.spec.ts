@@ -103,15 +103,15 @@ test("shows both schools with visual identity and concise degree details", async
   await expect(education.getByText(/B\.S\. in Mobile Engineering/)).toBeVisible();
 });
 
-test("uses a playable demo, a simple diagram, and a report figure for selected projects", async ({ page }) => {
+test("uses a playable demo and simple diagrams for selected projects", async ({ page }) => {
   await page.goto("/#projects");
 
   const projects = page.locator(".selected-projects-grid .project-card");
   await expect(projects).toHaveCount(3);
   await expect(projects.locator(".project-media")).toHaveCount(3);
   await expect(projects.locator(".project-media--empty, .project-overlay")).toHaveCount(0);
-  await expect(projects.locator(".project-media--illustration img")).toHaveCount(1);
-  await expect(projects.locator(".project-media--figure img")).toHaveCount(1);
+  await expect(projects.locator(".project-media--illustration img")).toHaveCount(2);
+  await expect(projects.locator(".project-media--figure img")).toHaveCount(0);
 
   const demo = projects.filter({ hasText: "ContextZip" }).getByLabel("ContextZip product demo");
   await expect(demo).toHaveAttribute("controls", "");
@@ -124,9 +124,9 @@ test("uses a playable demo, a simple diagram, and a report figure for selected p
     "src",
     "assets/images/code2contract-flow.svg",
   );
-  await expect(page.getByAltText("Hotel recommendation report figure showing data preparation, model selection, and hotel cluster extraction", { exact: true })).toHaveAttribute(
+  await expect(page.getByAltText("Hotel recommendation workflow comparing KNN, Random Forest, and XGBoost with tuned MAP at 5 results", { exact: true })).toHaveAttribute(
     "src",
-    "assets/images/hotel-recommendation-pipeline.png",
+    "assets/images/hotel-recommendation-flow.svg",
   );
 });
 
@@ -196,8 +196,8 @@ test("opens project stories on touch without covering project media", async ({ b
   await stories.first().locator("summary").click();
   expect(await stories.first().evaluate((element: HTMLDetailsElement) => element.open)).toBe(true);
   await expect(cards.first().getByLabel("ContextZip product demo")).toBeVisible();
-  await expect(cards.locator(".project-media--illustration img")).toHaveCount(1);
-  await expect(cards.locator(".project-media--figure img")).toHaveCount(1);
+  await expect(cards.locator(".project-media--illustration img")).toHaveCount(2);
+  await expect(cards.locator(".project-media--figure img")).toHaveCount(0);
   await expectNoHorizontalOverflow(page, 390);
   await context.close();
 });
