@@ -18,59 +18,11 @@
 
 <main class="shell">
   <div class="top-bar">
-    <a class="back-link" href="/index.html">Back to portfolio</a>
+    <a class="back-link" href="index.html#projects">Back to portfolio</a>
     <span class="logo-chip">eunaverse / demo</span>
   </div>
 
-  <section class="hero">
-    <div class="hero-grid">
-      <div>
-        <div class="eyebrow">Personal Project · Retrieval &amp; MCP</div>
-        <h1>ContextZip</h1>
-        <p class="hero-lede">
-          A private MCP server for LLM agents — with RAG-style retrieval over your own notes.
-          Syncs Notion, Tistory, GitHub, and Obsidian through a durable sync worker into a dual store —
-          Chroma for semantic search, SQLite for lifecycle metadata —
-          then returns citation-backed context so answers stay grounded.
-        </p>
-
-        <div class="stat-row">
-          <span class="stat-pill">MCP</span>
-          <span class="stat-pill">RAG</span>
-          <span class="stat-pill">4 sources</span>
-          <span class="stat-pill">8 MCP tools</span>
-        </div>
-
-        <div class="btn-row">
-          <a class="btn btn-primary" href="https://github.com/eunaverse/ContextZip" target="_blank" rel="noopener noreferrer">View Repository</a>
-        </div>
-      </div>
-
-      <figure class="demo-panel">
-        <div class="demo-panel-bar">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-          <span class="demo-panel-label">Agent · retrieval in context</span>
-        </div>
-        <video
-          class="demo-shot"
-          controls
-          playsinline
-          preload="metadata"
-          aria-label="ContextZip product demo"
-        >
-          <source src="assets/videos/contextzip-demo.mp4" type="video/mp4">
-          Your browser does not support embedded MP4 video.
-        </video>
-        <figcaption>
-          ContextZip product demo — play, pause, or seek with the video controls.
-        </figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <p class="section-title">The plot</p>
+  <p class="section-title" id="plot">The plot</p>
   <div class="story" aria-label="Project story in four beats">
     <article class="story-beat">
       <div class="story-idx">01</div>

@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eunwha Park | Backend &amp; Distributed Systems Engineer</title>
-  <meta name="description" content="Backend and distributed systems engineer working on large-scale data migration, cloud-native platforms, reliability, and AI knowledge retrieval.">
-  <meta property="og:title" content="Eunwha Park | Backend &amp; Distributed Systems Engineer">
-  <meta property="og:description" content="Backend and distributed systems engineer with experience in multi-region data migration, Kubernetes platforms, reliability, and MCP RAG systems.">
+  <title>Euna Park | Backend &amp; Distributed Systems Engineer</title>
+  <meta name="description" content="Euna Park builds reliable backend systems and practical AI retrieval tools.">
+  <meta property="og:title" content="Euna Park | Backend &amp; Distributed Systems Engineer">
+  <meta property="og:description" content="Reliable backend systems, cloud infrastructure, and practical AI retrieval tools.">
   <meta property="og:url" content="https://eunaverse.github.io/">
   <meta property="og:image" content="https://avatars.githubusercontent.com/u/49258273?v=4">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/index.css">
 </head>
 <body>
@@ -25,9 +25,9 @@
   <div class="bg-blob bg-blob-3" id="blob3"></div>
 </div>
 
-<nav>
+<nav aria-label="Primary navigation">
   <div class="nav-container">
-    <div class="logo">eunaverse</div>
+    <a class="logo" href="#home" aria-label="Eunaverse home">eunaverse</a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home">Home</a></li>
       <li><a href="#experience">Experience</a></li>
@@ -36,416 +36,299 @@
       <li><a href="#education">Education</a></li>
       <li><a href="#availability">Contact</a></li>
     </ul>
-    <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation menu">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation menu" aria-controls="navLinks" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<section id="home" class="hero">
-  <div class="container">
-    <div class="hero-layout">
-      <div class="hero-content">
-        <div class="hero-subtitle fade-in-up">Backend &amp; Distributed Systems Engineer</div>
-        <h1 class="hero-title fade-in-up">Eunwha Park</h1>
-        <p class="hero-description fade-in-up">
-          Building large-scale data systems, cloud-native platforms, reliable services,
-          and AI knowledge retrieval tools.
-        </p>
-        <div class="hero-location-roles fade-in-up">Urbana, IL &bull; UIUC MCS 2026 - 2028</div>
-        <div class="stats fade-in-up">
-          <div class="stat-item">
-            <div class="stat-number">78B+</div>
-            <div class="stat-label">Records Migrated</div>
+<main>
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-layout">
+        <div class="hero-content">
+          <div class="hero-tags fade-in-up">
+            <div class="identity-tag"><span></span>Backend &amp; Distributed Systems Engineer</div>
+            <div class="identity-tag certification-tag" aria-label="AWS certification"><span></span>AWS Certified Solutions Architect - Professional</div>
           </div>
-          <div class="stat-item">
-            <div class="stat-number">$2.2M</div>
-            <div class="stat-label">Annual Cost Reduction</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">99.5%+</div>
-            <div class="stat-label">Monthly SLO</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">9</div>
-            <div class="stat-label">Merged OSS PRs</div>
-          </div>
+          <h1 class="hero-title fade-in-up">Euna Park</h1>
+          <p class="hero-description fade-in-up">I build reliable backend systems and practical AI retrieval tools.</p>
         </div>
-      </div>
 
-      <aside class="hero-panel" id="heroPanel">
-        <div class="hero-panel-header">
-          <span class="hero-panel-dot red"></span>
-          <span class="hero-panel-dot yellow"></span>
-          <span class="hero-panel-dot green"></span>
-          <span class="hero-panel-title">systems@eunaverse ~ status</span>
-        </div>
-        <div class="hero-panel-body">
-          <span class="hero-panel-line"><span class="prompt">$</span> <span class="cmd">migrate records</span> <span class="flag">--regions 3</span></span>
-          <span class="hero-panel-line"><span class="ok">✓</span> <span class="val">78B+</span> complete · <span class="key">zero downtime</span></span>
-          <span class="hero-panel-line"><span class="prompt">$</span> <span class="cmd">cassandra throughput</span> <span class="flag">--peak</span></span>
-          <span class="hero-panel-line"><span class="ok">✓</span> <span class="val">18K QPS</span> · write traffic <span class="key">-50%</span></span>
-          <span class="hero-panel-line"><span class="prompt">$</span> <span class="cmd">cat ~/.focus</span></span>
-          <span class="hero-panel-line"><span class="ok">✓</span> distributed systems · <span class="key">RAG</span> · <span class="key">MCP</span></span>
-          <div class="hero-chip-row">
-            <span class="hero-chip">Spring Boot</span>
-            <span class="hero-chip">Kafka</span>
-            <span class="hero-chip">Cassandra</span>
-            <span class="hero-chip">Kubernetes</span>
-            <span class="hero-chip">MCP</span>
+        <aside class="hero-panel fade-in-up" id="heroPanel" aria-label="Mac-style terminal showing engineering focus">
+          <div class="hero-panel-header" aria-hidden="true">
+            <span class="hero-panel-dot red"></span>
+            <span class="hero-panel-dot yellow"></span>
+            <span class="hero-panel-dot green"></span>
+            <span class="hero-panel-title">systems@eunaverse ~ focus</span>
           </div>
-        </div>
-      </aside>
-    </div>
-  </div>
-</section>
-
-<section id="experience" class="section">
-  <div class="container reveal">
-    <div class="section-head">
-      <h2 class="section-title">Experience</h2>
-    </div>
-    <div class="experience-stack">
-      <div class="experience-item card">
-        <div class="company-name">Samsung Electronics</div>
-        <div class="job-title">Backend Software Engineer</div>
-        <div class="job-period">Jan 2023 - Present</div>
-        <div class="job-description">
-          <p class="exp-lede">Systems architecture, site reliability, and performance work across multi-region data, identity, and batch platforms.</p>
-          <div class="experience-highlights" aria-label="Experience highlights">
-            <div class="exp-group">
-              <div class="exp-group-title">Systems Architecture</div>
-              <article class="exp-hit">
-                <div class="exp-hit-num">01</div>
-                <div>
-                  <h3>Migrate 78B+ records without downtime</h3>
-                  <p>Led the migration strategy across three regions, achieving zero downtime and reducing annual infrastructure costs by $2.2M (95%).</p>
-                </div>
-              </article>
-              <article class="exp-hit">
-                <div class="exp-hit-num">02</div>
-                <div>
-                  <h3>Double regional batch throughput</h3>
-                  <p>Re-architected a Kubernetes batch platform serving 56M+ users, accelerating average regional processing throughput by 108% and enabling automated deployments.</p>
-                </div>
-              </article>
-              <article class="exp-hit">
-                <div class="exp-hit-num">03</div>
-                <div>
-                  <h3>Reduce identity exposure and coupling</h3>
-                  <p>Introduced a layered, purpose-specific ID model that reduced PII exposure and decoupled 10+ downstream services from a legacy identity system.</p>
-                </div>
-              </article>
-            </div>
-            <div class="exp-group">
-              <div class="exp-group-title">Site Reliability &amp; Performance</div>
-              <article class="exp-hit">
-                <div class="exp-hit-num">04</div>
-                <div>
-                  <h3>Move write-heavy workloads to Cassandra</h3>
-                  <p>Delivered $700K+/year in savings while reducing RDB write traffic by 50% at up to 18K QPS.</p>
-                </div>
-              </article>
-              <article class="exp-hit">
-                <div class="exp-hit-num">05</div>
-                <div>
-                  <h3>Eliminate recurring reliability failures</h3>
-                  <p>Raised monthly SLO from 97.5% to 99.5%+ by identifying root causes and removing recurring system failures.</p>
-                </div>
-              </article>
+          <div class="hero-panel-body">
+            <span class="hero-panel-line"><span class="prompt">$</span> <span class="cmd">whoami</span></span>
+            <span class="hero-panel-line"><span class="ok">✓</span> Backend &amp; Distributed Systems Engineer</span>
+            <span class="hero-panel-line"><span class="prompt">$</span> <span class="cmd">cat</span> <span class="flag">current-focus.txt</span></span>
+            <span class="hero-panel-line"><span class="ok">✓</span> reliable services · cloud platforms</span>
+            <span class="hero-panel-line"><span class="ok">✓</span> backend data · AI retrieval</span>
+            <div class="hero-chip-row" aria-label="Core technologies">
+              <span class="hero-chip">Java</span>
+              <span class="hero-chip">Spring Boot</span>
+              <span class="hero-chip">AWS</span>
+              <span class="hero-chip">Kubernetes</span>
+              <span class="hero-chip">RAG · MCP</span>
             </div>
           </div>
-          <div class="experience-focus" aria-label="Experience focus areas">
-            <span class="tech-tag">Large-scale migration</span>
-            <span class="tech-tag">Distributed systems</span>
-            <span class="tech-tag">Reliability &amp; performance</span>
-            <span class="tech-tag">Identity architecture</span>
-            <span class="tech-tag">Java · Kotlin · Spring Boot</span>
-            <span class="tech-tag">AWS · Kubernetes</span>
-            <span class="tech-tag">Cassandra · DynamoDB · Kafka</span>
-          </div>
-        </div>
-      </div>
-      <div class="experience-item experience-item--compact card">
-        <div class="company-name">Samsung Electronics</div>
-        <div class="job-title">Software Engineer Intern</div>
-        <div class="job-period">Mar 2022 - Jun 2022</div>
-        <p class="internship-summary">Automated regression testing for 10+ smartphone system features with Android UI Automator and JUnit, achieving 100% test coverage.</p>
+        </aside>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="projects" class="section">
-  <div class="container reveal">
-    <div class="section-head">
-      <h2 class="section-title">Personal &amp; Open Source Work</h2>
-    </div>
-
-    <h3 class="project-group-title">Selected Projects</h3>
-    <div class="projects-grid selected-projects-grid">
-      <div class="project-card card tilt-card">
-        <div class="project-card-main">
-          <div class="project-title">ContextZip</div>
-          <div class="project-period">Dec 2025 - Aug 2026 · AI Knowledge Retrieval</div>
-          <div class="project-story" aria-label="ContextZip project story">
-            <div class="project-story-row">
-              <div class="project-story-label">Problem</div>
-              <p>Knowledge was scattered across Notion, GitHub, Obsidian, and Tistory with no shared search for agents.</p>
+  <section id="experience" class="section">
+    <div class="container reveal">
+      <div class="section-head">
+        <p class="section-kicker">Where I build</p>
+        <h2 class="section-title">Experience</h2>
+      </div>
+      <article class="brand-card experience-card card">
+        <div class="brand-visual brand-visual--samsung">
+          <img src="assets/logos/samsung.png" alt="Samsung">
+        </div>
+        <div class="role-list">
+          <div class="role-row">
+            <div>
+              <h3>Backend Software Engineer</h3>
+              <p class="role-company">Samsung Electronics</p>
+              <p class="role-summary">Backend systems across identity, migration, reliability, and cloud platforms.</p>
             </div>
-            <div class="project-story-row">
-              <div class="project-story-label">Approach</div>
-              <p>Built a private, multi-source MCP RAG system with durable synchronization and citation-backed retrieval.</p>
+            <time datetime="2023-01">Jan 2023 — Present</time>
+          </div>
+          <div class="role-row">
+            <div>
+              <h3>Software Engineer Intern</h3>
+              <p>Samsung Electronics</p>
             </div>
-            <div class="project-story-row project-story-row--result">
-              <div class="project-story-label">Result</div>
-              <p>Enabled citation-backed retrieval across four sources for grounded agent responses.</p>
-            </div>
+            <time>Mar 2022 — Jun 2022</time>
+          </div>
+          <div class="tag-row" aria-label="Experience focus areas">
+            <span>Distributed systems</span>
+            <span>Cloud platforms</span>
+            <span>Reliability</span>
+            <span>Backend &amp; data</span>
           </div>
         </div>
-        <div class="project-card-footer">
-          <div class="project-evidence">
-            <a class="evidence-link" href="https://github.com/eunaverse/ContextZip" target="_blank" rel="noopener noreferrer">Repository</a>
-            <a class="evidence-link evidence-link-demo" href="/mcpcontentsearch-demo.html">Demo</a>
-          </div>
-          <div class="tech-stack">
-            <span class="tech-tag">Python</span>
-            <span class="tech-tag">RAG</span>
-            <span class="tech-tag">MCP</span>
-            <span class="tech-tag">Incremental Sync</span>
-          </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="projects" class="section">
+    <div class="container reveal">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Selected builds</p>
+          <h2 class="section-title">Projects</h2>
         </div>
       </div>
 
-      <div class="project-card card tilt-card">
-        <div class="project-card-main">
-          <div class="project-title">Code2Contract</div>
-          <div class="project-period">Aug 2025 - Dec 2025 · Self-Service API Discovery</div>
-          <div class="project-story" aria-label="Code2Contract project story">
-            <div class="project-story-row">
-              <div class="project-story-label">Problem</div>
-              <p>Developers had to inspect source code manually to discover API behavior.</p>
+      <div class="projects-grid selected-projects-grid">
+        <article class="project-card card">
+          <div class="project-media project-media--demo">
+            <video controls playsinline preload="metadata" poster="assets/images/contextzip-demo-poster.jpg" aria-label="ContextZip product demo">
+              <source src="assets/videos/contextzip-demo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <details class="project-story">
+            <summary><span>Project story</span><span>Problem · Approach · Result</span></summary>
+            <div class="story-list">
+              <div class="story-line"><span>Problem</span><p>Knowledge was scattered across four sources with no shared search for agents.</p></div>
+              <div class="story-line"><span>Approach</span><p>Built a private MCP RAG system with durable sync and citation-backed retrieval.</p></div>
+              <div class="story-line story-line--result"><span>Result</span><p>Grounded agent responses in retrievable source evidence.</p></div>
             </div>
-            <div class="project-story-row">
-              <div class="project-story-label">Approach</div>
-              <p>Built a self-service API documentation workflow for discovery, testing, and integration.</p>
+          </details>
+          <div class="project-meta">
+            <div>
+              <h3>ContextZip</h3>
+              <p>AI Knowledge Retrieval</p>
             </div>
-            <div class="project-story-row project-story-row--result">
-              <div class="project-story-label">Result</div>
-              <p>Cut API discovery from minutes of manual inspection to seconds.</p>
+            <div class="project-actions">
+              <a href="https://github.com/eunaverse/ContextZip" target="_blank" rel="noopener noreferrer">Repository</a>
+              <a class="action-primary" href="mcpcontentsearch-demo.html#plot">Full demo</a>
             </div>
           </div>
-        </div>
-        <div class="project-card-footer">
-          <div class="tech-stack">
-            <span class="tech-tag">API Docs</span>
-            <span class="tech-tag">Discovery</span>
-            <span class="tech-tag">Testing</span>
-            <span class="tech-tag">Integration</span>
-          </div>
-        </div>
-      </div>
+          <div class="tag-row"><span>Python</span><span>RAG</span><span>MCP</span><span>Incremental Sync</span></div>
+        </article>
 
-      <div class="project-card card tilt-card">
-        <div class="project-card-main">
-          <div class="project-title">Hotel Recommendation System</div>
-          <div class="project-period">Oct 2022 - Dec 2022 · Machine Learning</div>
-          <div class="project-story" aria-label="Hotel Recommendation System project story">
-            <div class="project-story-row">
-              <div class="project-story-label">Problem</div>
-              <p>Compare model families for ranking relevant hotel recommendations.</p>
+        <article class="project-card card">
+          <div class="project-media project-media--illustration">
+            <img src="assets/images/code2contract-flow.svg" alt="Concept diagram showing Spring code transformed into OpenAPI documentation" loading="lazy" decoding="async">
+          </div>
+          <details class="project-story">
+            <summary><span>Project story</span><span>Problem · Approach · Result</span></summary>
+            <div class="story-list">
+              <div class="story-line"><span>Problem</span><p>API behavior required repeated source-code inspection.</p></div>
+              <div class="story-line"><span>Approach</span><p>Generated OpenAPI and static reference documentation from Spring controllers and tests.</p></div>
+              <div class="story-line story-line--result"><span>Result</span><p>Created a self-service path for API discovery and Postman-based testing.</p></div>
             </div>
-            <div class="project-story-row">
-              <div class="project-story-label">Approach</div>
-              <p>Evaluated KNN, Random Forest, and XGBoost using MAP@5.</p>
-            </div>
-            <div class="project-story-row project-story-row--result">
-              <div class="project-story-label">Result</div>
-              <p>Achieved a MAP@5 of 0.37 with the full evaluation available in the report.</p>
+          </details>
+          <div class="project-meta">
+            <div>
+              <h3>Code2Contract</h3>
+              <p>Self-Service API Discovery</p>
             </div>
           </div>
-        </div>
-        <div class="project-card-footer">
-          <div class="project-evidence">
-            <a class="evidence-link" href="https://github.com/eunaverse/Hotel-Recommendation-Project/blob/main/Hotel_Recommendation.pdf" target="_blank" rel="noopener noreferrer">Project Report</a>
-          </div>
-          <div class="tech-stack">
-            <span class="tech-tag">KNN</span>
-            <span class="tech-tag">Random Forest</span>
-            <span class="tech-tag">XGBoost</span>
-            <span class="tech-tag">MAP@5</span>
-          </div>
-        </div>
-      </div>
-    </div>
+          <div class="tag-row"><span>API Docs</span><span>Discovery</span><span>Testing</span></div>
+        </article>
 
-    <h3 class="project-group-title">Open Source</h3>
-    <div class="projects-grid open-source-projects-grid">
-      <div class="project-card card tilt-card">
-        <div class="project-card-main">
-          <div class="project-title">Apache Zeppelin</div>
-          <div class="project-period">Open Source · 8 Merged PRs</div>
-          <div class="project-description">
-            Contributed 8 merged pull requests that prevented null-pointer failures, replaced deprecated APIs, and applied modern Java idioms.
+        <article class="project-card card">
+          <div class="project-media project-media--illustration">
+            <img src="assets/images/hotel-recommendation-flow.svg" alt="Hotel recommendation workflow comparing KNN, Random Forest, and XGBoost with tuned MAP at 5 results" loading="lazy" decoding="async">
           </div>
-        </div>
-        <div class="project-card-footer">
-          <div class="project-evidence">
-            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/4970" target="_blank" rel="noopener noreferrer">ZEPPELIN-6220</a>
-            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/4978" target="_blank" rel="noopener noreferrer">ZEPPELIN-6243</a>
-            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5033" target="_blank" rel="noopener noreferrer">ZEPPELIN-6285</a>
-            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5049" target="_blank" rel="noopener noreferrer">ZEPPELIN-6300</a>
-            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5069" target="_blank" rel="noopener noreferrer">ZEPPELIN-6306</a>
-            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5048" target="_blank" rel="noopener noreferrer">ZEPPELIN-6299</a>
-            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/5005" target="_blank" rel="noopener noreferrer">ZEPPELIN-6264</a>
-            <a class="evidence-link" href="https://github.com/apache/zeppelin/pull/4975" target="_blank" rel="noopener noreferrer">ZEPPELIN-6242</a>
+          <details class="project-story">
+            <summary><span>Project story</span><span>Problem · Approach · Result</span></summary>
+            <div class="story-list">
+              <div class="story-line"><span>Problem</span><p>Compare model families for relevant hotel ranking.</p></div>
+              <div class="story-line"><span>Approach</span><p>Evaluated KNN, Random Forest, and XGBoost using MAP@5.</p></div>
+              <div class="story-line story-line--result"><span>Result</span><p>Random Forest led the tuned evaluation at MAP@5 0.4096.</p></div>
+            </div>
+          </details>
+          <div class="project-meta">
+            <div>
+              <h3>Hotel Recommendation System</h3>
+              <p>Machine Learning</p>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/eunaverse/Hotel-Recommendation-Project/blob/main/Hotel_Recommendation.pdf" target="_blank" rel="noopener noreferrer">Report</a>
+            </div>
           </div>
-          <div class="tech-stack">
-            <span class="tech-tag">Java</span>
-            <span class="tech-tag">Reliability</span>
-            <span class="tech-tag">Refactoring</span>
-            <span class="tech-tag">Interpreters</span>
-          </div>
-        </div>
+          <div class="tag-row"><span>KNN</span><span>Random Forest</span><span>XGBoost</span></div>
+        </article>
       </div>
 
-      <div class="project-card card tilt-card">
-        <div class="project-card-main">
-          <div class="project-title">Kubernetes Website</div>
-          <div class="project-period">Open Source · Kubernetes SIG Docs</div>
-          <div class="project-description">
-            Synchronized the outdated Korean ingress-minikube tutorial with the English source through a merged SIG Docs contribution.
+      <div class="subsection-head">
+        <p class="section-kicker">Upstream work</p>
+        <h3>Open Source</h3>
+      </div>
+      <div class="open-source-grid">
+        <article class="oss-card card">
+          <div class="oss-logo-wrap">
+            <img src="assets/logos/apache-zeppelin.png" alt="Apache Zeppelin logo">
           </div>
-        </div>
-        <div class="project-card-footer">
-          <div class="project-evidence">
-            <a class="evidence-link" href="https://github.com/kubernetes/website/pull/52238" target="_blank" rel="noopener noreferrer">#52238 · ingress-minikube</a>
+          <div class="oss-content">
+            <p class="oss-count">8 merged pull requests</p>
+            <h3>Apache Zeppelin</h3>
+            <p>Reliability fixes, API modernization, and Java refactoring.</p>
+            <div class="oss-links" aria-label="Apache Zeppelin merged pull requests">
+              <a href="https://github.com/apache/zeppelin/pull/4970" target="_blank" rel="noopener noreferrer">6220</a>
+              <a href="https://github.com/apache/zeppelin/pull/4978" target="_blank" rel="noopener noreferrer">6243</a>
+              <a href="https://github.com/apache/zeppelin/pull/5033" target="_blank" rel="noopener noreferrer">6285</a>
+              <a href="https://github.com/apache/zeppelin/pull/5049" target="_blank" rel="noopener noreferrer">6300</a>
+              <a href="https://github.com/apache/zeppelin/pull/5069" target="_blank" rel="noopener noreferrer">6306</a>
+              <a href="https://github.com/apache/zeppelin/pull/5048" target="_blank" rel="noopener noreferrer">6299</a>
+              <a href="https://github.com/apache/zeppelin/pull/5005" target="_blank" rel="noopener noreferrer">6264</a>
+              <a href="https://github.com/apache/zeppelin/pull/4975" target="_blank" rel="noopener noreferrer">6242</a>
+            </div>
           </div>
-          <div class="tech-stack">
-            <span class="tech-tag">Kubernetes</span>
-            <span class="tech-tag">minikube</span>
-            <span class="tech-tag">Documentation</span>
-            <span class="tech-tag">Localization</span>
+        </article>
+
+        <article class="oss-card card">
+          <div class="oss-logo-wrap oss-logo-wrap--kubernetes">
+            <img src="assets/logos/kubernetes.svg" alt="Kubernetes logo">
           </div>
-        </div>
+          <div class="oss-content">
+            <p class="oss-count">Merged SIG Docs contribution</p>
+            <h3>Kubernetes Website</h3>
+            <p>Korean ingress-minikube tutorial synchronized with its English source.</p>
+            <div class="oss-links">
+              <a href="https://github.com/kubernetes/website/pull/52238" target="_blank" rel="noopener noreferrer">View #52238</a>
+            </div>
+          </div>
+        </article>
       </div>
+      <a class="more-link" href="https://github.com/eunaverse" target="_blank" rel="noopener noreferrer">More on GitHub <span>↗</span></a>
     </div>
+  </section>
 
-    <p class="section-footnote projects-github-more">
-      More projects and experiments on
-      <a href="https://github.com/eunaverse" target="_blank" rel="noopener noreferrer">GitHub →</a>
-    </p>
-  </div>
-</section>
+  <section id="skills" class="section">
+    <div class="container reveal">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">What I use</p>
+          <h2 class="section-title">Skills</h2>
+        </div>
+      </div>
+      <div class="skills-grid">
+        <article class="skill-card card">
+          <div class="skill-index">01</div>
+          <h3>Languages</h3>
+          <p>Java, Kotlin, Python<br>SQL, JavaScript</p>
+        </article>
+        <article class="skill-card card">
+          <div class="skill-index">02</div>
+          <h3>Backend &amp; Data</h3>
+          <p>Spring Boot, REST APIs, Kafka<br>Cassandra, DynamoDB<br>MySQL, PostgreSQL</p>
+        </article>
+        <article class="skill-card card">
+          <div class="skill-index">03</div>
+          <h3>Cloud &amp; Infrastructure</h3>
+          <p>AWS, Kubernetes, Docker<br>Helm, CI/CD, S3</p>
+        </article>
+        <article class="skill-card card">
+          <div class="skill-index">04</div>
+          <h3>AI &amp; Developer Tools</h3>
+          <p>RAG, MCP, Machine Learning<br>Claude Code, Codex</p>
+        </article>
+      </div>
+    </div>
+  </section>
 
-<section id="skills" class="section">
-  <div class="container reveal">
-    <div class="section-head">
-      <h2 class="section-title">Skills &amp; Focus</h2>
-    </div>
-    <div class="skills-grid">
-      <div class="skill-category card">
-        <div class="skill-icon">⌨️</div>
-        <div class="skill-title">Languages</div>
-        <div class="skill-list">
-          Java, Kotlin, Python<br>
-          SQL, JavaScript
-        </div>
+  <section id="education" class="section">
+    <div class="container reveal">
+      <div class="section-head">
+        <p class="section-kicker">Learning path</p>
+        <h2 class="section-title">Education</h2>
       </div>
-      <div class="skill-category card">
-        <div class="skill-icon">🗄️</div>
-        <div class="skill-title">Backend &amp; Data</div>
-        <div class="skill-list">
-          Spring Boot, REST APIs, Kafka<br>
-          Cassandra, DynamoDB<br>
-          MySQL, PostgreSQL
-        </div>
-      </div>
-      <div class="skill-category card">
-        <div class="skill-icon">☁️</div>
-        <div class="skill-title">Cloud &amp; Infrastructure</div>
-        <div class="skill-list">
-          AWS, Kubernetes, Docker<br>
-          Helm, CI/CD, S3
-        </div>
-      </div>
-      <div class="skill-category card">
-        <div class="skill-icon">🤖</div>
-        <div class="skill-title">AI &amp; Developer Tools</div>
-        <div class="skill-list">
-          RAG, MCP<br>
-          Machine Learning<br>
-          Claude Code, Codex
-        </div>
+      <div class="education-grid">
+        <article class="education-card card">
+          <div class="education-logo education-logo--illinois">
+            <img src="assets/logos/illinois-block-i.svg" alt="University of Illinois Block I logo">
+          </div>
+          <div>
+            <time>Aug 2026 — May 2028</time>
+            <h3>University of Illinois Urbana-Champaign</h3>
+            <p>Master of Computer Science</p>
+          </div>
+        </article>
+        <article class="education-card card">
+          <div class="education-logo education-logo--knu">
+            <img src="assets/logos/knu.jpg" alt="Kyungpook National University logo">
+          </div>
+          <div>
+            <time>Mar 2019 — Feb 2023</time>
+            <h3>Kyungpook National University</h3>
+            <p>B.S. in Mobile Engineering · Academic Chair · GPA 4.23 / 4.3</p>
+          </div>
+        </article>
       </div>
     </div>
-    <div class="certification-card card" aria-label="Certification">
-      <div class="certification-mark">AWS</div>
-      <div>
-        <div class="certification-label">Certification</div>
-        <div class="certification-title">AWS Certified Solutions Architect - Professional</div>
-        <div class="certification-date">Jan 2025</div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section id="education" class="section">
-  <div class="container reveal">
-    <div class="section-head">
-      <h2 class="section-title">Education</h2>
-    </div>
-    <div class="education-grid">
-      <div class="education-item card">
-        <div class="university-name">University of Illinois Urbana-Champaign</div>
-        <div class="degree">Master of Computer Science</div>
-        <div class="job-period">Aug 2026 - May 2028</div>
-        <div class="education-facts" aria-label="Relevant coursework">
-          <span class="tech-tag">Distributed Systems</span>
-          <span class="tech-tag">Advanced Topics in NLP</span>
-          <span class="tech-tag">Database Systems</span>
+  <section id="availability" class="section contact-section">
+    <div class="container reveal">
+      <div class="contact-shell">
+        <div>
+          <p class="section-kicker">Say hello</p>
+          <h2 class="section-title">Let’s build something reliable.</h2>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:euna.engineer@gmail.com"><span>@</span>Email</a>
+          <a href="https://www.linkedin.com/in/euna-engineer/" target="_blank" rel="noopener noreferrer"><span>in</span>LinkedIn</a>
+          <a href="https://github.com/eunaverse" target="_blank" rel="noopener noreferrer"><span>GH</span>GitHub</a>
         </div>
       </div>
-      <div class="education-item card">
-        <div class="university-name">Kyungpook National University</div>
-        <div class="degree">B.S. in Mobile Engineering (Academic Chair)</div>
-        <div class="job-period">Mar 2019 - Feb 2023</div>
-        <div class="gpa">GPA 4.23 / 4.3</div>
-      </div>
     </div>
-  </div>
-</section>
-
-<section id="availability" class="section">
-  <div class="container reveal">
-    <div class="section-head">
-      <h2 class="section-title">Contact</h2>
-      <p class="section-subtitle">Happy to talk about backend systems, infrastructure, or the next good problem</p>
-    </div>
-    <div class="contact-grid">
-      <a href="mailto:euna.engineer@gmail.com" class="contact-item card">
-        <div class="contact-icon">@</div>
-        <div class="contact-title">Email</div>
-        <div class="contact-link">euna.engineer@gmail.com</div>
-      </a>
-      <a href="https://www.linkedin.com/in/euna-engineer/" target="_blank" rel="noopener noreferrer" class="contact-item card">
-        <div class="contact-icon">in</div>
-        <div class="contact-title">LinkedIn</div>
-        <div class="contact-link">Connect</div>
-      </a>
-      <a href="https://github.com/eunaverse" target="_blank" rel="noopener noreferrer" class="contact-item card">
-        <div class="contact-icon">GH</div>
-        <div class="contact-title">GitHub</div>
-        <div class="contact-link">See the code</div>
-      </a>
-    </div>
-  </div>
-</section>
+  </section>
+</main>
 
 <footer>
-  <div class="container">
-    <p>&copy; 2026 Eunwha Park. Built as a living portfolio.</p>
-  </div>
+  <div class="container"><p>&copy; 2026 Euna Park</p></div>
 </footer>
 <script defer src="assets/js/index.js"></script>
 </body>
