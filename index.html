@@ -30,10 +30,10 @@
     <a class="logo" href="#home" aria-label="Eunaverse home">eunaverse</a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home">Home</a></li>
+      <li><a href="#education">Education</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Work</a></li>
       <li><a href="#skills">Skills</a></li>
-      <li><a href="#education">Education</a></li>
       <li><a href="#availability">Contact</a></li>
     </ul>
     <button class="hamburger" id="hamburgerBtn" aria-label="Open navigation menu" aria-controls="navLinks" aria-expanded="false">
@@ -77,6 +77,37 @@
             </div>
           </div>
         </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="education" class="section">
+    <div class="container reveal">
+      <div class="section-head">
+        <p class="section-kicker">Learning path</p>
+        <h2 class="section-title">Education</h2>
+      </div>
+      <div class="education-grid">
+        <article class="education-card card">
+          <div class="education-logo education-logo--illinois">
+            <img src="assets/logos/illinois-block-i.svg" alt="University of Illinois Block I logo">
+          </div>
+          <div>
+            <time>Aug 2026 — May 2028</time>
+            <h3>University of Illinois Urbana-Champaign</h3>
+            <p>Master of Computer Science</p>
+          </div>
+        </article>
+        <article class="education-card card">
+          <div class="education-logo education-logo--knu">
+            <img src="assets/logos/knu.jpg" alt="Kyungpook National University logo">
+          </div>
+          <div>
+            <time>Mar 2019 — Feb 2023</time>
+            <h3>Kyungpook National University</h3>
+            <p>B.S. in Mobile Engineering · Academic Chair · GPA 4.23 / 4.3</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -150,31 +181,10 @@
             </div>
             <div class="project-actions">
               <a href="https://github.com/eunaverse/ContextZip" target="_blank" rel="noopener noreferrer">Repository</a>
-              <a class="action-primary" href="mcpcontentsearch-demo.html#plot">Full demo</a>
+              <a class="action-primary" href="mcpcontentsearch-demo.html#plot">Details</a>
             </div>
           </div>
-          <div class="tag-row"><span>Python</span><span>RAG</span><span>MCP</span><span>Incremental Sync</span></div>
-        </article>
-
-        <article class="project-card card">
-          <div class="project-media project-media--illustration">
-            <img src="assets/images/code2contract-flow.svg" alt="Concept diagram showing Spring code transformed into OpenAPI documentation" loading="lazy" decoding="async">
-          </div>
-          <details class="project-story">
-            <summary><span>Project story</span><span>Problem · Approach · Result</span></summary>
-            <div class="story-list">
-              <div class="story-line"><span>Problem</span><p>API behavior required repeated source-code inspection.</p></div>
-              <div class="story-line"><span>Approach</span><p>Generated OpenAPI and static reference documentation from Spring controllers and tests.</p></div>
-              <div class="story-line story-line--result"><span>Result</span><p>Created a self-service path for API discovery and Postman-based testing.</p></div>
-            </div>
-          </details>
-          <div class="project-meta">
-            <div>
-              <h3>Code2Contract</h3>
-              <p>Self-Service API Discovery</p>
-            </div>
-          </div>
-          <div class="tag-row"><span>API Docs</span><span>Discovery</span><span>Testing</span></div>
+          <div class="tag-row"><span>Python</span><span>RAG</span><span>MCP</span></div>
         </article>
 
         <article class="project-card card">
@@ -195,10 +205,31 @@
               <p>Machine Learning</p>
             </div>
             <div class="project-actions">
-              <a href="https://github.com/eunaverse/Hotel-Recommendation-Project/blob/main/Hotel_Recommendation.pdf" target="_blank" rel="noopener noreferrer">Report</a>
+              <a class="action-primary" href="https://github.com/eunaverse/Hotel-Recommendation-Project/blob/main/Hotel_Recommendation.pdf" target="_blank" rel="noopener noreferrer">Report</a>
             </div>
           </div>
           <div class="tag-row"><span>KNN</span><span>Random Forest</span><span>XGBoost</span></div>
+        </article>
+
+        <article class="project-card card">
+          <div class="project-media project-media--illustration">
+            <img src="assets/images/code2contract-flow.svg" alt="Concept diagram showing Spring code transformed into OpenAPI documentation" loading="lazy" decoding="async">
+          </div>
+          <details class="project-story">
+            <summary><span>Project story</span><span>Problem · Approach · Result</span></summary>
+            <div class="story-list">
+              <div class="story-line"><span>Problem</span><p>API specifications drifted as controllers and tests evolved.</p></div>
+              <div class="story-line"><span>Approach</span><p>Generated OpenAPI and static reference documentation directly from Spring controllers and tests.</p></div>
+              <div class="story-line story-line--result"><span>Result</span><p>Code changes automatically refreshed the specification, keeping API discovery and testing aligned.</p></div>
+            </div>
+          </details>
+          <div class="project-meta">
+            <div>
+              <h3>Code2Contract</h3>
+              <p>Self-Service API Discovery</p>
+            </div>
+          </div>
+          <div class="tag-row"><span>API Docs</span><span>Discovery</span><span>Testing</span></div>
         </article>
       </div>
 
@@ -279,43 +310,12 @@
     </div>
   </section>
 
-  <section id="education" class="section">
-    <div class="container reveal">
-      <div class="section-head">
-        <p class="section-kicker">Learning path</p>
-        <h2 class="section-title">Education</h2>
-      </div>
-      <div class="education-grid">
-        <article class="education-card card">
-          <div class="education-logo education-logo--illinois">
-            <img src="assets/logos/illinois-block-i.svg" alt="University of Illinois Block I logo">
-          </div>
-          <div>
-            <time>Aug 2026 — May 2028</time>
-            <h3>University of Illinois Urbana-Champaign</h3>
-            <p>Master of Computer Science</p>
-          </div>
-        </article>
-        <article class="education-card card">
-          <div class="education-logo education-logo--knu">
-            <img src="assets/logos/knu.jpg" alt="Kyungpook National University logo">
-          </div>
-          <div>
-            <time>Mar 2019 — Feb 2023</time>
-            <h3>Kyungpook National University</h3>
-            <p>B.S. in Mobile Engineering · Academic Chair · GPA 4.23 / 4.3</p>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
   <section id="availability" class="section contact-section">
     <div class="container reveal">
       <div class="contact-shell">
         <div>
           <p class="section-kicker">Say hello</p>
-          <h2 class="section-title">Let’s build something reliable.</h2>
+          <h2 class="section-title">Contact me</h2>
         </div>
         <div class="contact-links">
           <a href="mailto:euna.engineer@gmail.com"><span>@</span>Email</a>
