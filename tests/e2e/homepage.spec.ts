@@ -209,7 +209,7 @@ test("keeps selected project evidence links", async ({ page }) => {
   );
   await expect(contextZip.getByRole("link", { name: "Full demo", exact: true })).toHaveAttribute(
     "href",
-    "/mcpcontentsearch-demo.html",
+    "mcpcontentsearch-demo.html#plot",
   );
 
   const code2Contract = page.locator(".project-card").filter({ hasText: "Code2Contract" });
@@ -371,15 +371,24 @@ test("marks every external new-tab link as safe", async ({ page }) => {
   expect(unsafe).toBe(0);
 });
 
-test("routes the ContextZip action to the playable full demo", async ({ page }) => {
+test("routes the ContextZip action directly to The plot walkthrough", async ({ page }) => {
   await page.goto("/#projects");
   await page.getByRole("link", { name: "Full demo", exact: true }).click();
 
-  await expect(page).toHaveURL(/\/mcpcontentsearch-demo\.html$/);
+  await expect(page).toHaveURL(/\/mcpcontentsearch-demo\.html#plot$/);
   await expect(page).toHaveTitle("ContextZip");
-  await expect(page.getByRole("heading", { name: "ContextZip", exact: true })).toBeVisible();
+  const plot = page.locator("#plot");
+  await expect(plot).toHaveText("The plot");
+  await expect(page.getByRole("heading", { name: "Four silos. Zero shared search." })).toBeVisible();
+  await expect.poll(() => plot.evaluate((element) => element.getBoundingClientRect().top)).toBeLessThan(80);
+  await expect(page.getByText("Architecture", { exact: true })).toBeAttached();
+  await expect(page.getByText("Proof", { exact: true })).toBeAttached();
+  await expect(page.getByText("Toolkit", { exact: true })).toBeAttached();
+  await expect(page.getByRole("link", { name: "Back to portfolio" })).toHaveAttribute(
+    "href",
+    "index.html#projects",
+  );
   const video = page.getByLabel("ContextZip product demo");
-  await expect(video).toBeVisible();
   await expect(video).toHaveAttribute("controls", "");
   await expect(video.locator("source")).toHaveAttribute("src", "assets/videos/contextzip-demo.mp4");
   await expect.poll(() => video.evaluate((element: HTMLVideoElement) => element.readyState)).toBeGreaterThanOrEqual(1);

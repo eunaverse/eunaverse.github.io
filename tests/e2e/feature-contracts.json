@@ -91,7 +91,7 @@
     },
     {
       "id": "contextzip-demo-route",
-      "test": "routes the ContextZip action to the playable full demo"
+      "test": "routes the ContextZip action directly to The plot walkthrough"
     },
     {
       "id": "contextzip-proof-card-responsiveness",
