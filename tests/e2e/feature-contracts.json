@@ -2,100 +2,100 @@
   "version": 1,
   "features": [
     {
-      "id": "home-content-and-primary-actions",
-      "test": "renders the portfolio content and primary calls to action"
+      "id": "visual-identity",
+      "test": "renders the concise visual portfolio identity"
     },
     {
-      "id": "career-timeline",
-      "test": "keeps the career timeline clearly stated"
+      "id": "hero-removals",
+      "test": "removes location and recruiter metric tiles"
     },
     {
-      "id": "hero-recruiter-stats",
-      "test": "uses recruiter-facing hero stats instead of leading with GPA"
+      "id": "identity-certification-tags",
+      "test": "presents the role and AWS certification as matching visual tags"
     },
     {
-      "id": "project-selection",
-      "test": "focuses the project section on the strongest recruiter-facing GitHub work"
+      "id": "experience-branding",
+      "test": "shows compact Samsung roles with an official logo"
     },
     {
-      "id": "experience-narrative",
-      "test": "keeps experience narrative concise and portfolio-friendly"
+      "id": "education-branding",
+      "test": "shows both schools with visual identity and concise degree details"
     },
     {
-      "id": "education-timeline",
-      "test": "shows the education timeline with the UIUC MCS program"
+      "id": "project-visual-frames",
+      "test": "uses a demo-first visual frame for every selected project"
     },
     {
-      "id": "recruiter-section-order",
-      "test": "orders recruiter evidence before education"
+      "id": "project-hover-stories",
+      "test": "reveals Problem Approach Result on pointer hover"
     },
     {
-      "id": "skills-claims",
-      "test": "uses defensible skill categories without overclaiming frontend tooling"
+      "id": "project-keyboard-stories",
+      "test": "reveals every project story with keyboard focus"
+    },
+    {
+      "id": "project-touch-stories",
+      "test": "keeps project stories visible on touch devices"
     },
     {
       "id": "project-evidence-links",
-      "test": "keeps project cards concise and points to evidence"
+      "test": "keeps selected project evidence links"
     },
     {
-      "id": "selected-project-footer-alignment",
-      "test": "aligns selected project footers while cards share a row"
+      "id": "open-source-branding",
+      "test": "shows logo-led open source contributions with merged evidence"
     },
     {
-      "id": "selected-project-story-layout",
-      "test": "keeps selected project stories contained and visually emphasizes results"
+      "id": "brand-assets",
+      "test": "loads every company school and open source logo"
     },
     {
-      "id": "contextzip-demo-route",
-      "test": "routes the ContextZip demo link to a playable video"
+      "id": "skills-claims",
+      "test": "preserves the existing defensible skill set"
     },
     {
-      "id": "contextzip-proof-card-responsiveness",
-      "test": "keeps ContextZip proof card content contained while resizing"
-    },
-    {
-      "id": "open-source-evidence",
-      "test": "groups open source contributions into evidence-backed upstream work"
-    },
-    {
-      "id": "open-source-card-alignment",
-      "test": "aligns open source evidence and technology rows while cards share a row"
-    },
-    {
-      "id": "resume-selected-projects",
-      "test": "shows resume-selected project evidence"
+      "id": "recruiter-section-order",
+      "test": "keeps the recruiter section order"
     },
     {
       "id": "contact-links",
-      "test": "collects contact links outside the hero"
+      "test": "collects contact links in the closing panel"
     },
     {
       "id": "content-visible-without-scroll",
-      "test": "keeps portfolio sections visible without scrolling"
+      "test": "keeps portfolio sections visible without scroll-triggered reveal"
     },
     {
       "id": "fixed-navigation-targets",
-      "test": "keeps internal navigation targets below the fixed nav"
+      "test": "keeps internal navigation targets clear of the fixed navigation"
     },
     {
       "id": "responsive-mobile",
-      "test": "scores responsive UX quality on mobile"
+      "test": "keeps the visual portfolio contained on mobile"
     },
     {
       "id": "responsive-tablet",
-      "test": "scores responsive UX quality on tablet"
+      "test": "keeps the visual portfolio contained on tablet"
     },
     {
       "id": "responsive-desktop",
-      "test": "scores responsive UX quality on desktop"
+      "test": "uses the expanded visual grid on desktop"
     },
     {
-      "id": "mobile-hero-priority",
-      "test": "keeps hero priority content visible in the mobile first viewport"
+      "id": "mobile-navigation",
+      "test": "opens and closes the mobile navigation accessibly"
     },
     {
       "id": "external-link-safety",
-      "test": "marks external new-tab links as safe"
+      "test": "marks every external new-tab link as safe"
+    },
+    {
+      "id": "contextzip-demo-route",
+      "test": "routes the ContextZip action to the playable full demo"
+    },
+    {
+      "id": "contextzip-proof-card-responsiveness",
+      "test": "keeps the full ContextZip proof card contained while resizing"
     }
   ]
 }

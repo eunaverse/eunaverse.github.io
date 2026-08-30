@@ -4,10 +4,12 @@
     if (hamburgerBtn && navLinksEl) {
       hamburgerBtn.addEventListener("click", function () {
         navLinksEl.classList.toggle("open");
+        hamburgerBtn.setAttribute("aria-expanded", String(navLinksEl.classList.contains("open")));
       });
       navLinksEl.querySelectorAll("a").forEach(function (link) {
         link.addEventListener("click", function () {
           navLinksEl.classList.remove("open");
+          hamburgerBtn.setAttribute("aria-expanded", "false");
         });
       });
     }
