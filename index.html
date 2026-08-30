@@ -105,27 +105,29 @@
 
   <section id="projects" class="section">
     <div class="container reveal">
-      <div class="section-head section-head--split">
+      <div class="section-head">
         <div>
           <p class="section-kicker">Selected builds</p>
           <h2 class="section-title">Projects</h2>
         </div>
-        <p class="interaction-hint">Hover or focus a demo to see the story.</p>
       </div>
 
       <div class="projects-grid selected-projects-grid">
         <article class="project-card card">
-          <div class="project-media" tabindex="0" aria-label="ContextZip demo. Hover or focus to reveal the project story.">
+          <div class="project-media">
             <video controls playsinline preload="metadata" poster="assets/images/contextzip-demo-poster.jpg" aria-label="ContextZip product demo">
               <source src="assets/videos/contextzip-demo.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
-            <div class="project-overlay">
+          </div>
+          <details class="project-story">
+            <summary><span>Project story</span><span>Problem · Approach · Result</span></summary>
+            <div class="story-list">
               <div class="story-line"><span>Problem</span><p>Knowledge was scattered across four sources with no shared search for agents.</p></div>
               <div class="story-line"><span>Approach</span><p>Built a private MCP RAG system with durable sync and citation-backed retrieval.</p></div>
               <div class="story-line story-line--result"><span>Result</span><p>Grounded agent responses in retrievable source evidence.</p></div>
             </div>
-          </div>
+          </details>
           <div class="project-meta">
             <div>
               <h3>ContextZip</h3>
@@ -140,30 +142,41 @@
         </article>
 
         <article class="project-card card">
-          <div class="project-media project-media--empty" tabindex="0" aria-label="Code2Contract demo not available yet. Hover or focus to reveal the project story.">
-            <div class="project-overlay">
-              <div class="story-line"><span>Problem</span><p>API behavior required repeated source-code inspection.</p></div>
-              <div class="story-line"><span>Approach</span><p>Built a self-service workflow for discovery, testing, and integration.</p></div>
-              <div class="story-line story-line--result"><span>Result</span><p>Reduced API discovery from minutes to seconds.</p></div>
-            </div>
+          <div class="project-media project-media--illustration">
+            <img src="assets/images/code2contract-flow.svg" alt="Concept diagram showing Spring code transformed into OpenAPI documentation" loading="lazy" decoding="async">
           </div>
+          <details class="project-story">
+            <summary><span>Project story</span><span>Problem · Approach · Result</span></summary>
+            <div class="story-list">
+              <div class="story-line"><span>Problem</span><p>API behavior required repeated source-code inspection.</p></div>
+              <div class="story-line"><span>Approach</span><p>Generated OpenAPI and static reference documentation from Spring controllers and tests.</p></div>
+              <div class="story-line story-line--result"><span>Result</span><p>Created a self-service path for API discovery and Postman-based testing.</p></div>
+            </div>
+          </details>
           <div class="project-meta">
             <div>
               <h3>Code2Contract</h3>
               <p>Self-Service API Discovery</p>
+            </div>
+            <div class="project-actions">
+              <a href="https://github.com/eunaverse/SpecGenerator" target="_blank" rel="noopener noreferrer">Related prototype</a>
             </div>
           </div>
           <div class="tag-row"><span>API Docs</span><span>Discovery</span><span>Testing</span></div>
         </article>
 
         <article class="project-card card">
-          <div class="project-media project-media--empty" tabindex="0" aria-label="Hotel Recommendation System demo not available yet. Hover or focus to reveal the project story.">
-            <div class="project-overlay">
+          <div class="project-media project-media--illustration">
+            <img src="assets/images/hotel-recommendation-flow.svg" alt="Hotel recommendation workflow and tuned MAP at 5 model comparison" loading="lazy" decoding="async">
+          </div>
+          <details class="project-story">
+            <summary><span>Project story</span><span>Problem · Approach · Result</span></summary>
+            <div class="story-list">
               <div class="story-line"><span>Problem</span><p>Compare model families for relevant hotel ranking.</p></div>
               <div class="story-line"><span>Approach</span><p>Evaluated KNN, Random Forest, and XGBoost using MAP@5.</p></div>
-              <div class="story-line story-line--result"><span>Result</span><p>Reached a MAP@5 of 0.37 in the documented evaluation.</p></div>
+              <div class="story-line story-line--result"><span>Result</span><p>Random Forest led the tuned evaluation at MAP@5 0.4096.</p></div>
             </div>
-          </div>
+          </details>
           <div class="project-meta">
             <div>
               <h3>Hotel Recommendation System</h3>

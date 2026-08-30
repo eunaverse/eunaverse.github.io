@@ -23,19 +23,19 @@
     },
     {
       "id": "project-visual-frames",
-      "test": "uses a demo-first visual frame for every selected project"
+      "test": "uses a playable demo and simple visual diagrams for selected projects"
     },
     {
-      "id": "project-hover-stories",
-      "test": "reveals Problem Approach Result on pointer hover"
+      "id": "contextzip-unobstructed-playback",
+      "test": "keeps ContextZip playback unobstructed while its story stays closed"
     },
     {
-      "id": "project-keyboard-stories",
-      "test": "reveals every project story with keyboard focus"
+      "id": "project-explicit-stories",
+      "test": "opens every project story only by explicit click or keyboard action"
     },
     {
       "id": "project-touch-stories",
-      "test": "keeps project stories visible on touch devices"
+      "test": "opens project stories on touch without covering project media"
     },
     {
       "id": "project-evidence-links",

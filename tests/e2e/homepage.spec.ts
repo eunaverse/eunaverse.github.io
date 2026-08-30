@@ -92,14 +92,14 @@ test("shows both schools with visual identity and concise degree details", async
   await expect(education.getByText(/B\.S\. in Mobile Engineering/)).toBeVisible();
 });
 
-test("uses a demo-first visual frame for every selected project", async ({ page }) => {
+test("uses a playable demo and simple visual diagrams for selected projects", async ({ page }) => {
   await page.goto("/#projects");
 
   const projects = page.locator(".selected-projects-grid .project-card");
   await expect(projects).toHaveCount(3);
   await expect(projects.locator(".project-media")).toHaveCount(3);
-  await expect(projects.locator(".project-media--empty")).toHaveCount(2);
-  await expect(projects.locator(".project-media--empty video, .project-media--empty img")).toHaveCount(0);
+  await expect(projects.locator(".project-media--empty, .project-overlay")).toHaveCount(0);
+  await expect(projects.locator(".project-media--illustration img")).toHaveCount(2);
 
   const demo = projects.filter({ hasText: "ContextZip" }).getByLabel("ContextZip product demo");
   await expect(demo).toHaveAttribute("controls", "");
@@ -107,39 +107,68 @@ test("uses a demo-first visual frame for every selected project", async ({ page 
   await expect(demo).toHaveAttribute("poster", "assets/images/contextzip-demo-poster.jpg");
   await expect(demo.locator("source")).toHaveAttribute("src", "assets/videos/contextzip-demo.mp4");
   await expect(demo.locator("source")).toHaveAttribute("type", "video/mp4");
+
+  await expect(page.getByAltText("Concept diagram showing Spring code transformed into OpenAPI documentation", { exact: true })).toHaveAttribute(
+    "src",
+    "assets/images/code2contract-flow.svg",
+  );
+  await expect(page.getByAltText("Hotel recommendation workflow and tuned MAP at 5 model comparison", { exact: true })).toHaveAttribute(
+    "src",
+    "assets/images/hotel-recommendation-flow.svg",
+  );
 });
 
-test("reveals Problem Approach Result on pointer hover", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("/");
-
-  const media = page.locator(".selected-projects-grid .project-card").filter({ hasText: "ContextZip" }).locator(".project-media");
-  const overlay = media.locator(".project-overlay");
-  await media.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(250);
-  await expect(overlay).toHaveCSS("opacity", "0");
-  await media.hover();
-  await expect(overlay).toHaveCSS("opacity", "1");
-  for (const label of ["Problem", "Approach", "Result"]) {
-    await expect(overlay.getByText(label, { exact: true })).toBeVisible();
-  }
-});
-
-test("reveals every project story with keyboard focus", async ({ page }) => {
+test("keeps ContextZip playback unobstructed while its story stays closed", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/#projects");
 
-  const mediaFrames = page.locator(".selected-projects-grid .project-media");
-  await expect(mediaFrames).toHaveCount(3);
-  for (let index = 0; index < 3; index += 1) {
-    const frame = mediaFrames.nth(index);
-    await frame.focus();
-    await expect(frame.locator(".project-overlay")).toHaveCSS("opacity", "1");
-    await expect(frame.locator(".story-line")).toHaveCount(3);
-  }
+  const card = page.locator(".selected-projects-grid .project-card").filter({ hasText: "ContextZip" });
+  const video = card.getByLabel("ContextZip product demo");
+  const story = card.locator("details.project-story");
+  await expect(card.locator(".project-overlay")).toHaveCount(0);
+  expect(await story.evaluate((element: HTMLDetailsElement) => element.open)).toBe(false);
+  await expect(video).toBeVisible();
+  await expect(video).toHaveCSS("filter", "none");
+  await expect(video).toHaveCSS("pointer-events", "auto");
+
+  const geometry = await card.evaluate((element) => {
+    const media = element.querySelector("video")?.getBoundingClientRect();
+    const details = element.querySelector("details.project-story")?.getBoundingClientRect();
+    return {
+      mediaBottom: media?.bottom,
+      storyTop: details?.top,
+    };
+  });
+  expect(geometry.mediaBottom).toBeDefined();
+  expect(geometry.storyTop).toBeDefined();
+  expect(geometry.storyTop!).toBeGreaterThanOrEqual(geometry.mediaBottom! - 1);
 });
 
-test("keeps project stories visible on touch devices", async ({ browser }) => {
+test("opens every project story only by explicit click or keyboard action", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/#projects");
+
+  const stories = page.locator(".selected-projects-grid details.project-story");
+  await expect(stories).toHaveCount(3);
+  for (let index = 0; index < 3; index += 1) {
+    expect(await stories.nth(index).evaluate((element: HTMLDetailsElement) => element.open)).toBe(false);
+  }
+
+  await stories.nth(0).locator("summary").click();
+  expect(await stories.nth(0).evaluate((element: HTMLDetailsElement) => element.open)).toBe(true);
+  await expect(stories.nth(0).locator(".story-line")).toHaveCount(3);
+
+  await stories.nth(1).locator("summary").focus();
+  await stories.nth(1).locator("summary").press("Enter");
+  expect(await stories.nth(1).evaluate((element: HTMLDetailsElement) => element.open)).toBe(true);
+  await expect(stories.nth(1).getByText("OpenAPI", { exact: false })).toBeVisible();
+
+  await stories.nth(2).locator("summary").click();
+  expect(await stories.nth(2).evaluate((element: HTMLDetailsElement) => element.open)).toBe(true);
+  await expect(stories.nth(2).getByText("MAP@5 0.4096", { exact: false })).toBeVisible();
+});
+
+test("opens project stories on touch without covering project media", async ({ browser }) => {
   const context = await browser.newContext({
     hasTouch: true,
     isMobile: true,
@@ -148,12 +177,14 @@ test("keeps project stories visible on touch devices", async ({ browser }) => {
   const page = await context.newPage();
   await page.goto("http://127.0.0.1:4173/#projects");
 
-  const overlays = page.locator(".selected-projects-grid .project-overlay");
-  await expect(overlays).toHaveCount(3);
-  for (let index = 0; index < 3; index += 1) {
-    await expect(overlays.nth(index)).toHaveCSS("opacity", "1");
-    await expect(overlays.nth(index)).toHaveCSS("position", "relative");
-  }
+  const cards = page.locator(".selected-projects-grid .project-card");
+  const stories = cards.locator("details.project-story");
+  await expect(cards.locator(".project-overlay")).toHaveCount(0);
+  expect(await stories.first().evaluate((element: HTMLDetailsElement) => element.open)).toBe(false);
+  await stories.first().locator("summary").click();
+  expect(await stories.first().evaluate((element: HTMLDetailsElement) => element.open)).toBe(true);
+  await expect(cards.first().getByLabel("ContextZip product demo")).toBeVisible();
+  await expect(cards.locator(".project-media--illustration img")).toHaveCount(2);
   await expectNoHorizontalOverflow(page, 390);
   await context.close();
 });
@@ -169,6 +200,12 @@ test("keeps selected project evidence links", async ({ page }) => {
   await expect(contextZip.getByRole("link", { name: "Full demo", exact: true })).toHaveAttribute(
     "href",
     "/mcpcontentsearch-demo.html",
+  );
+
+  const code2Contract = page.locator(".project-card").filter({ hasText: "Code2Contract" });
+  await expect(code2Contract.getByRole("link", { name: "Related prototype", exact: true })).toHaveAttribute(
+    "href",
+    "https://github.com/eunaverse/SpecGenerator",
   );
 
   const hotel = page.locator(".project-card").filter({ hasText: "Hotel Recommendation System" });
