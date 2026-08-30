@@ -36,7 +36,11 @@ test("renders the concise visual portfolio identity", async ({ page }) => {
   await expect(page).toHaveTitle("Eunwha Park | Backend & Distributed Systems Engineer");
   await expect(page.getByRole("heading", { name: "Eunwha Park", exact: true })).toBeVisible();
   await expect(page.getByText("I build reliable backend systems and practical AI retrieval tools.", { exact: true })).toBeVisible();
-  await expect(page.locator("#home .hero-skill-orbit")).toBeVisible();
+  const terminal = page.getByLabel("Mac-style terminal showing engineering focus", { exact: true });
+  await expect(terminal).toBeVisible();
+  await expect(terminal.locator(".hero-panel-dot")).toHaveCount(3);
+  await expect(terminal.getByText("current-focus.txt", { exact: true })).toBeVisible();
+  await expect(page.locator("#home .hero-skill-orbit")).toHaveCount(0);
 });
 
 test("removes location and recruiter metric tiles", async ({ page }) => {
@@ -54,10 +58,11 @@ test("removes location and recruiter metric tiles", async ({ page }) => {
 test("presents the role and AWS certification as matching visual tags", async ({ page }) => {
   await page.goto("/");
 
-  const tags = page.locator(".identity-tag");
+  const tags = page.locator("#home .identity-tag");
   await expect(tags).toHaveCount(2);
   await expect(tags.nth(0)).toHaveText(/Backend & Distributed Systems Engineer/);
   await expect(tags.nth(1)).toHaveText(/AWS Certified Solutions Architect - Professional/);
+  await expect(page.locator("#skills .identity-tag")).toHaveCount(0);
 
   const styles = await tags.evaluateAll((elements) =>
     elements.map((element) => ({
@@ -69,7 +74,8 @@ test("presents the role and AWS certification as matching visual tags", async ({
   expect(parseFloat(styles[0].borderRadius)).toBeGreaterThan(20);
 });
 
-test("shows compact Samsung roles with an official logo", async ({ page }) => {
+test("shows compact Samsung roles with a logo and one-line current role summary", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/#experience");
 
   const experience = page.locator("#experience");
@@ -78,6 +84,10 @@ test("shows compact Samsung roles with an official logo", async ({ page }) => {
   await expect(experience.getByRole("heading", { name: "Software Engineer Intern", exact: true })).toBeVisible();
   await expect(experience.getByText("Jan 2023 — Present", { exact: true })).toBeVisible();
   await expect(experience.getByText("Mar 2022 — Jun 2022", { exact: true })).toBeVisible();
+  const summary = experience.getByText("Backend systems across identity, migration, reliability, and cloud platforms.", { exact: true });
+  await expect(summary).toBeVisible();
+  const summaryBox = await summary.boundingBox();
+  expect(summaryBox?.height).toBeLessThan(30);
   await expect(experience.locator(".role-row")).toHaveCount(2);
 });
 
@@ -307,7 +317,7 @@ test("keeps the visual portfolio contained on mobile", async ({ page }) => {
 
   await expectNoHorizontalOverflow(page, 375);
   await expect(page.getByRole("heading", { name: "Eunwha Park", exact: true })).toBeVisible();
-  await expect(page.locator(".hero-skill-orbit")).toBeVisible();
+  await expect(page.getByLabel("Mac-style terminal showing engineering focus", { exact: true })).toBeVisible();
   await expect(page.locator(".selected-projects-grid .project-card")).toHaveCount(3);
   await expect(page.locator(".education-card")).toHaveCount(2);
 });

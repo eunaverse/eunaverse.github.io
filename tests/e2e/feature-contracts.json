@@ -15,7 +15,7 @@
     },
     {
       "id": "experience-branding",
-      "test": "shows compact Samsung roles with an official logo"
+      "test": "shows compact Samsung roles with a logo and one-line current role summary"
     },
     {
       "id": "education-branding",
