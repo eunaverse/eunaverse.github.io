@@ -33,8 +33,9 @@ async function expectPageImagesLoaded(page: Page) {
 test("renders the concise visual portfolio identity", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page).toHaveTitle("Eunwha Park | Backend & Distributed Systems Engineer");
-  await expect(page.getByRole("heading", { name: "Eunwha Park", exact: true })).toBeVisible();
+  await expect(page).toHaveTitle("Euna Park | Backend & Distributed Systems Engineer");
+  await expect(page.getByRole("heading", { name: "Euna Park", exact: true })).toBeVisible();
+  await expect(page.getByText("Eunwha Park", { exact: true })).toHaveCount(0);
   await expect(page.getByText("I build reliable backend systems and practical AI retrieval tools.", { exact: true })).toBeVisible();
   const terminal = page.getByLabel("Mac-style terminal showing engineering focus", { exact: true });
   await expect(terminal).toBeVisible();
@@ -316,7 +317,7 @@ test("keeps the visual portfolio contained on mobile", async ({ page }) => {
   await page.evaluate(() => document.fonts.ready.then(() => true));
 
   await expectNoHorizontalOverflow(page, 375);
-  await expect(page.getByRole("heading", { name: "Eunwha Park", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Euna Park", exact: true })).toBeVisible();
   await expect(page.getByLabel("Mac-style terminal showing engineering focus", { exact: true })).toBeVisible();
   await expect(page.locator(".selected-projects-grid .project-card")).toHaveCount(3);
   await expect(page.locator(".education-card")).toHaveCount(2);

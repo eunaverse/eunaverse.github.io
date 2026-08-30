@@ -1,10 +1,10 @@
-# Eunwha Park · Portfolio
+# Euna Park · Portfolio
 
 ## Live Site
 - Production site: https://eunaverse.github.io/
 
 ## Purpose
-This repository hosts Eunwha Park's portfolio as a Backend & Distributed Systems Engineer.
+This repository hosts Euna Park's portfolio as a Backend & Distributed Systems Engineer.
 
 ## Local Development
 ```bash
