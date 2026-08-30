@@ -135,11 +135,14 @@ test("keeps ContextZip playback unobstructed while its story stays closed", asyn
   await page.goto("/#projects");
 
   const card = page.locator(".selected-projects-grid .project-card").filter({ hasText: "ContextZip" });
+  const media = card.locator(".project-media--demo");
   const video = card.getByLabel("ContextZip product demo");
   const story = card.locator("details.project-story");
   await expect(card.locator(".project-overlay")).toHaveCount(0);
+  await expect(media).toHaveCSS("aspect-ratio", "4 / 3");
   expect(await story.evaluate((element: HTMLDetailsElement) => element.open)).toBe(false);
   await expect(video).toBeVisible();
+  await expect(video).toHaveCSS("object-fit", "contain");
   await expect(video).toHaveCSS("filter", "none");
   await expect(video).toHaveCSS("pointer-events", "auto");
 

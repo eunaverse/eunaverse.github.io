@@ -546,6 +546,15 @@ section[id] {
   object-fit: contain;
 }
 
+.project-media--demo {
+  aspect-ratio: 4 / 3;
+  background: #fff;
+}
+
+.project-media--demo video {
+  object-fit: contain;
+}
+
 .project-media--figure {
   background: #fff;
 }
@@ -936,7 +945,6 @@ footer {
 
   .projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .project-card:first-child { grid-column: 1 / -1; }
-  .project-card:first-child .project-media { aspect-ratio: 16 / 7; }
 
   .open-source-grid { grid-template-columns: 1fr; }
   .oss-logo-wrap { min-height: 15rem; }
@@ -988,7 +996,6 @@ footer {
 
   .projects-grid { grid-template-columns: 1fr; }
   .project-card:first-child { grid-column: auto; }
-  .project-card:first-child .project-media { aspect-ratio: 16 / 10; }
 
   .education-grid { grid-template-columns: 1fr; }
   .education-card { min-height: 15rem; }
